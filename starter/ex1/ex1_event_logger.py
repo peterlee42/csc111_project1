@@ -62,17 +62,17 @@ class EventList:
 
     Instance Attributes:
         - first: The first event in the linked list of game events
-        - last: The last even in the linked list of game events
+        - last: The last event in the linked list of game events
 
     Representation Invariants:
-        - # TODO add any appropriate representation invariants, if needed
+        - self.first is not None and self.first.prev is None
+        - self.last is not None and self.last.next is None
     """
     first: Optional[Event]
     last: Optional[Event]
 
     def __init__(self) -> None:
         """Initialize a new empty event list."""
-
         self.first = None
         self.last = None
 
