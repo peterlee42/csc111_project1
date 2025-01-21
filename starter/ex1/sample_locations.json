@@ -1,0 +1,43 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Library",
+      "brief_description": "You are in the library.",
+      "long_description": "You are in the library where you fell asleep last night, studying for an important exam. You wake up and look around. No one else seems to be here but you.",
+      "available_commands": {
+        "go south": 4,
+        "go east": 2
+      }
+    },
+    {
+      "id": 2,
+      "name": "Library Study Room",
+      "brief_description": "You are in the library study room.",
+      "long_description": "You are in a quiet library study room, surrounded by neatly arranged desks and chairs. The soft hum of the air conditioner fills the air.",
+      "available_commands": {
+        "go east": 3,
+        "go west": 1
+      }
+    },
+    {
+      "id": 3,
+      "name": "Starbucks",
+      "brief_description": "You are in a Starbucks.",
+      "long_description": "You are inside a Starbucks outside the library. The coffee smells good, and you hear the faint sound of baristas calling out names for orders.",
+      "available_commands": {
+        "go west": 2,
+        "buy coffee": 3
+      }
+    },
+    {
+      "id": 4,
+      "name": "Library Entrance",
+      "brief_description": "You are at the entrance of the library.",
+      "long_description": "You are at the entrance of the library, where glass doors lead outside to the campus. The sun is shining brightly outside, and a few students are walking in and out.",
+      "available_commands": {
+        "go north": 1
+      }
+    }]
+}
+
