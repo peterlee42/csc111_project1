@@ -100,6 +100,7 @@ class SimpleAdventureGame:
             loc_id = self.current_location_id
         return self._locations[loc_id]
 
+
 class AdventureGameSimulation:
     """A simulation of an adventure game playthrough.
     """
@@ -135,7 +136,8 @@ class AdventureGameSimulation:
         for command in commands:
             next_location_id = current_location.available_commands[command]
             next_location = self._game.get_location(next_location_id)
-            self._events.add_event(Event(next_location.id_num, next_location.description, command, None, self._events.last))
+            self._events.add_event(Event(next_location.id_num, next_location.description, command, None,
+                                         self._events.last))
             current_location = next_location
 
     def get_id_log(self) -> list[int]:

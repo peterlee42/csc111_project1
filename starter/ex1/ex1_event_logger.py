@@ -55,6 +55,7 @@ class Event:
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
+
 class EventList:
     """
     A linked list of game events.
@@ -82,14 +83,12 @@ class EventList:
             print(f"Location: {curr.id_num}, Command: {curr.next_command}")
             curr = curr.next
 
-
     def is_empty(self) -> bool:
         """Return whether this event list is empty."""
         if self.first is None:
             return True
         else:
             return False
-
 
     def add_event(self, event: Event, command: Optional[str] = None) -> None:
         """Add the given new event to the end of this event list.
@@ -102,10 +101,10 @@ class EventList:
             self.first = event
             self.last = event
         else:
+            event.prev = self.last
             self.last.next = event
             self.last.next_command = command
             self.last = event
-
 
     def remove_last_event(self) -> None:
         """Remove the last event from this event list.
@@ -117,7 +116,7 @@ class EventList:
                 self.first, self.last = None, None
             else:
                 curr = self.first
-                while not (curr.next is self.last):
+                while curr.next is not self.last:
                     curr = curr.next
 
                 assert curr.next is self.last
@@ -126,7 +125,6 @@ class EventList:
                     curr.next = None
                     curr.next_command = None
                     self.last = curr
-
 
     def get_id_log(self) -> list[int]:
         """Return a list of all location IDs visited for each event in this list, in sequence."""
@@ -138,7 +136,6 @@ class EventList:
             curr = curr.next
 
         return location_ids
-
 
     # Note: You may add other methods to this class as needed but DO NOT CHANGE THE SPECIFICATION OF ANY OF THE ABOVE
 
