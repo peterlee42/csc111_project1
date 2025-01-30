@@ -27,9 +27,19 @@ class Location:
 
     Instance Attributes:
         - # TODO Describe each instance attribute here
+        - id_num: the unique identifier of the location
+        - name: the name of the location
+        - brief_description: a short description for quick rederence
+        - long_description: a longer description of the location displayed upon entering
+        - available_commands: a dictionary of commands available in the location
+        - items: a list of items available in the location
+        - visited: a boolean that indicates if the location has been visited
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
+        - id_num >= 0
+        - name != ''
+        - brief_description != ''
+        - long_description != ''
     """
 
     # This is just a suggested starter class for Location.
@@ -37,6 +47,13 @@ class Location:
     #
     # The only thing you must NOT change is the name of this class: Location.
     # All locations in your game MUST be represented as an instance of this class.
+    id_num: int
+    name: str
+    brief_description: str
+    long_description: str
+    available_commands: dict[str, int]
+    items: list[str]
+    visited: bool = False
 
     def __init__(self, location_id, brief_description, long_description, available_commands, items,
                  visited=False) -> None:
@@ -59,9 +76,19 @@ class Item:
 
     Instance Attributes:
         - # TODO Describe each instance attribute here
+        - name: the name of the item
+        - start_position: 
+        - target_position: 
+        - target_points: points awarded when the item is placed at its correct location
+
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
+        - name != ''
+        - start_position >= 0
+        - target_position >= 0
+        - target_points >= 0
+
     """
 
     # NOTES:

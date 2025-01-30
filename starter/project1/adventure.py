@@ -29,15 +29,18 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
     Instance Attributes:
-        - # TODO add descriptions of public instance attributes as needed
+        - # TODO add descriptions of public instance attributes as needed (DONE)
+        - current_location_id: the current location ID of the player in the game.
+        - ongoing: a boolean representing whether the game is ongoing or not.
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
+        - self.current_location_id in self._locations
+        - 
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -49,6 +52,7 @@ class AdventureGame:
     _items: list[Item]
     current_location_id: int  # Suggested attribute, can be removed
     ongoing: bool  # Suggested attribute, can be removed
+    inventory = []
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
         """
@@ -84,13 +88,18 @@ class AdventureGame:
             data = json.load(f)  # This loads all the data from the JSON file
 
         locations = {}
-        for loc_data in data['locations']:  # Go through each element associated with the 'locations' key in the file
+        # Go through each element associated with the 'locations' key in the file
+        for loc_data in data['locations']:
             location_obj = Location(loc_data['id'], loc_data['brief_description'], loc_data['long_description'],
                                     loc_data['available_commands'], loc_data['items'])
             locations[loc_data['id']] = location_obj
 
         items = []
-        # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
+        # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
+        for item_data in data['items']:
+            item_obj = Item(item_data['name'], item_data['start_position'],
+                            item_data['target_position'], item_data['target_points'])
+            items.append(item_obj)
         # YOUR CODE BELOW
 
         return locations, items
@@ -102,6 +111,69 @@ class AdventureGame:
 
         # TODO: Complete this method as specified
         # YOUR CODE BELOW
+        if loc_id not in self._locations:
+            raise ValueError("Invalid location ID")
+
+        return self._locations[self.current_location_id] if loc_id is None else self._locations[loc_id]
+
+    # HELPER FUNCTIONS
+
+    def undo(self, game_log: EventList, locations: dict[int, Location]) -> None:
+        """Undo the last action taken by the player."""
+        # Make current location id the id of the previous event. Remove the last event from the game log.
+        last_event = game_log.last
+        self.current_location_id = last_event.id_num
+        game_log.remove_last_event()
+
+        last_command = game_log.last.next_command
+
+        # IF YOU DROPPED
+        if last_command == "drop":
+            dropped_item = locations[self.current_location_id].items[-1]
+            self.inventory.append(dropped_item)
+            locations[self.current_location_id].items.remove(dropped_item)
+        elif last_command == "pick_up":
+            picked_up_item = self.inventory[-1]
+            locations[self.current_location_id].items.append(picked_up_item)
+            self.inventory.remove(picked_up_item)
+        elif last_command == "use":
+            # undo any effects of using an item
+            pass
+        else:
+            print("No more actions to undo.")
+
+        game_log.last.next_command = None
+
+    def pick_up_item(self, item_name: str, locations: dict[int, Location]) -> None:
+        """Add an item to the player's inventory.
+        """
+        location = self.get_location()
+        if item_name in location.items:
+            self.inventory.append(item_name)
+            location.items.remove(item_name)
+            print(f"{item_name} has been added to your inventory.")
+        else:
+            print(f"{item_name} is not in this location.")
+
+    def drop_item(self, item_name: str, locations: dict[int, Location]) -> None:
+        """Remove an item from the player's inventory.
+        """
+        if item_name in self.inventory:
+            self.inventory.remove(item_name)
+            self.get_location().items.append(item_name)
+            print(f"{item_name} has been removed from your inventory.")
+        else:
+            print(f"{item_name} is not in your inventory.")
+
+    def go(self, direction: str) -> None:
+        """Move the player to a new location.
+        """
+        location = self.get_location()
+
+        if direction in location.available_commands:
+            self.current_location_id = location.available_commands[direction]
+        else:
+            print("Invalid direction. Try again.")
 
 
 if __name__ == "__main__":
@@ -116,8 +188,10 @@ if __name__ == "__main__":
     # })
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
-    game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
-    menu = ["look", "inventory", "score", "undo", "log", "quit"]  # Regular menu options available at each location
+    # load data, setting initial location ID to 1
+    game = AdventureGame('game_data.json', 1)
+    # Regular menu options available at each location
+    menu = ["look", "inventory", "score", "undo", "log", "quit"]
     choice = None
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
@@ -127,13 +201,20 @@ if __name__ == "__main__":
 
         location = game.get_location()
 
-        # TODO: Add new Event to game log to represent current game location
+        # TODO: Add new Event to game log to represent current game location (DONE)
         #  Note that the <choice> variable should be the command which led to this event
         # YOUR CODE HERE
+        if choice is not None and choice not in menu:
+            game_log.add_event(Event(id_num=location.id_num,
+                               description=location.brief_description), choice)
 
-        # TODO: Depending on whether or not it's been visited before,
+        # TODO: Depending on whether or not it's been visited before, (DONE)
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
         # YOUR CODE HERE
+        if location.id_num not in game_log.get_id_log():
+            print(location.long_description)
+        else:
+            print(location.brief_description)
 
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
@@ -155,12 +236,22 @@ if __name__ == "__main__":
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if choice == "log":
                 game_log.display_events()
+            elif choice == "quit":
+                game.ongoing = False
+            elif choice == "undo":
+                game.undo(game_log)
+            elif choice == "inventory":
+                print("Inventory:", game.inventory)
+            elif choice == "score":
+                print("Score:", game.score)
+            elif choice == "look":
+                print(location.long_description)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
-
         else:
             # Handle non-menu actions
             result = location.available_commands[choice]
             game.current_location_id = result
 
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
+
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
