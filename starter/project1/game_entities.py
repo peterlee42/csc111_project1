@@ -69,6 +69,10 @@ class Location:
         self.items = items
         self.visited = visited
 
+        # Initialize pick up commands
+        for item in items:
+            self.available_commands[f'pick up {item}'] = self.id_num
+
 
 @dataclass
 class Item:
@@ -77,10 +81,9 @@ class Item:
     Instance Attributes:
         - # TODO Describe each instance attribute here
         - name: the name of the item
-        - start_position: 
-        - target_position: 
+        - start_position:
+        - target_position:
         - target_points: points awarded when the item is placed at its correct location
-
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -88,14 +91,12 @@ class Item:
         - start_position >= 0
         - target_position >= 0
         - target_points >= 0
-
     """
 
     # NOTES:
     # This is just a suggested starter class for Item.
     # You may change these parameters and the data available for each Item object as you see fit.
     # (The current parameters correspond to the example in the handout).
-    #
     # The only thing you must NOT change is the name of this class: Item.
     # All item objects in your game MUST be represented as an instance of this class.
 
@@ -105,10 +106,86 @@ class Item:
     target_points: int
 
 
+class Player:
+    """An item in our text adventure game world.
+
+    Instance Attributes:
+        - current_location_id: the id of the location the player is currently in
+        - inventory: a list of items the player has
+        - available_commands: a list of commands the player can use
+
+    Representation Invariants:
+        - current_location_id >= 0
+    """
+
+    current_location: Location
+    inventory: list[str]
+    available_commands: list[str]
+    score: int
+
+    def __init__(self, current_location) -> None:
+        """Initialize a new player object.
+        """
+        self.current_location = current_location
+        self.inventory = []
+        self.available_commands = []
+        self.score = 0
+
+    def use(self, current_location: Location, item_name: str, item_obj: Item) -> None:
+        """Use an item in the player's inventory.
+        """
+        if current_location.id_num == item_obj.target_position:
+            self.score += item_obj.target_points
+            print(f"{item_name} has been used")
+            self.inventory.remove(item_name)
+            self.available_commands.remove(f'use {item_name}')
+            self.available_commands.remove(f'drop {item_name}')
+        else:
+            print(f"{item_name} cannot be used at this location")
+
+    def undo_use(self, prev_location: Location, item_name: str, item_obj: Item) -> None:
+        """Undo the effects of the item in the player's inventory."""
+        if prev_location.id_num == item_obj.target_position:
+            self.score -= item_obj.target_points
+            self.inventory.append(item_name)
+            self.available_commands.append(f'use {item_name}')
+            self.available_commands.append(f'drop {item_name}')
+
+    def drop_item(self, current_location: Location, item_name: str) -> None:
+        """Remove an item from the player's inventory."""
+        self.inventory.remove(item_name)
+        current_location.items.append(item_name)
+        current_location.available_commands[f'pick up {item_name}'] = \
+            current_location.id_num
+        self.available_commands.remove(f'drop {item_name}')
+        self.available_commands.remove(f'use {item_name}')
+
+        print(f"{item_name} has been removed from your inventory.")
+
+    def pick_up_item(self, current_location: Location, item_name: str) -> None:
+        """Add an item to the player's inventory."""
+
+        self.inventory.append(item_name)  # add to inventory
+        current_location.items.remove(item_name)  # remove item from location
+
+        current_location.available_commands.pop(
+            f'pick up {item_name}')  # remove command from location
+
+        self.available_commands.append(f'drop {item_name}')
+        self.available_commands.append(f'use {item_name}')
+
+        print(f"{item_name} has been added to your inventory.")
+
+
+class puzzle:
+    def __init__():
+        pass
+
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
 # - Player class
 # etc.
+
 
 if __name__ == "__main__":
     pass

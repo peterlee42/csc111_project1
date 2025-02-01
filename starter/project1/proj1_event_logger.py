@@ -51,7 +51,7 @@ class Event:
     # TODO: Add attributes below based on the provided descriptions above.
     id_num: int
     description: str
-    next_command: Optional[str]
+    next_command: Optional[str] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
@@ -94,7 +94,7 @@ class EventList:
         else:
             return False
 
-    def add_event(self, event: Event, command: str = None) -> None:
+    def add_event(self, event: Event, command: Optional[str] = None) -> None:
         """Add the given new event to the end of this event list.
         The given command is the command which was used to reach this new event, or None if this is the first
         event in the game.

@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from game_entities import Location, Item
+from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
 
@@ -36,11 +36,12 @@ class AdventureGame:
         - # TODO add descriptions of public instance attributes as needed (DONE)
         - current_location_id: the current location ID of the player in the game.
         - ongoing: a boolean representing whether the game is ongoing or not.
+        - player: a Player object representing the player in the game.
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
         - self.current_location_id in self._locations
-        - 
+        -
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -50,9 +51,9 @@ class AdventureGame:
 
     _locations: dict[int, Location]
     _items: list[Item]
+    player = Player
     current_location_id: int  # Suggested attribute, can be removed
     ongoing: bool  # Suggested attribute, can be removed
-    inventory = []
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
         """
@@ -77,6 +78,9 @@ class AdventureGame:
         # Suggested attributes (you can remove and track these differently if you wish to do so):
         self.current_location_id = initial_location_id  # game begins at this location
         self.ongoing = True  # whether the game is ongoing
+
+        # Player attribute
+        self.player = Player(initial_location_id)
 
     @staticmethod
     def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item]]:
@@ -111,69 +115,56 @@ class AdventureGame:
 
         # TODO: Complete this method as specified
         # YOUR CODE BELOW
-        if loc_id not in self._locations:
+        if loc_id is None:
+            return self._locations[self.current_location_id]
+        elif loc_id not in self._locations:
             raise ValueError("Invalid location ID")
+        else:
+            return self._locations[loc_id]
 
-        return self._locations[self.current_location_id] if loc_id is None else self._locations[loc_id]
+    def get_item(self, item_name: str) -> Item:
+        for item in self._items:
+            if item.name == item_name:
+                return item
 
-    # HELPER FUNCTIONS
-
-    def undo(self, game_log: EventList, locations: dict[int, Location]) -> None:
+    def undo(self, game_log: EventList, current_location: Location) -> None:
         """Undo the last action taken by the player."""
         # Make current location id the id of the previous event. Remove the last event from the game log.
-        last_event = game_log.last
-        self.current_location_id = last_event.id_num
-        game_log.remove_last_event()
-
-        last_command = game_log.last.next_command
-
-        # IF YOU DROPPED
-        if last_command == "drop":
-            dropped_item = locations[self.current_location_id].items[-1]
-            self.inventory.append(dropped_item)
-            locations[self.current_location_id].items.remove(dropped_item)
-        elif last_command == "pick_up":
-            picked_up_item = self.inventory[-1]
-            locations[self.current_location_id].items.append(picked_up_item)
-            self.inventory.remove(picked_up_item)
-        elif last_command == "use":
-            # undo any effects of using an item
-            pass
+        if game_log.is_empty():
+            print("No actions to undo.")
+        elif game_log.first.next is None:
+            print("No actions to undo")
         else:
-            print("No more actions to undo.")
+            # comment wtvr happening here
+            prev_event = game_log.last.prev
 
-        game_log.last.next_command = None
+            prev_command = prev_event.next_command
+            prev_location_id = prev_event.id_num
+            prev_location = self.get_location(prev_event.id_num)
 
-    def pick_up_item(self, item_name: str, locations: dict[int, Location]) -> None:
-        """Add an item to the player's inventory.
-        """
-        location = self.get_location()
-        if item_name in location.items:
-            self.inventory.append(item_name)
-            location.items.remove(item_name)
-            print(f"{item_name} has been added to your inventory.")
-        else:
-            print(f"{item_name} is not in this location.")
+            game_log.last = prev_event
 
-    def drop_item(self, item_name: str, locations: dict[int, Location]) -> None:
-        """Remove an item from the player's inventory.
-        """
-        if item_name in self.inventory:
-            self.inventory.remove(item_name)
-            self.get_location().items.append(item_name)
-            print(f"{item_name} has been removed from your inventory.")
-        else:
-            print(f"{item_name} is not in your inventory.")
+            game_log.last.next = None
+            game_log.last.next_command = None
 
-    def go(self, direction: str) -> None:
-        """Move the player to a new location.
-        """
-        location = self.get_location()
+            if prev_command.startswith('pick up'):
+                item_name = prev_command[8:]
+                self.player.drop_item(prev_location, item_name)
+            elif prev_command.startswith('drop'):
+                item_name = prev_command[5:]
+                self.player.pick_up_item(prev_location, item_name)
+            elif prev_command.startswith('use'):
+                item_name = prev_command[4:]
 
-        if direction in location.available_commands:
-            self.current_location_id = location.available_commands[direction]
-        else:
-            print("Invalid direction. Try again.")
+                item_obj = self.get_item(item_name)
+
+                self.player.undo_use(prev_location, item_name, item_obj)
+
+            else:
+                print("No more actions to undo.")
+
+            self.current_location_id = prev_location_id
+            self.player.current_location = self._locations[prev_location_id]
 
 
 if __name__ == "__main__":
@@ -204,9 +195,9 @@ if __name__ == "__main__":
         # TODO: Add new Event to game log to represent current game location (DONE)
         #  Note that the <choice> variable should be the command which led to this event
         # YOUR CODE HERE
-        if choice is not None and choice not in menu:
-            game_log.add_event(Event(id_num=location.id_num,
-                               description=location.brief_description), choice)
+        if choice not in menu:
+            game_log.add_event(
+                Event(location.id_num, location.brief_description), choice)
 
         # TODO: Depending on whether or not it's been visited before, (DONE)
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
@@ -224,7 +215,7 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in location.available_commands and choice not in menu:
+        while choice not in location.available_commands and choice not in menu and choice not in game.player.available_commands:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -239,19 +230,33 @@ if __name__ == "__main__":
             elif choice == "quit":
                 game.ongoing = False
             elif choice == "undo":
-                game.undo(game_log)
+                game.undo(game_log, location)
             elif choice == "inventory":
-                print("Inventory:", game.inventory)
+                print("Inventory:", game.player.inventory)
             elif choice == "score":
                 print("Score:", game.score)
             elif choice == "look":
                 print(location.long_description)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-            # Handle non-menu actions
-            result = location.available_commands[choice]
-            game.current_location_id = result
+            if choice.startswith('go'):
+                # Change to new location
+                result = location.available_commands[choice]
+                game.current_location_id = result
 
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
+            elif choice.startswith('pick up'):
+                item_name = choice[8:]
+                game.player.pick_up_item(location, item_name)
 
-            # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
+            elif choice.startswith('use'):  # use
+                item_name = choice[4:]
+                game.player.use(location, item_name,
+                                game.get_item(item_name))
+            else:
+                item_name = choice[5:]
+                game.player.drop_item(location, item_name)
+
+        # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
+
+        print("========")

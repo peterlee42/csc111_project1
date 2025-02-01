@@ -50,6 +50,7 @@ class AdventureGameSimulation:
         # Hint: self._game.get_location() gives you back the current location
         start_location = self._game.get_location()
         self._events.add_event(
+            # not completely sure how this works
             Event(start_location.id_num, start_location.long_description))
 
         # TODO: Generate the remaining events based on the commands and initial location
@@ -68,6 +69,16 @@ class AdventureGameSimulation:
         #  it to self._events.
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
+
+        for command in commands:
+            next_location_id = current_location.available_commands[command]
+            self._game.set_location(next_location_id)
+            new_location = self._game.get_location()
+            # not sure if this is right
+            new_event = Event(new_location.id_num,
+                              new_location.long_description, command)
+            self._events.add_event(new_event)
+            current_location = new_location
 
     def get_id_log(self) -> list[int]:
         """
