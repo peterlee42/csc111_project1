@@ -82,6 +82,7 @@ class Item:
     Instance Attributes:
         - # TODO Describe each instance attribute here
         - name: the name of the item
+        - description: a description of the item
         - start_position:
         - target_position:
         - target_points: points awarded when the item is placed at its correct location
@@ -89,6 +90,7 @@ class Item:
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
         - name != ''
+        - description != ''
         - start_position >= 0
         - target_position >= 0
         - target_points >= 0
@@ -102,6 +104,7 @@ class Item:
     # All item objects in your game MUST be represented as an instance of this class.
 
     name: str
+    description: str
     start_position: int
     target_position: int
     target_points: int
@@ -132,10 +135,10 @@ class Player:
         self.available_commands = []
         self.score = 0
 
-    def use(self, current_location: Location, item_name: str, item_obj: Item) -> None:
+    def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
         """Use an item in the player's inventory.
         """
-        if current_location.id_num == item_obj.target_position:
+        if current_location_id_num == item_obj.target_position:
             self.score += item_obj.target_points
             print(f"{item_name} has been used")
             self.inventory.remove(item_name)
@@ -164,7 +167,7 @@ class Player:
         print(f"{item_name} has been removed from your inventory.")
 
     def pick_up_item(self, current_location: Location, item_name: str) -> None:
-        """Add an item to the player's inventory."""
+        """Add an item to the player's inventory. Reward the player with 1 point."""
 
         self.inventory.append(item_name)  # add to inventory
         current_location.items.remove(item_name)  # remove item from location

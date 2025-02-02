@@ -29,6 +29,21 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add helper functions, classes, etc. below as needed
 
+def parse_command(command: str) -> tuple[str, str]:
+    """Parses a command and returns the action and target item."""
+    words = command.lower().split()
+
+    # Handle compound verbs like 'pick up'
+    if len(words) >= 2 and f"{words[0]} {words[1]}" in ["pick up"]:
+        action = f"{words[0]} {words[1]}"
+        target = " ".join(words[2:])  # Handles multi-word items like 'red key'
+    else:
+        action = words[0]
+        target = " ".join(words[1:])
+
+    return action, target
+
+
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
@@ -100,7 +115,7 @@ class AdventureGame:
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
         for item_data in data['items']:
-            item_obj = Item(item_data['name'], item_data['start_position'],
+            item_obj = Item(item_data['name'], item_data['description'], item_data['start_position'],
                             item_data['target_position'], item_data['target_points'])
             items.append(item_obj)
         # YOUR CODE BELOW
@@ -123,9 +138,9 @@ class AdventureGame:
 
     def get_item(self, given_item_name: str) -> Item:
         """Retrieves item object by a given item name. If item object does not exist, do nothing."""
-        for item in self._items:
-            if item.name == given_item_name:
-                return item
+        for item_obj in self._items:
+            if item_obj.name == given_item_name:
+                return item_obj
 
     def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
@@ -148,15 +163,15 @@ class AdventureGame:
             current_game_log.last.next_command = None
 
             if prev_command.startswith('pick up'):
-                item_name = prev_command[8:]
-                self.player.drop_item(prev_location, item_name)
+                prev_item_name = prev_command[8:]
+                self.player.drop_item(prev_location, prev_item_name)
             elif prev_command.startswith('drop'):
-                item_name = prev_command[5:]
-                self.player.pick_up_item(prev_location, item_name)
+                prev_item_name = prev_command[5:]
+                self.player.pick_up_item(prev_location, prev_item_name)
             elif prev_command.startswith('use'):
-                item_name = prev_command[4:]
-                item_obj = self.get_item(item_name)
-                self.player.undo_use(prev_location, item_name, item_obj)
+                prev_item_name = prev_command[4:]
+                prev_item_obj = self.get_item(prev_item_name)
+                self.player.undo_use(prev_location, prev_item_name, prev_item_obj)
             else:
                 print('You have been move back to your previous location.')
 
@@ -205,6 +220,10 @@ if __name__ == "__main__":
             print(location.long_description)
             location.visited = True
 
+        # Display Location's Item Descriptions if there is any.
+        for item in location.items:
+            print('- ', game.get_item(item).description)
+
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can also:")
@@ -236,22 +255,24 @@ if __name__ == "__main__":
                 print("Score:", game.player.score)
             elif choice == "look":
                 print(location.long_description)
+                for item in game.player.inventory:
+                    print('- ', item)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             # Change to new location
-            result = location.available_commands[choice]
-            game.current_location_id = result
-
+            if choice.startswith('go'):
+                result = location.available_commands[choice]
+                game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
-            if choice.startswith('pick up'):
-                item_name = choice[8:].strip()
+            elif choice.startswith('take'):
+                item_name = choice[8:]
                 game.player.pick_up_item(location, item_name)
             elif choice.startswith('use'):  # use
-                item_name = choice[4:].strip()
-                game.player.use(location, item_name,
+                item_name = choice[4:]
+                game.player.use(location.id_num, item_name,
                                 game.get_item(item_name))
             elif choice.startswith('drop'):
-                item_name = choice[5:].strip()
+                item_name = choice[5:]
                 game.player.drop_item(location, item_name)
 
         # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game

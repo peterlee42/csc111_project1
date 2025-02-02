@@ -4,42 +4,41 @@
       "id": 1,
       "name": "Bahen 1F",
       "brief_description": "You are on the first floor of the Bahen Center.",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the South, and an exit from the building to St. George street to the East.",
+      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
       "available_commands": {
-        "go south": 4,
-        "go east": 2
+        "go west": 2,
+        "go east": 4
       },
       "items": ["toonie"]
     },
     {
       "id": 2,
-      "name": "Library Study Room",
-      "brief_description": "You are in the library study room.",
-      "long_description": "You are in a quiet library study room, surrounded by neatly arranged desks and chairs. The soft hum of the air conditioner fills the air.",
+      "name": "Bahen 2F",
+      "brief_description": "You are on the second floor of the Bahen Center.",
+      "long_description": "You are on the second floor of the Bahen Center. It is even emptier up here... You start to hear the hum of the air conditioner. Oh! The CSSU Lounge!. The CSSU Lounge is located to the South, and there are elevators to the East.",
       "available_commands": {
-        "go east": 3,
-        "go west": 1
+        "go east": 1,
+        "go south": 3
       },
-      "items": []
+      "items": ["crumpled paper"]
     },
     {
       "id": 3,
-      "name": "Starbucks",
-      "brief_description": "You are in a Starbucks.",
-      "long_description": "You are inside a Starbucks outside the library. The coffee smells good, and you hear the faint sound of baristas calling out names for orders.",
+      "name": "CSSU Lounge",
+      "brief_description": "You are in the CSSU Lounge.",
+      "long_description": "You made it to the CSSU Lounge. There is a fridge... The only way out is north.",
       "available_commands": {
-        "go west": 2,
-        "buy coffee": 3
+        "go north": 2
       },
-      "items": []
+      "items": ["redbull"]
     },
     {
       "id": 4,
-      "name": "Library Entrance",
-      "brief_description": "You are at the entrance of the library.",
-      "long_description": "You are at the entrance of the library, where glass doors lead outside to the campus. The sun is shining brightly outside, and a few students are walking in and out.",
+      "name": "St. George Street",
+      "brief_description": "You are on St. George Street",
+      "long_description": "You are on St. George Street. It's pretty windy day...  Thankfully you brought your jacket! You hear the bustling noise of the city.",
       "available_commands": {
-        "go north": 1
+        "go north": 2
       },
       "items": []
     }
@@ -53,23 +52,16 @@
       "target_points" : 5
     },
     {
-      "name" : "USB Drive",
-      "description" : "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position" : 1,
+      "name" : "crumpled paper",
+      "description" : "There's some crumpled paper. Seems like someone didn't want to do their homework...",
+      "start_position" : 2,
       "target_position" : 4,
       "target_points" : 5
     },
     {
-      "name" : "Laptop Charger",
-      "description" : "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position" : 1,
-      "target_position" : 4,
-      "target_points" : 5
-    },
-    {
-      "name" : "Lucky UofT Mug",
-      "description" : "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position" : 1,
+      "name" : "redbull",
+      "description" : "Wow, a RedBull.",
+      "start_position" : 3,
       "target_position" : 4,
       "target_points" : 5
     }
