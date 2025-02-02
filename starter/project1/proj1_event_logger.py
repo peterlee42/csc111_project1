@@ -66,7 +66,7 @@ class EventList:
 
     Representation Invariants:
         - self.first.prev is None
-        - self.last.next is None
+        - self.first is not self.last and self.last.next is None
     """
     first: Optional[Event]
     last: Optional[Event]

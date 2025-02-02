@@ -41,7 +41,6 @@ class AdventureGame:
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
         - self.current_location_id in self._locations
-        -
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -122,30 +121,31 @@ class AdventureGame:
         else:
             return self._locations[loc_id]
 
-    def get_item(self, item_name: str) -> Item:
+    def get_item(self, given_item_name: str) -> Item:
+        """Retrieves item object by a given item name. If item object does not exist, do nothing."""
         for item in self._items:
-            if item.name == item_name:
+            if item.name == given_item_name:
                 return item
 
-    def undo(self, game_log: EventList, current_location: Location) -> None:
+    def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
         # Make current location id the id of the previous event. Remove the last event from the game log.
-        if game_log.is_empty():
+        if current_game_log.is_empty():
             print("No actions to undo.")
-        elif game_log.first.next is None:
+        elif current_game_log.first.next is None:
             print("No actions to undo")
         else:
             # comment wtvr happening here
-            prev_event = game_log.last.prev
+            prev_event = current_game_log.last.prev
 
             prev_command = prev_event.next_command
             prev_location_id = prev_event.id_num
             prev_location = self.get_location(prev_event.id_num)
 
-            game_log.last = prev_event
+            current_game_log.last = prev_event
 
-            game_log.last.next = None
-            game_log.last.next_command = None
+            current_game_log.last.next = None
+            current_game_log.last.next_command = None
 
             if prev_command.startswith('pick up'):
                 item_name = prev_command[8:]
@@ -155,13 +155,10 @@ class AdventureGame:
                 self.player.pick_up_item(prev_location, item_name)
             elif prev_command.startswith('use'):
                 item_name = prev_command[4:]
-
                 item_obj = self.get_item(item_name)
-
                 self.player.undo_use(prev_location, item_name, item_obj)
-
             else:
-                print("No more actions to undo.")
+                print('You have been move back to your previous location.')
 
             self.current_location_id = prev_location_id
             self.player.current_location = self._locations[prev_location_id]
@@ -202,10 +199,11 @@ if __name__ == "__main__":
         # TODO: Depending on whether or not it's been visited before, (DONE)
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
         # YOUR CODE HERE
-        if location.id_num not in game_log.get_id_log():
-            print(location.long_description)
-        else:
+        if location.visited:
             print(location.brief_description)
+        else:
+            print(location.long_description)
+            location.visited = True
 
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
@@ -215,7 +213,8 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in location.available_commands and choice not in menu and choice not in game.player.available_commands:
+        while (choice not in location.available_commands and choice not in menu and choice not in
+               game.player.available_commands):
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -230,31 +229,29 @@ if __name__ == "__main__":
             elif choice == "quit":
                 game.ongoing = False
             elif choice == "undo":
-                game.undo(game_log, location)
+                game.undo(game_log)
             elif choice == "inventory":
-                print("Inventory:", game.player.inventory)
+                game.player.display_inventory()
             elif choice == "score":
-                print("Score:", game.score)
+                print("Score:", game.player.score)
             elif choice == "look":
                 print(location.long_description)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-            if choice.startswith('go'):
-                # Change to new location
-                result = location.available_commands[choice]
-                game.current_location_id = result
+            # Change to new location
+            result = location.available_commands[choice]
+            game.current_location_id = result
 
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
-            elif choice.startswith('pick up'):
-                item_name = choice[8:]
+            if choice.startswith('pick up'):
+                item_name = choice[8:].strip()
                 game.player.pick_up_item(location, item_name)
-
             elif choice.startswith('use'):  # use
-                item_name = choice[4:]
+                item_name = choice[4:].strip()
                 game.player.use(location, item_name,
                                 game.get_item(item_name))
-            else:
-                item_name = choice[5:]
+            elif choice.startswith('drop'):
+                item_name = choice[5:].strip()
                 game.player.drop_item(location, item_name)
 
         # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game

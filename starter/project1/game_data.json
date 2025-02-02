@@ -3,8 +3,8 @@
     {
       "id": 1,
       "name": "Bahen 1F",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "brief_description": "You are on the first floor of the Bahen Center.",
+      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the South, and an exit from the building to St. George street to the East.",
       "available_commands": {
         "go south": 4,
         "go east": 2
@@ -13,19 +13,31 @@
     },
     {
       "id": 2,
-      "name": "ROOM A",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "name": "Library Study Room",
+      "brief_description": "You are in the library study room.",
+      "long_description": "You are in a quiet library study room, surrounded by neatly arranged desks and chairs. The soft hum of the air conditioner fills the air.",
       "available_commands": {
+        "go east": 3,
         "go west": 1
       },
       "items": []
     },
     {
+      "id": 3,
+      "name": "Starbucks",
+      "brief_description": "You are in a Starbucks.",
+      "long_description": "You are inside a Starbucks outside the library. The coffee smells good, and you hear the faint sound of baristas calling out names for orders.",
+      "available_commands": {
+        "go west": 2,
+        "buy coffee": 3
+      },
+      "items": []
+    },
+    {
       "id": 4,
-      "name": "ROOM C",
-      "brief_description": "You are on the first floor of the Bahen Center. There are elevators to the West, and an exit from the building to St. George street to the East. You see something shiny on the ground -- looks like a toonie?",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "name": "Library Entrance",
+      "brief_description": "You are at the entrance of the library.",
+      "long_description": "You are at the entrance of the library, where glass doors lead outside to the campus. The sun is shining brightly outside, and a few students are walking in and out.",
       "available_commands": {
         "go north": 1
       },
@@ -34,11 +46,32 @@
   ],
   "items": [
     {
-      "name": "toonie",
-      "description": "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position": 1,
-      "target_position": 4,
-      "target_points": 5
+      "name" : "toonie",
+      "description" : "There is a toonie on the ground. Someone must have dropped it.",
+      "start_position" : 1,
+      "target_position" : 4,
+      "target_points" : 5
+    },
+    {
+      "name" : "USB Drive",
+      "description" : "There is a toonie on the ground. Someone must have dropped it.",
+      "start_position" : 1,
+      "target_position" : 4,
+      "target_points" : 5
+    },
+    {
+      "name" : "Laptop Charger",
+      "description" : "There is a toonie on the ground. Someone must have dropped it.",
+      "start_position" : 1,
+      "target_position" : 4,
+      "target_points" : 5
+    },
+    {
+      "name" : "Lucky UofT Mug",
+      "description" : "There is a toonie on the ground. Someone must have dropped it.",
+      "start_position" : 1,
+      "target_position" : 4,
+      "target_points" : 5
     }
   ]
 }

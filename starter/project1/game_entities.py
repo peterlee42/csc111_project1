@@ -53,13 +53,14 @@ class Location:
     long_description: str
     available_commands: dict[str, int]
     items: list[str]
-    visited: bool = False
+    visited: bool
 
     def __init__(self, location_id, brief_description, long_description, available_commands, items,
                  visited=False) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
+        For each item in the location, initialize a pick up command.
         """
 
         self.id_num = location_id
@@ -174,12 +175,23 @@ class Player:
         self.available_commands.append(f'drop {item_name}')
         self.available_commands.append(f'use {item_name}')
 
+        # add 1 point to score for picking up item
+        self.score += 1
+
         print(f"{item_name} has been added to your inventory.")
 
+    def display_inventory(self) -> None:
+        """Displays the player's current inventory"""
+        if not self.inventory:
+            print('Your inventory is empty!')
+        else:
+            print('You currently have:')
+            for item in self.inventory:
+                print('- ', item)
 
-class puzzle:
-    def __init__():
-        pass
+# class puzzle:
+#     def __init__():
+#         pass
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

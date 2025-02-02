@@ -121,7 +121,7 @@ class AdventureGameSimulation:
         self._events = EventList()
 
         initial_location = self._game.get_location()
-        self._events.add_event(Event(initial_location.id_num, initial_location.description, None, None , None))
+        self._events.add_event(Event(initial_location.id_num, initial_location.description, None, None, None))
 
         self.generate_events(commands, initial_location)
 
