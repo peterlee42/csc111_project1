@@ -2,68 +2,177 @@
   "locations": [
     {
       "id": 1,
-      "name": "Bahen 1F",
-      "brief_description": "You are on the first floor of the Bahen Center.",
-      "long_description": "You are on the first floor of the Bahen Center. It's usually crowded at this time of the day, but today it's eerily quiet. Only a few students are studying at the table near the doors. You better not disturb them. One student is rushing down the corridor, wearing a heavy-looking backpack and carrying a textbook in their arms. There are elevators to the West, and an exit from the building to St. George street to the East.",
+      "name": "Your Dorm Room (Morning)",
+      "brief_description": "You are in your dorm room at Chestnut Residence.",
+      "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
       "available_commands": {
-        "go west": 2,
-        "go east": 4
+        "pick up toonie": 30,
+        "go out of room": 2
       },
       "items": ["toonie"]
     },
     {
       "id": 2,
-      "name": "Bahen 2F",
-      "brief_description": "You are on the second floor of the Bahen Center.",
-      "long_description": "You are on the second floor of the Bahen Center. It is even emptier up here... You start to hear the hum of the air conditioner. Oh! The CSSU Lounge!. The CSSU Lounge is located to the South, and there are elevators to the East.",
+      "name": "Chestnut Lobby",
+      "brief_description": "You are in the lobby of Chestnut Residence.",
+      "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
       "available_commands": {
-        "go east": 1,
-        "go south": 3
+        "go to Robarts": 3,
+        "pick up random student_ID": 2,
+        "use toonie": 2,
+        "go back to dorm": 1
       },
-      "items": ["crumpled paper"]
+      "items": ["student_ID"]
     },
     {
       "id": 3,
-      "name": "CSSU Lounge",
-      "brief_description": "You are in the CSSU Lounge.",
-      "long_description": "You made it to the CSSU Lounge. There is a fridge... The only way out is north.",
+      "name": "Robarts Library",
+      "brief_description": "You are inside Robarts Library.",
+      "long_description": "Robarts is eerily quiet this morning. A few students are still studying from the night before. The table where you were working is in the corner, covered in leftover study materials. Maybe your USB drive is here? You also remember stopping by the cafe on the second floor.",
       "available_commands": {
-        "go north": 2
+        "check table": 4,
+        "go upstairs": 5,
+        "pick up notebook": 3,
+        "go to chesnut": 8
       },
-      "items": ["redbull"]
+      "items": ["notebook"]
     },
     {
       "id": 4,
-      "name": "St. George Street",
-      "brief_description": "You are on St. George Street",
-      "long_description": "You are on St. George Street. It's pretty windy day...  Thankfully you brought your jacket! You hear the bustling noise of the city.",
+      "name": "Study Table",
+      "brief_description": "You are at your old study table in Robarts.",
+      "long_description": "Your old study table has an empty coffee cup, a few crumpled notes, and your USB drive sitting among them. You better grab it before someone else does! The only way back is to the main library floor.",
       "available_commands": {
-        "go north": 2
+        "go upstairs": 5,
+        "go back": 3,
+        "pick up usb drive": 4
+      },
+      "items": ["usb drive"]
+    },
+    {
+      "id": 5,
+      "name": "Robarts Café",
+      "brief_description": "You are in Robarts Café on the second floor.",
+      "long_description": "The aroma of coffee fills the air. You remember stopping here for a caffeine boost. A barista is wiping down the counter, and a student is struggling to carry multiple drinks. Maybe they saw your lucky mug?",
+      "available_commands": {
+        "go to the counter": 6,
+        "go downstairs": 3,
+        "pick up half-finished essay": 5
+      },
+      "items": ["half-finished_essay"]
+    },
+    {
+      "id": 6,
+      "name": "Barista Counter",
+      "brief_description": "You are at the counter in Robarts Café.",
+      "long_description": "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you!",
+      "available_commands": {
+        "go downstairs": 3,
+        "pick up lucky mug": 6
+      },
+      "items": ["lucky_mug"]
+    },
+    {
+      "id": 8,
+      "name": "Your Dorm Room (Evening)",
+      "brief_description": "You are back in your dorm room, ready to make a decision.",
+      "long_description": "You have collected everything you need: your USB drive, your laptop charger, and your lucky UofT mug. You also have a drink to keep you focused. Now, it’s time to decide—will you finish your assignment or give up?",
+      "available_commands": {
+        "go finish assignment": -1,
+        "give up": -1
+      },
+      "items": []
+    },
+    {
+      "id": 9,
+      "name": "Dorm Authentication",
+      "brief_description": "You must solve a puzzle to leave your dorm room.",
+      "long_description": "Before leaving, you must answer a puzzle correctly to authenticate yourself.",
+      "available_commands": {
+        "go solve puzzle": 2
+      },
+      "items": []
+    },
+    {
+      "id": 10,
+      "name": "Robarts Authentication",
+      "brief_description": "You must solve a puzzle to enter Robarts Library.",
+      "long_description": "Security measures require you to solve a puzzle before entering Robarts Library.",
+      "available_commands": {
+        "go solve puzzle": 3
+      },
+      "items": []
+    },
+    {
+      "id": 11,
+      "name": "Vending Machine Authentication",
+      "brief_description": "You must solve a puzzle to use the vending machine.",
+      "long_description": "Before you can buy a drink, the vending machine prompts you to solve a puzzle.",
+      "available_commands": {
+        "go solve puzzle": 2
+      },
+      "items": []
+    },
+    {
+      "id": 12,
+      "name": "Dorm Authentication",
+      "brief_description": "You must solve a puzzle to enter your dorm room.",
+      "long_description": "Before enter, you must answer a puzzle correctly to authenticate yourself.",
+      "available_commands": {
+        "go solve puzzle": 8
       },
       "items": []
     }
   ],
   "items": [
     {
-      "name" : "toonie",
-      "description" : "There is a toonie on the ground. Someone must have dropped it.",
-      "start_position" : 1,
-      "target_position" : 4,
-      "target_points" : 5
+      "name": "usb drive",
+      "description": "Your missing USB drive, containing the only copy of your project.",
+      "start_position": 4,
+      "target_position": 8,
+      "target_points": 10
     },
     {
-      "name" : "crumpled paper",
-      "description" : "There's some crumpled paper. Seems like someone didn't want to do their homework...",
-      "start_position" : 2,
-      "target_position" : 4,
-      "target_points" : 5
+      "name": "toonie",
+      "description": "A shiny two-dollar coin. Useful for vending machines!",
+      "start_position": 1,
+      "target_position": 2,
+      "target_points": 0
     },
     {
-      "name" : "redbull",
-      "description" : "Wow, a RedBull.",
-      "start_position" : 3,
-      "target_position" : 4,
-      "target_points" : 5
+      "name": "student ID",
+      "description": "Your student ID. You can’t access certain buildings without it!",
+      "start_position": 2,
+      "target_position": 0,
+      "target_points": 0
+    },
+    {
+      "name": "notebook",
+      "description": "A notebook filled with notes from last night's study session.",
+      "start_position": 3,
+      "target_position": 0,
+      "target_points": 0
+    },
+    {
+      "name": "lucky mug",
+      "description": "Your lucky UofT mug, essential for your caffeine-fueled success!",
+      "start_position": 6,
+      "target_position": 8,
+      "target_points": 10
+    },
+    {
+      "name": "laptop charger",
+      "description": "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
+      "start_position": 7,
+      "target_position": 8,
+      "target_points": 10
+    },
+    {
+      "name": "energy drink",
+      "description": "An energy drink from the vending machine to help you focus.",
+      "start_position": 2,
+      "target_position": 8,
+      "target_points": 10
     }
   ]
 }

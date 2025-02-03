@@ -72,8 +72,8 @@ class AdventureGameSimulation:
 
         for command in commands:
             next_location_id = current_location.available_commands[command]
-            self._game.set_location(next_location_id)
             new_location = self._game.get_location()
+            self._game.set_location(next_location_id)
             # not sure if this is right
             new_event = Event(new_location.id_num,
                               new_location.long_description, command)
@@ -126,7 +126,10 @@ if __name__ == "__main__":
 
     # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
     # Create a list of all the commands needed to walk through your game to win it
-    win_walkthrough = []
+    win_walkthrough = ["pick up toonie", "leave room", "solve puzzle", "use toonie", "solve puzzle", "go to Robarts",
+                       "solve puzzle", "check table", "pick up usb driver", "go back", "go upstairs", "talk to barista",
+                       "pick coffe mug", "go downstairs", "go home", "solve puzzle", "finish assignment"
+    ]
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = []
     # Uncomment the line below to test your walkthrough
@@ -134,9 +137,9 @@ if __name__ == "__main__":
     assert expected_log == win_sim.get_id_log()
 
     # Create a list of all the commands needed to walk through your game to reach a 'game over' state
-    lose_demo = []
+    lose_demo = ["give up"]
     # Update this log list to include the IDs of all locations that would be visited
-    expected_log = []
+    expected_log = [-1]
     # Uncomment the line below to test your demo
     lose_sim = AdventureGameSimulation('game_data.json', 1, lose_demo)
     assert expected_log == lose_sim.get_id_log()
