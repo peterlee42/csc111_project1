@@ -29,19 +29,16 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-def parse_command(command: str) -> tuple[str, str]:
-    """Parses a command and returns the action and target item."""
-    words = command.lower().split()
+def handle_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
+    """Parses a command and returns the command's action and target item in a tuple if it is a valid action.
+    If the action is not valid, return a tuple of empty strings."""
+    for valid_action in valid_actions:
+        # Account for a space in the action.
+        if command.startswith(valid_action + ' '):
+            target = command[len(valid_action) + 1:].strip()
+            return valid_action, target
 
-    # Handle compound verbs like 'pick up'
-    if len(words) >= 2 and f"{words[0]} {words[1]}" in ["pick up"]:
-        action = f"{words[0]} {words[1]}"
-        target = " ".join(words[2:])  # Handles multi-word items like 'red key'
-    else:
-        action = words[0]
-        target = " ".join(words[1:])
-
-    return action, target
+    return '', ''
 
 
 class AdventureGame:
@@ -232,8 +229,8 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while (choice not in location.available_commands and choice not in menu and choice not in
-               game.player.available_commands):
+        while choice not in location.available_commands and choice not in menu and not \
+                handle_command(choice, game.player.available_actions)[0]:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -259,21 +256,21 @@ if __name__ == "__main__":
                     print('- ', item)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
+            # In this case, you always have 2 parts. An action and a target.
+            player_action, player_target = handle_command(choice, game.player.available_actions)
+
             # Change to new location
-            if choice.startswith('go'):
+            if player_action == 'go':
                 result = location.available_commands[choice]
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
-            elif choice.startswith('take'):
-                item_name = choice[8:]
-                game.player.pick_up_item(location, item_name)
-            elif choice.startswith('use'):  # use
-                item_name = choice[4:]
-                game.player.use(location.id_num, item_name,
-                                game.get_item(item_name))
-            elif choice.startswith('drop'):
-                item_name = choice[5:]
-                game.player.drop_item(location, item_name)
+            elif player_action == 'pick up':
+                game.player.pick_up_item(location, player_target)
+            elif player_action == 'use':
+                game.player.use(game.current_location_id, player_target,
+                                game.get_item(player_target))
+            elif player_action == 'drop':
+                game.player.drop_item(location, player_target)
 
         # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
