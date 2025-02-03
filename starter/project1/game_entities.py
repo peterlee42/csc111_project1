@@ -20,8 +20,8 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 import random
 from dataclasses import dataclass
-from pyexpat.errors import messages
 from random import randrange
+from typing import Optional
 
 
 @dataclass
@@ -109,6 +109,16 @@ class Item:
     target_points: int
 
 
+# HELPER FUNCTION
+def get_article(item: str) -> str:
+    """Returns 'a' or 'an' based on whether the item starts with a vowel sound."""
+    vowels = 'aeiou'
+    if item.strip().lower()[0] in vowels:
+        return 'an'
+    else:
+        return 'a'
+
+
 class Player:
     """An item in our text adventure game world.
 
@@ -135,27 +145,26 @@ class Player:
         self.available_actions = ['go', 'pick up', 'use', 'drop']
         self.score = 0
         self.messages = {
-            "item_used": [
-                "{item_name} has been used.",
-                "You successfully used {item_name}.",
-                "{item_name} works as intended.",
-                "{item_name} is now in action!",
-                "You use {item_name} with precision."
+            'item_used': [
+                "You have used {item}.",
+                "You successfully used {item}.",
+                "You use {item} with confidence.",
+                "You skillfully use {item} to great effect."
             ],
             "item_cannot_be_used": [
-                "{item_name} cannot be used at this location.",
-                "Using {item_name} here has no effect.",
-                "{item_name} doesn't seem to work in this place.",
-                "Nothing happens when you try to use {item_name} here.",
-                "{item_name} isn't useful in this situation."
+                "{item} cannot be used at this location.",
+                "Using {item} here has no effect.",
+                "{item} doesn't seem to work in this place.",
+                "Nothing happens when you try to use {item} here.",
+                "{item} isn't useful in this situation."
             ],
             "item_does_not_exist": [
-                "{item_name}? That doesn't seem to exist.",
-                "You can't find any trace of {item_name}.",
-                "{item_name} isn’t part of this world… or is it?",
-                "There’s no such thing as {item_name} here.",
-                "{item_name} sounds unfamiliar—are you sure it exists?",
-                "Your mind conjures {item_name}, but reality disagrees."
+                "{item}? That doesn't seem to exist.",
+                "You can't find any trace of {item}.",
+                "{item} isn’t part of this world… or is it?",
+                "There’s no such thing as {item} here.",
+                "{item} sounds unfamiliar—are you sure it exists?",
+                "Your mind conjures {item}, but reality disagrees.",
                 "Hmmm... Maybe look somewhere else.",
                 "You reach out, but grasp only empty air.",
                 "You search thoroughly but find nothing of the sort.",
@@ -164,19 +173,19 @@ class Player:
                 "The item eludes you, as if it was never here to begin with."
             ],
             "item_picked_up": [
-                "{item_name} has been added to your inventory.",
-                "You have picked up {item_name}.",
-                "Nice! {item_name} is in your inventory.",
-                "{item_name} is now safely in your possession.",
-                "You carefully stow {item_name} into your inventory.",
-                "Success! {item_name} is now yours."
+                "{item} has been added to your inventory.",
+                "You have picked up {item}.",
+                "{item} is in your inventory.",
+                "{item} is now safely in your possession.",
+                "You carefully stow {item} into your inventory.",
+                "{item} is now yours."
             ],
             "item_removed_from_inventory": [
-                "{item_name} has been removed from your inventory.",
-                "You dropped {item_name}.",
-                "{item_name} is no longer in your possession.",
-                "You carefully set down {item_name}.",
-                "You let go of {item_name}, leaving it behind."
+                "{item} has been removed from your inventory.",
+                "You dropped {item}.",
+                "{item} is no longer in your possession.",
+                "You carefully set down {item}.",
+                "You let go of {item}, leaving it behind."
             ],
             "inventory_empty": [
                 "Your inventory is empty!",
@@ -191,13 +200,20 @@ class Player:
             ]
         }
 
-    # random message generator based on type of message
-    def get_random_message(self, message_type: str) -> str:
+    def get_random_message(self, message_type: str, item_name: Optional[str] = None) -> str:
         """Get a random message from the messages attribute based on the message type.
         If the type does not exist, do nothing."""
+        article = ''
+
         if message_type in self.messages:
             random_index = randrange(len(self.messages[message_type]))
-            return self.messages[message_type][random_index]
+            random_message = self.messages[message_type][random_index]
+
+            if item_name is None or '{item}' not in random_message:
+                return self.messages[message_type][random_index].capitalize()
+            else:
+                article = get_article(item_name)
+                return self.messages[message_type][random_index].format(item=f'{article} {item_name}').capitalize()
 
     def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
         """Use an item in the player's inventory.
@@ -207,11 +223,11 @@ class Player:
                 self.score += item_obj.target_points
                 self.inventory.remove(item_name)
 
-                print(self.get_random_message('item_used').format(item_name=item_name))
+                print(self.get_random_message('item_used', item_name))
             else:
-                print(self.get_random_message('item_cannot_be_used').format(item_name=item_name))
+                print(self.get_random_message('item_cannot_be_used', item_name))
         else:
-            print(self.get_random_message('item_does_not_exist').format(item_name=item_name))
+            print(self.get_random_message('item_does_not_exist', item_name))
 
     def undo_use(self, prev_location: Location, item_name: str, item_obj: Item) -> None:
         """Undo the effects of the item in the player's inventory."""
@@ -221,10 +237,13 @@ class Player:
 
     def drop_item(self, current_location: Location, item_name: str) -> None:
         """Remove an item from the player's inventory."""
-        self.inventory.remove(item_name)
-        current_location.items.append(item_name)
+        if item_name in self.inventory:
+            self.inventory.remove(item_name)
+            current_location.items.append(item_name)
 
-        print(self.get_random_message('item_removed_from_inventory'))
+            print(self.get_random_message('item_removed_from_inventory', item_name))
+        else:
+            print(self.get_random_message('item_does_not_exist', item_name))
 
     def pick_up_item(self, current_location: Location, item_name: str) -> None:
         """Add an item to the player's inventory. Reward the player with 1 point."""
@@ -235,9 +254,10 @@ class Player:
 
             # add 1 point to score for picking up item
             self.score += 1
-            print(self.get_random_message('item_picked_up').format(item_name=item_name))
+
+            print(self.get_random_message('item_picked_up', item_name))
         else:
-            print(self.get_random_message('item_does_not_exist').format(item_name=item_name))
+            print(self.get_random_message('item_does_not_exist', item_name))
 
     def display_inventory(self) -> None:
         """Displays the player's current inventory"""

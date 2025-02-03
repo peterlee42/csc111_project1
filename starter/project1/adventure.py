@@ -252,8 +252,6 @@ if __name__ == "__main__":
                 print("Score:", game.player.score)
             elif choice == "look":
                 print(location.long_description)
-                for item in game.player.inventory:
-                    print('- ', item)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             # In this case, you always have 2 parts. An action and a target.
