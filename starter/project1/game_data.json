@@ -2,7 +2,7 @@
   "locations": [
     {
       "id": 1,
-      "name": "Your Dorm Room (Morning)",
+      "name": "Your Dorm Room",
       "brief_description": "You are in your dorm room at Chestnut Residence.",
       "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
       "available_commands": {
@@ -16,111 +16,345 @@
       "brief_description": "You are in the lobby of Chestnut Residence.",
       "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
       "available_commands": {
-        "go to Robarts": 3,
-        "pick up random student_ID": 2,
+        "go to outside": 3,
         "use toonie": 2,
         "go back to dorm": 1
-      },
-      "items": ["student_ID"]
+      }
     },
     {
       "id": 3,
-      "name": "Robarts Library",
-      "brief_description": "You are inside Robarts Library.",
-      "long_description": "Robarts is eerily quiet this morning. A few students are still studying from the night before. The table where you were working is in the corner, covered in leftover study materials. Maybe your USB drive is here? You also remember stopping by the cafe on the second floor.",
-      "available_commands": {
-        "check table": 4,
-        "go upstairs": 5,
-        "pick up notebook": 3,
-        "go to chesnut": 8
-      },
-      "items": ["notebook"]
+      "name": "Outside Chestnut",
+      "brief_description": "You are outside Chestnut residence",
+      "long_description": "",
+      "available_commands":
+      {
+        "go south": 4,
+        "go east": 5,
+        "go west" : 28
+      }
+
+
+
     },
     {
       "id": 4,
+      "name": "Infront of Food Trucks",
+      "brief_description": "You're in front of the prink and brown food trucks, and Mclennan east of you",
+      "long_description": "",
+      "available_commands": {
+        "go south": 6,
+        "buy from brown food truck": 6,
+        "buy from pink food truck": 6,
+        "go north": 3,
+        "go inside McLennan": 13
+      }
+    },
+    {
+      "id": 6,
+      "name": "At Food Trucks",
+      "brief_description": "You don't have money",
+      "long_description":"You have insuffient funds",
+      "available_commands": {
+        "go north" : 3,
+        "go south" : 7
+    }
+    },
+
+    {
+      "id": 7,
+      "name": "Outside Bahen",
+      "brief_description": "You are infront of Bahen",
+      "long_description":"",
+      "available_commands": {
+        "go inside": 8,
+        "go north": 6
+    }
+    },
+
+    {
+      "id": 8,
+      "name": "Bahen Lobby",
+      "brief_description": "You are inside Bahen Lobby",
+      "long_description":"",
+      "available_commands": {
+        "go to CSSU Longue": 9,
+        "use vending machine": 10,
+        "go outside using front door": 7,
+        "go outside using side door": 12
+    }
+    },
+
+    {
+      "id": 11,
+      "name": "CSSU Lounge",
+      "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remebers you and says that you must answer the following question to get your bag back...",
+      "long_description":"",
+      "available_commands": {
+        "solve puzzle": -1,
+        "go to Lobby": 8
+    }
+    },
+    {
+      "id": 12,
+      "name": "Outside Bahen",
+      "brief_description": "You are outside Bahen, Mclennan is North and concovation hall is east",
+      "long_description":"",
+      "available_commands": {
+        "go inside Bahen": 8,
+        "go east": 14,
+        "go inside Mclennan": 13
+    }
+    },
+
+    {
+      "id": 13,
+      "name": "McLennan",
+      "brief_description": "You are inside Mclennan",
+      "long_description":"",
+      "available_commands": {
+        "go outside south entrance": 12,
+        "go outside west entrance": 16,
+        "go outside east entrance": 15
+    },
+      "items": ["notebook"]
+    },
+
+    {
+      "id": 14,
+      "name": "West of Kings Circle",
+      "brief_description": "You are infront of kings circle, with MyHall in the distant North, and the Concovation Hall is still East of you",
+      "long_description":"",
+      "available_commands": {
+        "go north": 16,
+        "go east": 15,
+        "go west": 12
+    }
+    },
+
+    {
+      "id": 15,
+      "name": "Centre of Kings Circle",
+      "brief_description": "You are now directly in the centre of KingsCircle, you see University College South, and the concovation hall east.",
+      "long_description":"",
+      "available_commands": {
+        "go south": 17,
+        "go inside Concovation Hall": 22,
+        "go west": 14
+    }
+    },
+
+    {
+      "id": 22,
+      "name": "Infront of Concovation Hall",
+      "brief_description": "You are now directly infront of Concovation Hall",
+      "long_description":"",
+      "available_commands": {
+        "go outside": 15
+      }
+    },
+
+    {
+      "id": 17,
+      "name": "Between University College and Gerstein",
+      "brief_description": "You now have University College south, and Gerstien to the west",
+      "long_description":"",
+      "available_commands": {
+        "go west": 18,
+        "go south": 19
+    }
+    },
+
+    {
+      "id": 18,
+      "name": "Infront Gerstein",
+      "brief_description": "You are now directly infont of Gerstein",
+      "long_description":"",
+      "available_commands": {
+        "go inside Gerstein": 20,
+        "go east": 17
+    }
+    },
+
+    {
+      "id": 20,
+      "name": "Gerstein",
+      "brief_description": "You are now inside Gerstein",
+      "long_description":"",
+      "available_commands": {
+        "go outside": 18
+    },
+      "items": ["crumpled apper"]
+    },
+
+    {
+      "id": 19,
+      "name": "Infront of University College",
+      "brief_description": "You are now directly infront of University College",
+      "long_description":"",
+      "available_commands": {
+        "go south": 17,
+        "go inside University College": 21
+    }
+    },
+    {
+      "id": 20,
+      "name": "University College",
+      "brief_description": "You are now inside University College",
+      "long_description": "",
+      "available_commands": {
+        "go outside": 17
+      }
+    },
+
+    {
+      "id": 16,
+      "name": "Infront of McLennan",
+      "brief_description": "You have McLennan directly to the west",
+      "long_description":"",
+      "available_commands": {
+        "go inside McLennan": 13,
+        "go north": 23
+      }
+    },
+
+    {
+      "id": 23,
+      "name": "middle",
+      "brief_description": "You now have Sideny Smith to the East",
+      "long_description": "",
+      "available_commands": {
+        "go east": 24,
+        "go north": 25
+      }
+    },
+    {
+      "id": 24,
+      "name": "Infront of Sideny Smith",
+      "brief_description": "You are now directly infront of Sidney Smith",
+      "long_description": "",
+      "available_commands": {
+        "go inside Sidney Smith": 23,
+        "go secret room": 26
+      }
+    },
+    {
+      "id": 26,
+      "name": "Secret Room",
+      "brief_description": "You are now in secret room",
+      "long_description": "",
+      "available_commands": {
+        "go out of this room": 24
+      },
+      "items": ["usb drive"]
+    },
+
+    {
+      "id": 25,
+      "name": "Infront of New College",
+      "brief_description": "You now have New College directly east, and Myhall some distance north",
+      "long_description": "",
+      "available_commands": {
+        "go inside New College ": 27,
+        "go North": 29
+      }
+    },
+
+    {
+      "id": 27,
+      "name": "New College",
+      "brief_description": "You are now inside of New College.",
+      "long_description": "You go into New College and see a student with your laptop, you need to confront him.",
+      "available_commands": {
+        "go confront student": 27,
+        "go outside through west exit": 25,
+        "go outside through north exit": 28
+      }
+    },
+
+    {
+      "id": 28,
+      "name": "Top Road",
+      "brief_description": "You now have New College directly south, and Robarts East",
+      "long_description": "",
+      "available_commands": {
+        "go inside New College ": 27,
+        "go east": 29,
+        "go west": 3
+      }
+    },
+
+    {
+      "id": 29,
+      "name": "Infront of Myhall",
+      "brief_description": "You now have MyHall directly North, and Robarts East",
+      "long_description": "",
+      "available_commands": {
+        "go inside MyHall": 30,
+        "go East": 31,
+        "go west": 28
+      }
+    },
+
+    {
+      "id": 30,
+      "brief_description": "You are now inside MyHall",
+      "long_description": "You are now inside MyHall, and see your charger plugged into an outlet and your bag sitting on a bench, but on closer inspection you realize that the bag is empty",
+      "available_commands": {
+        "go outside MyHall": 29
+      }
+    },
+
+    {
+      "id": 31,
+      "brief_description": "You now have Robarts directly infront of you",
+      "long_description": "",
+      "available_commands": {
+        "go inside Robarts": 32,
+        "go wast": 29
+      }
+    },
+
+    {
+      "id": 32,
+      "brief_description": "You are now inside Robarts",
+      "long_description": "You remember that you were at two places, the cafe and remeber that you were last at a study table",
+      "available_commands": {
+        "go outside": 31,
+        "go to your last spot": 33
+      }
+    },
+
+    {
+      "id": 33,
       "name": "Study Table",
       "brief_description": "You are at your old study table in Robarts.",
-      "long_description": "Your old study table has an empty coffee cup, a few crumpled notes, and your USB drive sitting among them. You better grab it before someone else does! The only way back is to the main library floor.",
+      "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your redbull",
       "available_commands": {
-        "go upstairs": 5,
-        "go back": 3,
-        "pick up usb drive": 4
+        "go upstairs to cafe": 34,
+        "go back": 32
       },
       "items": ["usb drive"]
     },
     {
-      "id": 5,
+      "id": 34,
       "name": "Robarts Café",
       "brief_description": "You are in Robarts Café on the second floor.",
-      "long_description": "The aroma of coffee fills the air. You remember stopping here for a caffeine boost. A barista is wiping down the counter, and a student is struggling to carry multiple drinks. Maybe they saw your lucky mug?",
+      "long_description": "You remember stopping here for a caffeine boost. A barista is wiping down the counter. Maybe they saw your lucky mug?",
       "available_commands": {
-        "go to the counter": 6,
-        "go downstairs": 3,
-        "pick up half-finished essay": 5
+        "go to the counter": 35,
+        "go downstairs": 33
       },
-      "items": ["half-finished_essay"]
+      "items": []
     },
     {
-      "id": 6,
+      "id": 35,
       "name": "Barista Counter",
       "brief_description": "You are at the counter in Robarts Café.",
       "long_description": "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you!",
       "available_commands": {
-        "go downstairs": 3,
-        "pick up lucky mug": 6
+        "go downstairs": 33
       },
-      "items": ["lucky_mug"]
-    },
-    {
-      "id": 8,
-      "name": "Your Dorm Room (Evening)",
-      "brief_description": "You are back in your dorm room, ready to make a decision.",
-      "long_description": "You have collected everything you need: your USB drive, your laptop charger, and your lucky UofT mug. You also have a drink to keep you focused. Now, it’s time to decide—will you finish your assignment or give up?",
-      "available_commands": {
-        "go finish assignment": -1,
-        "give up": -1
-      },
-      "items": []
-    },
-    {
-      "id": 9,
-      "name": "Dorm Authentication",
-      "brief_description": "You must solve a puzzle to leave your dorm room.",
-      "long_description": "Before leaving, you must answer a puzzle correctly to authenticate yourself.",
-      "available_commands": {
-        "go solve puzzle": 2
-      },
-      "items": []
-    },
-    {
-      "id": 10,
-      "name": "Robarts Authentication",
-      "brief_description": "You must solve a puzzle to enter Robarts Library.",
-      "long_description": "Security measures require you to solve a puzzle before entering Robarts Library.",
-      "available_commands": {
-        "go solve puzzle": 3
-      },
-      "items": []
-    },
-    {
-      "id": 11,
-      "name": "Vending Machine Authentication",
-      "brief_description": "You must solve a puzzle to use the vending machine.",
-      "long_description": "Before you can buy a drink, the vending machine prompts you to solve a puzzle.",
-      "available_commands": {
-        "go solve puzzle": 2
-      },
-      "items": []
-    },
-    {
-      "id": 12,
-      "name": "Dorm Authentication",
-      "brief_description": "You must solve a puzzle to enter your dorm room.",
-      "long_description": "Before enter, you must answer a puzzle correctly to authenticate yourself.",
-      "available_commands": {
-        "go solve puzzle": 8
-      },
-      "items": []
+      "items": ["lucky mug"]
     }
   ],
   "items": [
@@ -132,16 +366,23 @@
       "target_points": 10
     },
     {
+      "name": "backpack",
+      "description": "Your missing backpack, should contain all your stuff",
+      "start_position": 30,
+      "target_position": 1,
+      "target_points": 10
+    },
+    {
       "name": "toonie",
       "description": "A shiny two-dollar coin. Useful for vending machines!",
       "start_position": 1,
-      "target_position": 2,
+      "target_position": "needs to be used",
       "target_points": 0
     },
     {
-      "name": "student ID",
+      "name": "random student ID",
       "description": "Your student ID. You can’t access certain buildings without it!",
-      "start_position": 2,
+      "start_position": 30,
       "target_position": 0,
       "target_points": 0
     },
@@ -167,10 +408,24 @@
       "target_points": 10
     },
     {
+      "name": "laptop",
+      "description": "",
+      "start_position": 27,
+      "target_position": 1,
+      "target_points": 10
+    },
+    {
       "name": "energy drink",
       "description": "An energy drink from the vending machine to help you focus.",
-      "start_position": 2,
-      "target_position": 8,
+      "start_position": "",
+      "target_position": "",
+      "target_points": 10
+    },
+    {
+      "name": "crumbled paper",
+      "description": "",
+      "start_position": "",
+      "target_position": "",
       "target_points": 10
     }
   ]
