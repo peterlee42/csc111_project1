@@ -260,7 +260,6 @@ if __name__ == "__main__":
             elif choice == "inventory":
                 game.player.display_inventory()
             elif choice == "score":
-
                 print("Score:", game.player.score)
             elif choice == "look":
                 print(location.long_description)
