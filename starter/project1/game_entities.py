@@ -108,6 +108,7 @@ class Item:
     start_position: int
     target_position: int
     target_points: int
+    interactive: str
 
 
 class Player:
@@ -126,7 +127,7 @@ class Player:
     inventory: list[str]
     available_actions: list[str]
     score: int
-    messages: dict[str, list[[str]]]
+    messages: dict[str, list[str]]
 
     def __init__(self, current_location) -> None:
         """Initialize a new player object.
@@ -151,6 +152,20 @@ class Player:
             else:
                 return self.messages[message_type][random_index].format(item=f'{item_name}').capitalize()
 
+    def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
+        """Use an item in the player's inventory.
+        """
+        if item_name in self.inventory:
+            if current_location_id_num == item_obj.target_position:
+                self.score += item_obj.target_points
+                self.inventory.remove(item_name)
+                print(self.get_random_message('item_used', item_name))
+                Interactive.interact(self, item_name, item_obj)
+            else:
+                print(self.get_random_message('item_cannot_be_used', item_name))
+        else:
+            print(self.get_random_message('item_does_not_exist', item_name))
+
     @staticmethod
     def _load_game_data(filename: str) -> dict[str, list[str]]:
         """Load locations and items from a JSON file with the given filename and
@@ -167,20 +182,6 @@ class Player:
             player_messages[message_type['type']] = message_type['messages']
 
         return player_messages
-
-    def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
-        """Use an item in the player's inventory.
-        """
-        if item_name in self.inventory:
-            if current_location_id_num == item_obj.target_position:
-                self.score += item_obj.target_points
-                self.inventory.remove(item_name)
-
-                print(self.get_random_message('item_used', item_name))
-            else:
-                print(self.get_random_message('item_cannot_be_used', item_name))
-        else:
-            print(self.get_random_message('item_does_not_exist', item_name))
 
     def undo_use(self, prev_location: Location, item_name: str, item_obj: Item) -> None:
         """Undo the effects of the item in the player's inventory."""
@@ -222,6 +223,44 @@ class Player:
                 print('- ', item)
 
 
+class Interactive:
+    """
+    Objects that a player can interact with within the game.
+    """
+
+    @staticmethod
+    def interact(player: Player, item_name: str, item_obj: Item) -> None:
+        """Interact with an item using the interactive object.
+
+        This method dynamically retrieves and calls the method specified by
+        the string in `item_obj.interactive`. For example, if
+        `item_obj.interactive` is "vending_machine", then this method will
+        effectively call `Interactive.vending_machine(item_name, player)`.
+        """
+        method_name = getattr(item_obj, 'interactive', None)
+        if not method_name:
+            print("")
+            return
+
+        # Dynamically get the corresponding method from the Interactive class
+        method = getattr(Interactive, method_name, None)
+        if callable(method):
+            method(item_name, player)
+        else:
+            print("a")
+
+    @staticmethod
+    def vending(item_name: str, player: Player) -> None:
+        """Simulate a vending machine interaction when using a toonie."""
+
+        player.inventory.append("energy drink")
+        print("You insert your toonie into the vending machine. It whirs for a moment and dispenses an energy drink into your inventory.")
+
+
+
+
+
+
 # class puzzle:
 #     def __init__():
 #         pass
@@ -242,3 +281,4 @@ if __name__ == "__main__":
     #     'max-line-length': 120,
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
+

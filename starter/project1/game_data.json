@@ -400,70 +400,81 @@
       "description": "Your missing USB drive, containing the only copy of your project.",
       "start_position": 4,
       "target_position": 8,
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
+
     },
     {
       "name": "backpack",
       "description": "Your missing backpack, should contain all your stuff",
       "start_position": 30,
       "target_position": 1,
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     },
     {
       "name": "toonie",
       "description": "A shiny two-dollar coin. Useful for vending machines!",
       "start_position": 1,
       "target_position": 2,
-      "target_points": 0
+      "target_points": 0,
+      "interactive": "vending"
     },
     {
       "name": "random student ID",
       "description": "Your student ID. You can’t access certain buildings without it!",
       "start_position": 30,
       "target_position": 0,
-      "target_points": 0
+      "target_points": 0,
+      "interactive": ""
     },
     {
       "name": "notebook",
       "description": "A notebook filled with notes from last night's study session.",
       "start_position": 3,
       "target_position": 0,
-      "target_points": 0
+      "target_points": 0,
+      "interactive": ""
     },
     {
       "name": "lucky mug",
       "description": "Your lucky UofT mug, essential for your caffeine-fueled success!",
       "start_position": 6,
       "target_position": 8,
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     },
     {
       "name": "laptop charger",
       "description": "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
       "start_position": 7,
       "target_position": 8,
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     },
     {
       "name": "laptop",
       "description": "",
       "start_position": 27,
       "target_position": 1,
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     },
     {
       "name": "energy drink",
       "description": "An energy drink from the vending machine to help you focus.",
       "start_position": "",
       "target_position": "",
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     },
     {
       "name": "crumbled paper",
       "description": "",
       "start_position": "",
       "target_position": "",
-      "target_points": 10
+      "target_points": 10,
+      "interactive": ""
     }
   ]
 }

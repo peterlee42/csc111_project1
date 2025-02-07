@@ -122,7 +122,7 @@ class AdventureGame:
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
         for item_data in data['items']:
             item_obj = Item(item_data['name'], item_data['description'], item_data['start_position'],
-                            item_data['target_position'], item_data['target_points'])
+                            item_data['target_position'], item_data['target_points'], item_data['interactive'])
             items.append(item_obj)
         # YOUR CODE BELOW
 
