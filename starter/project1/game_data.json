@@ -5,8 +5,8 @@
       "name": "Your Dorm Room",
       "brief_description": "You are in your dorm room at Chestnut Residence.",
       "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
-      "available_commands": {
-        "go out of room": 2
+      "available_directions": {
+        "out of room": 2
       },
       "items": ["toonie"]
     },
@@ -15,10 +15,9 @@
       "name": "Chestnut Lobby",
       "brief_description": "You are in the lobby of Chestnut Residence.",
       "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
-      "available_commands": {
-        "go to outside": 3,
-        "use toonie": 2,
-        "go back to dorm": 1
+      "available_directions": {
+        "to outside": 3,
+        "back to dorm": 1
       },
       "items": []
 
@@ -28,11 +27,11 @@
       "name": "Outside Chestnut",
       "brief_description": "You are outside Chestnut residence",
       "long_description": "",
-      "available_commands":
+      "available_directions":
       {
-        "go south": 4,
-        "go east": 5,
-        "go west" : 28
+        "south": 4,
+        "east": 5,
+        "west" : 28
       },
       "items": []
 
@@ -45,12 +44,12 @@
       "name": "Infront of Food Trucks",
       "brief_description": "You're in front of the prink and brown food trucks, and Mclennan east of you",
       "long_description": "",
-      "available_commands": {
-        "go south": 6,
+      "available_directions": {
+        "south": 6,
         "buy from brown food truck": 6,
         "buy from pink food truck": 6,
-        "go north": 3,
-        "go inside McLennan": 13
+        "north": 3,
+        "inside McLennan": 13
       },
       "items": []
 
@@ -60,9 +59,9 @@
       "name": "At Food Trucks",
       "brief_description": "You don't have money",
       "long_description":"You have insuffient funds",
-      "available_commands": {
-        "go north" : 3,
-        "go south" : 7
+      "available_directions": {
+        "north" : 3,
+        "south" : 7
     },
       "items": []
 
@@ -73,9 +72,9 @@
       "name": "Outside Bahen",
       "brief_description": "You are infront of Bahen",
       "long_description":"",
-      "available_commands": {
-        "go inside": 8,
-        "go north": 6
+      "available_directions": {
+        "inside": 8,
+        "north": 6
     },
       "items": []
 
@@ -86,11 +85,11 @@
       "name": "Bahen Lobby",
       "brief_description": "You are inside Bahen Lobby",
       "long_description":"",
-      "available_commands": {
-        "go to CSSU Longue": 9,
+      "available_directions": {
+        "to CSSU Longue": 9,
         "use vending machine": 10,
-        "go outside using front door": 7,
-        "go outside using side door": 12
+        "outside using front door": 7,
+        "outside using side door": 12
     },
       "items": []
     },
@@ -100,21 +99,21 @@
       "name": "CSSU Lounge",
       "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remebers you and says that you must answer the following question to get your bag back...",
       "long_description":"",
-      "available_commands": {
+      "available_directions": {
         "solve puzzle": -1,
-        "go to Lobby": 8
+        "to Lobby": 8
     },
       "items": []
     },
     {
       "id": 12,
       "name": "Outside Bahen",
-      "brief_description": "You are outside Bahen, Mclennan is North and concovation hall is east",
+      "brief_description": "You are outside Bahen, Mclennan is North and convocation hall is east",
       "long_description":"",
-      "available_commands": {
-        "go inside Bahen": 8,
-        "go east": 14,
-        "go inside Mclennan": 13
+      "available_directions": {
+        "inside Bahen": 8,
+        "east": 14,
+        "inside Mclennan": 13
     },
       "items": []
     },
@@ -124,10 +123,10 @@
       "name": "McLennan",
       "brief_description": "You are inside Mclennan",
       "long_description":"",
-      "available_commands": {
-        "go outside south entrance": 12,
-        "go outside west entrance": 16,
-        "go outside east entrance": 15
+      "available_directions": {
+        "outside south entrance": 12,
+        "outside west entrance": 16,
+        "outside east entrance": 15
     },
       "items": ["notebook"]
     },
@@ -135,12 +134,12 @@
     {
       "id": 14,
       "name": "West of Kings Circle",
-      "brief_description": "You are infront of kings circle, with MyHall in the distant North, and the Concovation Hall is still East of you",
+      "brief_description": "You are infront of Kings Circle, with MyHall in the distant North, and the Convocation Hall is still East of you",
       "long_description":"",
-      "available_commands": {
-        "go north": 16,
-        "go east": 15,
-        "go west": 12
+      "available_directions": {
+        "north": 16,
+        "east": 15,
+        "west": 12
     },
       "items": []
     },
@@ -148,23 +147,23 @@
     {
       "id": 15,
       "name": "Centre of Kings Circle",
-      "brief_description": "You are now directly in the centre of KingsCircle, you see University College South, and the concovation hall east.",
+      "brief_description": "You are now directly in the centre of Kings Circle, you see University College South, and the Convocation Hall east.",
       "long_description":"",
-      "available_commands": {
-        "go south": 17,
-        "go inside Concovation Hall": 22,
-        "go west": 14
+      "available_directions": {
+        "south": 17,
+        "inside convocation hall": 22,
+        "west": 14
     },
       "items": []
     },
 
     {
       "id": 22,
-      "name": "Infront of Concovation Hall",
-      "brief_description": "You are now directly infront of Concovation Hall",
+      "name": "Infront of Convocation Hall",
+      "brief_description": "You are now directly infront of Convocation Hall",
       "long_description":"",
-      "available_commands": {
-        "go outside": 15
+      "available_directions": {
+        "outside": 15
       },
       "items": []
     },
@@ -174,9 +173,9 @@
       "name": "Between University College and Gerstein",
       "brief_description": "You now have University College south, and Gerstien to the west",
       "long_description":"",
-      "available_commands": {
-        "go west": 18,
-        "go south": 19
+      "available_directions": {
+        "west": 18,
+        "south": 19
     },
      "items": []
     },
@@ -186,9 +185,9 @@
       "name": "Infront Gerstein",
       "brief_description": "You are now directly infont of Gerstein",
       "long_description":"",
-      "available_commands": {
-        "go inside Gerstein": 20,
-        "go east": 17
+      "available_directions": {
+        "inside gerstein": 20,
+        "east": 17
     },
       "items": []
     },
@@ -198,20 +197,20 @@
       "name": "Gerstein",
       "brief_description": "You are now inside Gerstein",
       "long_description":"",
-      "available_commands": {
-        "go outside": 18
+      "available_directions": {
+        "outside": 18
     },
-      "items": ["crumpled apper"]
+      "items": ["crumpled paper"]
     },
 
     {
       "id": 19,
-      "name": "Infront of University College",
+      "name": "In front of University College",
       "brief_description": "You are now directly infront of University College",
       "long_description":"",
-      "available_commands": {
-        "go south": 17,
-        "go inside University College": 21
+      "available_directions": {
+        "south": 17,
+        "inside university college": 21
     },
       "items": []
     },
@@ -220,8 +219,8 @@
       "name": "University College",
       "brief_description": "You are now inside University College",
       "long_description": "",
-      "available_commands": {
-        "go outside": 17
+      "available_directions": {
+        "outside": 17
       },
       "items": []
     },
@@ -231,9 +230,9 @@
       "name": "Infront of McLennan",
       "brief_description": "You have McLennan directly to the west",
       "long_description":"",
-      "available_commands": {
-        "go inside McLennan": 13,
-        "go north": 23
+      "available_directions": {
+        "inside mclennan": 13,
+        "north": 23
       },
       "items": []
     },
@@ -243,9 +242,9 @@
       "name": "middle",
       "brief_description": "You now have Sideny Smith to the East",
       "long_description": "",
-      "available_commands": {
-        "go east": 24,
-        "go north": 25
+      "available_directions": {
+        "east": 24,
+        "north": 25
       },
       "items": []
 
@@ -255,9 +254,9 @@
       "name": "Infront of Sideny Smith",
       "brief_description": "You are now directly infront of Sidney Smith",
       "long_description": "",
-      "available_commands": {
-        "go inside Sidney Smith": 23,
-        "go secret room": 26
+      "available_directions": {
+        "inside sidney smith": 23,
+        "secret room": 26
       },
       "items": []
 
@@ -267,8 +266,8 @@
       "name": "Secret Room",
       "brief_description": "You are now in secret room",
       "long_description": "",
-      "available_commands": {
-        "go out of this room": 24
+      "available_directions": {
+        "out of this room": 24
       },
       "items": []
     },
@@ -278,9 +277,9 @@
       "name": "Infront of New College",
       "brief_description": "You now have New College directly east, and Myhall some distance north",
       "long_description": "",
-      "available_commands": {
-        "go inside New College ": 27,
-        "go North": 29
+      "available_directions": {
+        "inside new college ": 27,
+        "North": 29
       },
       "items": []
 
@@ -290,11 +289,11 @@
       "id": 27,
       "name": "New College",
       "brief_description": "You are now inside of New College.",
-      "long_description": "You go into New College and see a student with your laptop, you need to confront him.",
-      "available_commands": {
-        "go confront student": 27,
-        "go outside through west exit": 25,
-        "go outside through north exit": 28
+      "long_description": "You into New College and see a student with your laptop, you need to confront him.",
+      "available_directions": {
+        "confront student": 27,
+        "outside through west exit": 25,
+        "outside through north exit": 28
       },
       "items": []
 
@@ -305,10 +304,10 @@
       "name": "Top Road",
       "brief_description": "You now have New College directly south, and Robarts East",
       "long_description": "",
-      "available_commands": {
-        "go inside New College ": 27,
-        "go east": 29,
-        "go west": 3
+      "available_directions": {
+        "inside new college ": 27,
+        "east": 29,
+        "west": 3
       },
       "items": []
 
@@ -319,10 +318,10 @@
       "name": "Infront of Myhall",
       "brief_description": "You now have MyHall directly North, and Robarts East",
       "long_description": "",
-      "available_commands": {
-        "go inside MyHall": 30,
-        "go East": 31,
-        "go west": 28
+      "available_directions": {
+        "inside myhall": 30,
+        "East": 31,
+        "west": 28
       },
       "items": []
 
@@ -332,8 +331,8 @@
       "id": 30,
       "brief_description": "You are now inside MyHall",
       "long_description": "You are now inside MyHall, and see your charger plugged into an outlet and your bag sitting on a bench, but on closer inspection you realize that the bag is empty",
-      "available_commands": {
-        "go outside MyHall": 29
+      "available_directions": {
+        "outside myhall": 29
       },
       "items": []
 
@@ -343,9 +342,9 @@
       "id": 31,
       "brief_description": "You now have Robarts directly infront of you",
       "long_description": "",
-      "available_commands": {
-        "go inside Robarts": 32,
-        "go wast": 29
+      "available_directions": {
+        "inside robarts": 32,
+        "wast": 29
       },
       "items": []
     },
@@ -354,9 +353,9 @@
       "id": 32,
       "brief_description": "You are now inside Robarts",
       "long_description": "You remember that you were at two places, the cafe and remeber that you were last at a study table",
-      "available_commands": {
-        "go outside": 31,
-        "go to your last spot": 33
+      "available_directions": {
+        "outside": 31,
+        "to your last spot": 33
       },
       "items": []
 
@@ -367,9 +366,9 @@
       "name": "Study Table",
       "brief_description": "You are at your old study table in Robarts.",
       "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your redbull",
-      "available_commands": {
-        "go upstairs to cafe": 34,
-        "go back": 32
+      "available_directions": {
+        "upstairs to cafe": 34,
+        "back": 32
       },
       "items": ["usb drive"]
     },
@@ -378,9 +377,9 @@
       "name": "Robarts Café",
       "brief_description": "You are in Robarts Café on the second floor.",
       "long_description": "You remember stopping here for a caffeine boost. A barista is wiping down the counter. Maybe they saw your lucky mug?",
-      "available_commands": {
-        "go to the counter": 35,
-        "go downstairs": 33
+      "available_directions": {
+        "to the counter": 35,
+        "downstairs": 33
       },
       "items": []
     },
@@ -389,8 +388,8 @@
       "name": "Barista Counter",
       "brief_description": "You are at the counter in Robarts Café.",
       "long_description": "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you!",
-      "available_commands": {
-        "go downstairs": 33
+      "available_directions": {
+        "downstairs": 33
       },
       "items": ["lucky mug"]
     }
@@ -414,7 +413,7 @@
       "name": "toonie",
       "description": "A shiny two-dollar coin. Useful for vending machines!",
       "start_position": 1,
-      "target_position": "needs to be used",
+      "target_position": 2,
       "target_points": 0
     },
     {

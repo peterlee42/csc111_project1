@@ -60,18 +60,17 @@ class Location:
     items: list[str]
     visited: bool
 
-    def __init__(self, location_id, brief_description, long_description, available_commands, items,
+    def __init__(self, location_id, brief_description, long_description, available_directions, items,
                  visited=False) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
-        For each item in the location, initialize a pick up command.
         """
 
         self.id_num = location_id
         self.brief_description = brief_description
         self.long_description = long_description
-        self.available_commands = available_commands
+        self.available_directions = available_directions
         self.items = items
         self.visited = visited
 
@@ -109,16 +108,6 @@ class Item:
     start_position: int
     target_position: int
     target_points: int
-
-
-# HELPER FUNCTION
-def get_article(item: str) -> str:
-    """Returns 'a' or 'an' based on whether the item starts with a vowel sound."""
-    vowels = 'aeiou'
-    if item.strip().lower()[0] in vowels:
-        return 'an'
-    else:
-        return 'a'
 
 
 class Player:
@@ -160,8 +149,7 @@ class Player:
             if item_name is None or '{item}' not in random_message:
                 return self.messages[message_type][random_index].capitalize()
             else:
-                article = get_article(item_name)
-                return self.messages[message_type][random_index].format(item=f'{article} {item_name}').capitalize()
+                return self.messages[message_type][random_index].format(item=f'{item_name}').capitalize()
 
     @staticmethod
     def _load_game_data(filename: str) -> dict[str, list[str]]:

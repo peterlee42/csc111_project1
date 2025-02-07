@@ -29,16 +29,25 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-def handle_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
-    """Parses a command and returns the command's action and target item in a tuple if it is a valid action.
-    If the action is not valid, return a tuple of empty strings."""
+def handle_input(command: str, valid_actions: list[str], menu_commands: set[str]) -> Optional[tuple[str, str] | str]:
+    """If command is a menu command, return the command itself.
+    If the command's action is valid, parse it and return a tuple of the command's action and target.
+    If the command is not valid, return None.
+
+    Preconditions:
+    - command == command.lower().strip()
+    """
+
+    if command in menu_commands:
+        return command
+
     for valid_action in valid_actions:
         # Account for a space in the action.
         if command.startswith(valid_action + ' '):
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
 
-    return '', ''
+    return None
 
 
 class AdventureGame:
@@ -106,7 +115,7 @@ class AdventureGame:
         # Go through each element associated with the 'locations' key in the file
         for loc_data in data['locations']:
             location_obj = Location(loc_data['id'], loc_data['brief_description'], loc_data['long_description'],
-                                    loc_data['available_commands'], loc_data['items'])
+                                    loc_data['available_directions'], loc_data['items'])
             locations[loc_data['id']] = location_obj
 
         items = []
@@ -191,7 +200,7 @@ if __name__ == "__main__":
     # load data, setting initial location ID to 1
     game = AdventureGame('game_data.json', 1)
     # Regular menu options available at each location
-    menu = ["look", "inventory", "score", "undo", "log", "quit"]
+    menu = {"look", "inventory", "score", "undo", "log", "quit"}
     choice = None
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
@@ -225,15 +234,16 @@ if __name__ == "__main__":
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can also:")
-        for action in location.available_commands:
-            print("-", action)
+        for direction in location.available_directions:
+            print("- go", direction)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in location.available_commands and choice not in menu and not \
-                handle_command(choice, game.player.available_actions)[0]:
+        handled_choice = handle_input(choice, game.player.available_actions, menu)
+        while not handled_choice:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
+            handled_choice = handle_input(choice, game.player.available_actions, menu)
 
         print("========")
         print("You decided to:", choice)
@@ -256,11 +266,11 @@ if __name__ == "__main__":
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             # In this case, you always have 2 parts. An action and a target.
-            player_action, player_target = handle_command(choice, game.player.available_actions)
+            player_action, player_target = handled_choice
 
             # Change to new location
             if player_action == 'go':
-                result = location.available_commands[choice]
+                result = location.available_directions[player_target]
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             elif player_action == 'pick up':
