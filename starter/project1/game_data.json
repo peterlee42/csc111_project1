@@ -17,11 +17,10 @@
       "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
       "available_commands": {
         "go to outside": 3,
-        "use toonie": 2,
+        "use vending machine": "do something",
         "go back to dorm": 1
       },
       "items": []
-
     },
     {
       "id": 3,
@@ -88,7 +87,6 @@
       "long_description":"",
       "available_commands": {
         "go to CSSU Longue": 9,
-        "use vending machine": 10,
         "go outside using front door": 7,
         "go outside using side door": 12
     },
