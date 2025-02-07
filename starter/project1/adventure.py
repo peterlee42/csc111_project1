@@ -19,7 +19,6 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from __future__ import annotations
 import json
-from types import NoneType
 from typing import Optional
 
 from game_entities import Location, Item, Player
@@ -139,7 +138,6 @@ class AdventureGame:
         for item_obj in self._items:
             if item_obj.name == given_item_name:
                 return item_obj
-
 
     def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
@@ -262,7 +260,7 @@ if __name__ == "__main__":
 
             # Change to new location
             if player_action == 'go':
-                result = location.available_commands[choice] # something wrong here
+                result = location.available_commands[choice]
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             elif player_action == 'pick up':

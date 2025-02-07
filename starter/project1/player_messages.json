@@ -1,0 +1,78 @@
+{
+  "message_types": [
+    {
+      "type": "item_used",
+      "messages": [
+        "You have used {item}.",
+        "You successfully used {item}.",
+        "You use {item} with confidence.",
+        "You skillfully use {item} to great effect."
+      ]
+    },
+    {
+      "type": "item_cannot_be_used",
+      "messages": [
+        "{item} cannot be used at this location.",
+        "Using {item} here has no effect.",
+        "{item} doesn't seem to work in this place.",
+        "Nothing happens when you try to use {item} here.",
+        "{item} isn't useful in this situation."
+      ]
+    },
+    {
+      "type": "item_does_not_exist",
+      "messages": [
+        "{item}? That doesn't seem to exist.",
+        "You can't find any trace of {item}.",
+        "{item} isn’t part of this world… or is it?",
+        "There’s no such thing as {item} here.",
+        "{item} sounds unfamiliar—are you sure it exists?",
+        "Your mind conjures {item}, but reality disagrees.",
+        "Hmmm... Maybe look somewhere else.",
+        "You reach out, but grasp only empty air.",
+        "You search thoroughly but find nothing of the sort.",
+        "Nothing like that is around here.",
+        "Your search yields nothing. Perhaps it’s hidden elsewhere.",
+        "The item eludes you, as if it was never here to begin with."
+      ]
+    },
+    {
+      "type": "item_picked_up",
+      "messages": [
+        "{item} has been added to your inventory.",
+        "You have picked up {item}.",
+        "{item} is in your inventory.",
+        "{item} is now safely in your possession.",
+        "You carefully stow {item} into your inventory.",
+        "{item} is now yours."
+      ]
+    },
+    {
+      "type": "item_removed_from_inventory",
+      "messages": [
+        "{item} has been removed from your inventory.",
+        "You dropped {item}.",
+        "{item} is no longer in your possession.",
+        "You carefully set down {item}.",
+        "You let go of {item}, leaving it behind."
+      ]
+    },
+    {
+      "type": "inventory_empty",
+      "messages": [
+        "Your inventory is empty!",
+        "You’re not carrying anything right now.",
+        "Nothing in your inventory at the moment.",
+        "Your pockets are completely empty."
+      ]
+    },
+    {
+      "type": "currently_have",
+      "messages": [
+        "You currently have:",
+        "You're carrying the following items:",
+        "Your inventory contains:"
+      ]
+    }
+  ]
+}

@@ -18,10 +18,12 @@ please consult our Course Syllabus.
 
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
-import random
 from dataclasses import dataclass
+
+# My imports
 from random import randrange
 from typing import Optional
+import json
 
 
 @dataclass
@@ -144,61 +146,7 @@ class Player:
         self.inventory = []
         self.available_actions = ['go', 'pick up', 'use', 'drop']
         self.score = 0
-        self.messages = {
-            'item_used': [
-                "You have used {item}.",
-                "You successfully used {item}.",
-                "You use {item} with confidence.",
-                "You skillfully use {item} to great effect."
-            ],
-            "item_cannot_be_used": [
-                "{item} cannot be used at this location.",
-                "Using {item} here has no effect.",
-                "{item} doesn't seem to work in this place.",
-                "Nothing happens when you try to use {item} here.",
-                "{item} isn't useful in this situation."
-            ],
-            "item_does_not_exist": [
-                "{item}? That doesn't seem to exist.",
-                "You can't find any trace of {item}.",
-                "{item} isn’t part of this world… or is it?",
-                "There’s no such thing as {item} here.",
-                "{item} sounds unfamiliar—are you sure it exists?",
-                "Your mind conjures {item}, but reality disagrees.",
-                "Hmmm... Maybe look somewhere else.",
-                "You reach out, but grasp only empty air.",
-                "You search thoroughly but find nothing of the sort.",
-                "Nothing like that is around here.",
-                "Your search yields nothing. Perhaps it’s hidden elsewhere.",
-                "The item eludes you, as if it was never here to begin with."
-            ],
-            "item_picked_up": [
-                "{item} has been added to your inventory.",
-                "You have picked up {item}.",
-                "{item} is in your inventory.",
-                "{item} is now safely in your possession.",
-                "You carefully stow {item} into your inventory.",
-                "{item} is now yours."
-            ],
-            "item_removed_from_inventory": [
-                "{item} has been removed from your inventory.",
-                "You dropped {item}.",
-                "{item} is no longer in your possession.",
-                "You carefully set down {item}.",
-                "You let go of {item}, leaving it behind."
-            ],
-            "inventory_empty": [
-                "Your inventory is empty!",
-                "You’re not carrying anything right now.",
-                "Nothing in your inventory at the moment.",
-                "Your pockets are completely empty."
-            ],
-            "currently_have": [
-                "You currently have:",
-                "You're carrying the following items:",
-                "Your inventory contains:"
-            ]
-        }
+        self.messages = self._load_game_data('player_messages.json')
 
     def get_random_message(self, message_type: str, item_name: Optional[str] = None) -> str:
         """Get a random message from the messages attribute based on the message type.
@@ -214,6 +162,23 @@ class Player:
             else:
                 article = get_article(item_name)
                 return self.messages[message_type][random_index].format(item=f'{article} {item_name}').capitalize()
+
+    @staticmethod
+    def _load_game_data(filename: str) -> dict[str, list[str]]:
+        """Load locations and items from a JSON file with the given filename and
+        return a tuple consisting of (1) a dictionary of locations mapping each game location's ID to a Location object,
+        and (2) a list of all Item objects."""
+
+        with open(filename, 'r') as f:
+            data = json.load(f)  # This loads all the data from the JSON file
+
+        player_messages = {}
+        # Go through each element associated with the 'message_types' key in the file
+        # Map each type of message to the list of all messages of that type.
+        for message_type in data['message_types']:
+            player_messages[message_type['type']] = message_type['messages']
+
+        return player_messages
 
     def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
         """Use an item in the player's inventory.

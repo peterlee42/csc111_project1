@@ -6,7 +6,6 @@
       "brief_description": "You are in your dorm room at Chestnut Residence.",
       "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
       "available_commands": {
-        "pick up toonie": 30,
         "go out of room": 2
       },
       "items": ["toonie"]
