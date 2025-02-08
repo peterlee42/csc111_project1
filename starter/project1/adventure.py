@@ -50,6 +50,22 @@ def parse_command(command: str, valid_actions: list[str]) -> Optional[tuple[str,
     return None
 
 
+def format_time(time_obj: time) -> str:
+    """Takes in a datetime.time object and formats it to 12 hour time into a string. Return this formatted time."""
+    hour, minute = time_obj.hour, time_obj.minute
+
+    if hour < 12:
+        time_period = "AM"
+    else:
+        time_period = "PM"
+
+    hour = hour % 12
+    if hour == 0:
+        hour = 12
+
+    return f"{hour}:{minute:02d} {time_period}"
+
+
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
@@ -57,12 +73,13 @@ class AdventureGame:
         - # TODO add descriptions of public instance attributes as needed (DONE)
         - ongoing: a boolean representing whether the game is ongoing or not.
         - player: a Player object representing the player in the game.
-        - current_time: the current time in the game (24 hour time)
-        - deadline: the deadline of the assignment (24 hour time)
+        - current_time: the current time in the game (in 24 hour time)
+        - deadline: the deadline of the assignment (in 24 hour time)
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
         - self.current_location_id in self._locations
+        - self.current_time < self.deadline
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -78,8 +95,8 @@ class AdventureGame:
     deadline: time
     """- # TODO total_moves"""
 
-    def __init__(self, game_data_file: str, initial_location_id: int, start_time: tuple[int, int],
-                 deadline: tuple[int, int]) -> None:
+    def __init__(self, game_data_file: str, initial_location_id: int, start_time: time,
+                 deadline: time) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
@@ -87,11 +104,7 @@ class AdventureGame:
 
         Preconditions:
         - game_data_file is the filename of a valid game data JSON file
-        - 0 <= start_time[0] <= 23
-        - 0 <= deadline[0] <= 23
-        - 0 <= start_time[1] <= 59
-        - 0 <= deadline[1] <= 59
-        - (start_time[0] < deadline[0] or (start_time[0] == deadline[0] and start_time[1] < deadline[1]))
+        - start_time < end_time
         """
 
         # NOTES:
@@ -111,8 +124,8 @@ class AdventureGame:
         # Player attribute
         self.player = Player()
 
-        self.current_time = time(hour=start_time[0], minute=start_time[1])
-        self.deadline = time(hour=deadline[0], minute=deadline[1])
+        self.current_time = start_time
+        self.deadline = deadline
 
     @staticmethod
     def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item]]:
@@ -196,7 +209,8 @@ class AdventureGame:
 
                 self.player.score -= prev_item_obj.target_points
                 self.player.inventory.pop()  # remove any acquired items
-                self.player.inventory.append(prev_target)  # add previous target item
+                # add previous target item
+                self.player.inventory.append(prev_target)
             else:
                 self.current_location_id = prev_location_id
 
@@ -225,14 +239,18 @@ class AdventureGame:
             self.current_time = time(current_hour, current_minute)
         else:
             current_hour %= 24
-            print(f'It is {time(hour=current_hour, minute=current_minute)} the next day!')
-            print('YOU MISSED THE DEADLINE! YOU FAILED!')
+            new_time = format_time(
+                time(hour=current_hour, minute=current_minute))
+            print(
+                f'It is {new_time} the next day!')
+            print('YOU MISSED THE DEADLINE!')
             self.ongoing = False
 
     def check_lose(self) -> None:
         """Check if the deadline has passed"""
         if self.current_time >= self.deadline:
-            print('YOU MISSED THE DEADLINE! YOU FAILED!')
+            print(f'It is {format_time(self.current_time)}!')
+            print('YOU MISSED THE DEADLINE!')
             self.ongoing = False
 
 
@@ -248,7 +266,8 @@ if __name__ == "__main__":
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     # load data, setting initial location ID to 1
-    game = AdventureGame('game_data.json', 1, (8, 0), (9, 30))
+    game = AdventureGame('game_data.json', 1, time(hour=8, minute=0),
+                         time(hour=16, minute=00))
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit"}
     choice = None
@@ -282,7 +301,7 @@ if __name__ == "__main__":
                 print(f'- There is {game.get_item(item).full_name}')
 
         # display the current time
-        print(f"\nThe current time is {game.current_time}.")
+        print(f"\nThe current time is {format_time(game.current_time)}.")
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can go:")
@@ -320,7 +339,8 @@ if __name__ == "__main__":
         else:
             # In this case, you always have 2 parts. An action and a target.
             player_action, player_target = parsed_choice
-            player_target_obj = game.get_item(player_target)  # TODO: Maybe handle this better
+            # TODO: Maybe handle this better
+            player_target_obj = game.get_item(player_target)
 
             # Change to new location
             if player_action == 'go':
@@ -334,7 +354,7 @@ if __name__ == "__main__":
             elif player_action == 'pick up' and game.player.pick_up_item(location, player_target):
                 game.add_minutes(2)
             elif player_action == 'use' and game.player.use(location, player_target_obj):
-                game.add_minutes(2)
+                game.add_minutes(5)
             elif player_action == 'drop' and game.player.drop_item(location, player_target):
                 game.add_minutes(2)
             elif player_action == 'examine' and game.player.examine_item(player_target_obj):

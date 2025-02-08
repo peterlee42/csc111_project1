@@ -134,14 +134,14 @@ class Player:
     inventory: list[str]
     available_actions: list[str]
     score: int
-    messages: dict[str, list[[str]]]
+    messages: dict[str, list[str]]
 
     def __init__(self) -> None:
-        """Initialize a new player object.
-        """
+        """Initialize a new player object."""
         self.inventory = []
         """TODO : I want to add consume, give, and interact (maybe npc class)..."""
-        self.available_actions = ['go', 'pick up', 'use', 'drop', 'examine', 'unlock']
+        self.available_actions = ['go', 'pick up',
+                                  'use', 'drop', 'examine', 'unlock']
         self.score = 0
         self.messages = self._load_player_messages('player_messages.json')
 
@@ -179,7 +179,8 @@ class Player:
         """Use an item in the player's inventory. Return true if the player sucessfully used the item. Return false
         otherwise."""
         if not item_obj or item_obj.name not in self.inventory:
-            print(self._get_random_message('item_does_not_exist', item_obj.name))
+            print(self._get_random_message(
+                'item_does_not_exist', item_obj.name))
             return False
         elif current_location.id_num == item_obj.target_position:
             item_name = item_obj.name
@@ -192,7 +193,8 @@ class Player:
             print(f'You received: {acquired_item}')
             return True
         else:
-            print(self._get_random_message('item_cannot_be_used', item_obj.name))
+            print(self._get_random_message(
+                'item_cannot_be_used', item_obj.name))
             return False
 
     def drop_item(self, current_location: Location, item_name: str) -> bool:
@@ -208,7 +210,8 @@ class Player:
 
             self.score -= 1  # so that you cant infinitely farm points
 
-            print(self._get_random_message('item_removed_from_inventory', item_name))
+            print(self._get_random_message(
+                'item_removed_from_inventory', item_name))
             return True
         else:
             print(self._get_random_message('item_does_not_exist', item_name))
@@ -236,7 +239,8 @@ class Player:
         if item_name in current_location.items:
 
             self.inventory.append(item_name)  # add to inventory
-            current_location.items.remove(item_name)  # remove item from location
+            # remove item from location
+            current_location.items.remove(item_name)
 
             # add 1 point to score for picking up item
             self.score += 1
@@ -255,7 +259,7 @@ class Player:
             sorted_inventory = sorted(self.inventory)
             print(self._get_random_message('currently_have'))
             for item in sorted_inventory:
-                print('- ', item.capitalize())
+                print('- ', item.title())
 
     def examine_item(self, item_obj: Item) -> bool:
         """Examine the item and display the item's description. Return true if the player sucessfully examined the item.
@@ -264,7 +268,8 @@ class Player:
             print(item_obj.description)
             return True
         else:
-            print(self._get_random_message('item_does_not_exist', item_obj.name))
+            print(self._get_random_message(
+                'item_does_not_exist', item_obj.name))
             return False
 
 # Note: Other entities you may want to add, depending on your game plan:

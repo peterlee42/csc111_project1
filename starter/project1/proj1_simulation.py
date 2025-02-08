@@ -129,7 +129,7 @@ if __name__ == "__main__":
     win_walkthrough = ["pick up toonie", "leave room", "solve puzzle", "use toonie", "solve puzzle", "go to Robarts",
                        "solve puzzle", "check table", "pick up usb driver", "go back", "go upstairs", "talk to barista",
                        "pick coffe mug", "go downstairs", "go home", "solve puzzle", "finish assignment"
-    ]
+                       ]
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = []
     # Uncomment the line below to test your walkthrough

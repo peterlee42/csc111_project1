@@ -54,7 +54,7 @@
         "buy from brown food truck" : 6,
         "buy from pink food truck" : 6,
         "north" : 3,
-        "inside McLennan" : 13
+        "inside mclennan" : 13
       },
       "items" : [],
       "acquired_items" : []
