@@ -31,12 +31,11 @@ class Location:
     """A location in our text adventure game world.
 
     Instance Attributes:
-        - # TODO Describe each instance attribute here
         - id_num: the unique identifier of the location
         - name: the name of the location
         - brief_description: a short description for quick rederence
         - long_description: a longer description of the location displayed upon entering
-        - available_commands: a dictionary of commands available in the location
+        - available_directions: a dictionary of available directions in the location
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
 
@@ -56,7 +55,7 @@ class Location:
     name: str
     brief_description: str
     long_description: str
-    available_commands: dict[str, int]
+    available_directions: dict[str, int]
     items: list[str]
     visited: bool
 
@@ -73,6 +72,30 @@ class Location:
         self.available_directions = available_directions
         self.items = items
         self.visited = visited
+
+
+@dataclass
+class InteractiveLocation(Location):
+    """An interactive location in our text adventure game world.
+
+    Instance Attributes:
+        - required_item: the item that needs to be used to interact with the location
+        - given_item: the item that will be given after interacting with the location
+
+    Representation Invariants:
+        - self.required_item != ''
+        - self.given_item != ''
+    """
+
+    required_item: str
+    given_item: str
+
+    def __init__(self, required_item, given_item, location_id, brief_description, long_description,
+                 available_directions, items, visited=False) -> None:
+        """Initialize a new interactive location"""
+        Location.__init__(self, location_id, brief_description, long_description, available_directions, items, visited)
+        self.required_item = required_item
+        self.given_item = given_item
 
 
 @dataclass
@@ -140,8 +163,6 @@ class Player:
     def get_random_message(self, message_type: str, item_name: Optional[str] = None) -> str:
         """Get a random message from the messages attribute based on the message type.
         If the type does not exist, do nothing."""
-        article = ''
-
         if message_type in self.messages:
             random_index = randrange(len(self.messages[message_type]))
             random_message = self.messages[message_type][random_index]
@@ -149,7 +170,7 @@ class Player:
             if item_name is None or '{item}' not in random_message:
                 return self.messages[message_type][random_index].capitalize()
             else:
-                return self.messages[message_type][random_index].format(item=f'{item_name}').capitalize()
+                return self.messages[message_type][random_index].format(item=item_name).capitalize()
 
     @staticmethod
     def _load_game_data(filename: str) -> dict[str, list[str]]:
@@ -168,19 +189,20 @@ class Player:
 
         return player_messages
 
-    def use(self, current_location_id_num: int, item_name: str, item_obj: Item) -> None:
-        """Use an item in the player's inventory.
-        """
-        if item_name in self.inventory:
-            if current_location_id_num == item_obj.target_position:
-                self.score += item_obj.target_points
-                self.inventory.remove(item_name)
-
-                print(self.get_random_message('item_used', item_name))
-            else:
-                print(self.get_random_message('item_cannot_be_used', item_name))
-        else:
+    def use(self, current_location: Location | InteractiveLocation, item_name: str, item_obj: Item) -> None:
+        """Use an item in the player's inventory."""
+        if item_name not in self.inventory:
             print(self.get_random_message('item_does_not_exist', item_name))
+            return
+
+        if current_location.id_num == item_obj.target_position and item_name == current_location.required_item:
+            self.score += item_obj.target_points
+            self.inventory.remove(item_name)
+            self.inventory.append(current_location.given_item)
+            print(self.get_random_message('item_used', item_name))
+            print(f'You received: {current_location.given_item}')
+        else:
+            print(self.get_random_message('item_cannot_be_used', item_name))
 
     def undo_use(self, prev_location: Location, item_name: str, item_obj: Item) -> None:
         """Undo the effects of the item in the player's inventory."""
@@ -197,6 +219,14 @@ class Player:
             print(self.get_random_message('item_removed_from_inventory', item_name))
         else:
             print(self.get_random_message('item_does_not_exist', item_name))
+
+    def go(self, current_location: Location, direction: str):
+        """Return the id of the new location if the direction is valid. Return the current location id otherwise."""
+        if direction in current_location.available_directions:
+            return current_location.available_directions[direction]
+        else:
+            print("Looks like that isn't a valid direction...")
+            return current_location.id_num
 
     def pick_up_item(self, current_location: Location, item_name: str) -> None:
         """Add an item to the player's inventory. Reward the player with 1 point."""
@@ -221,10 +251,6 @@ class Player:
             for item in self.inventory:
                 print('- ', item)
 
-
-# class puzzle:
-#     def __init__():
-#         pass
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

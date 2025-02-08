@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from game_entities import Location, Item, Player
+from game_entities import Location, Item, Player, InteractiveLocation
 from proj1_event_logger import Event, EventList
 
 
@@ -118,6 +118,17 @@ class AdventureGame:
                                     loc_data['available_directions'], loc_data['items'])
             locations[loc_data['id']] = location_obj
 
+        # Go through each element associated with the 'interactive_locations' key in the file
+        for interactive_loc_data in data['interactive_locations']:
+            interactive_location_obj = InteractiveLocation(interactive_loc_data['required_item'],
+                                                           interactive_loc_data['given_item'],
+                                                           interactive_loc_data['id'],
+                                                           interactive_loc_data['brief_description'],
+                                                           interactive_loc_data['long_description'],
+                                                           interactive_loc_data['available_directions'],
+                                                           interactive_loc_data['items'])
+            locations[interactive_location_obj.id_num] = interactive_location_obj
+
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
         for item_data in data['items']:
@@ -132,7 +143,6 @@ class AdventureGame:
         """Return Location object associated with the provided location ID.
         If no ID is provided, return the Location object associated with the current location.
         """
-
         # TODO: Complete this method as specified
         # YOUR CODE BELOW
         if loc_id is None:
@@ -151,10 +161,8 @@ class AdventureGame:
     def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
         # Make current location id the id of the previous event. Remove the last event from the game log.
-        if current_game_log.is_empty():
+        if current_game_log.is_empty() or current_game_log.first.next is None:
             print("No actions to undo.")
-        elif current_game_log.first.next is None:
-            print("No actions to undo")
         else:
             # comment wtvr happening here
             prev_event = current_game_log.last.prev
@@ -233,9 +241,9 @@ if __name__ == "__main__":
 
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
-        print("At this location, you can also:")
+        print("At this location, you can go:")
         for direction in location.available_directions:
-            print("- go", direction)
+            print('-', direction.title())
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
@@ -270,13 +278,13 @@ if __name__ == "__main__":
 
             # Change to new location
             if player_action == 'go':
-                result = location.available_directions[player_target]
+                result = game.player.go(location, player_target)
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
             elif player_action == 'pick up':
                 game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
-                game.player.use(game.current_location_id, player_target,
+                game.player.use(location, player_target,
                                 game.get_item(player_target))
             elif player_action == 'drop':
                 game.player.drop_item(location, player_target)

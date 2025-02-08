@@ -11,18 +11,6 @@
       "items": ["toonie"]
     },
     {
-      "id": 2,
-      "name": "Chestnut Lobby",
-      "brief_description": "You are in the lobby of Chestnut Residence.",
-      "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
-      "available_directions": {
-        "to outside": 3,
-        "back to dorm": 1
-      },
-      "items": []
-
-    },
-    {
       "id": 3,
       "name": "Outside Chestnut",
       "brief_description": "You are outside Chestnut residence",
@@ -411,7 +399,7 @@
     },
     {
       "name": "toonie",
-      "description": "A shiny two-dollar coin. Useful for vending machines!",
+      "description": "A shiny toonie. Useful for vending machines!",
       "start_position": 1,
       "target_position": 2,
       "target_points": 0
@@ -464,6 +452,21 @@
       "start_position": "",
       "target_position": "",
       "target_points": 10
+    }
+  ],
+  "interactive_locations": [
+    {
+      "id": 2,
+      "name": "Chestnut Lobby",
+      "brief_description": "You are in the lobby of Chestnut Residence.",
+      "long_description": "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
+      "available_directions": {
+        "outside": 3,
+        "back to dorm": 1
+      },
+      "items": [],
+      "required_item": "toonie",
+      "given_item": "energy drink"
     }
   ]
 }
