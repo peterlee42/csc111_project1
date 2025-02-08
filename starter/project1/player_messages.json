@@ -12,10 +12,9 @@
     {
       "type": "item_cannot_be_used",
       "messages": [
-        "{item} cannot be used at this location.",
-        "Using {item} here has no effect.",
-        "{item} doesn't seem to work in this place.",
-        "Nothing happens when you try to use {item} here.",
+        "Hmmm... Maybe {item} has a better use.",
+        "I think I'm going to save {item} for later...",
+        "I might need {item} for something else...",
         "{item} isn't useful in this situation."
       ]
     },
@@ -26,7 +25,6 @@
         "You can't find any trace of {item}.",
         "{item} isn’t part of this world… or is it?",
         "There’s no such thing as {item} here.",
-        "{item} sounds unfamiliar—are you sure it exists?",
         "Your mind conjures {item}, but reality disagrees.",
         "Hmmm... Maybe look somewhere else.",
         "You reach out, but grasp only empty air.",
