@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from game_entities import Location, Item, Player, InteractiveLocation
+from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
 
@@ -29,7 +29,7 @@ from proj1_event_logger import Event, EventList
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-def handle_input(command: str, valid_actions: list[str], menu_commands: set[str]) -> Optional[tuple[str, str] | str]:
+def parse_command(command: str, valid_actions: list[str]) -> Optional[tuple[str, str]]:
     """If command is a menu command, return the command itself.
     If the command's action is valid, parse it and return a tuple of the command's action and target.
     If the command is not valid, return None.
@@ -37,10 +37,6 @@ def handle_input(command: str, valid_actions: list[str], menu_commands: set[str]
     Preconditions:
     - command == command.lower().strip()
     """
-
-    if command in menu_commands:
-        return command
-
     for valid_action in valid_actions:
         # Account for a space in the action.
         if command.startswith(valid_action + ' '):
@@ -55,7 +51,6 @@ class AdventureGame:
 
     Instance Attributes:
         - # TODO add descriptions of public instance attributes as needed (DONE)
-        - current_location_id: the current location ID of the player in the game.
         - ongoing: a boolean representing whether the game is ongoing or not.
         - player: a Player object representing the player in the game.
 
@@ -72,8 +67,8 @@ class AdventureGame:
     _locations: dict[int, Location]
     _items: list[Item]
     player = Player
-    current_location_id: int  # Suggested attribute, can be removed
     ongoing: bool  # Suggested attribute, can be removed
+    """- # TODO total_moves"""
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
         """
@@ -114,20 +109,10 @@ class AdventureGame:
         locations = {}
         # Go through each element associated with the 'locations' key in the file
         for loc_data in data['locations']:
-            location_obj = Location(loc_data['id'], loc_data['brief_description'], loc_data['long_description'],
-                                    loc_data['available_directions'], loc_data['items'])
+            location_obj = Location(loc_data['id'], loc_data['name'], loc_data['brief_description'],
+                                    loc_data['long_description'], loc_data['available_directions'],
+                                    loc_data['items'], loc_data['acquired_items'])
             locations[loc_data['id']] = location_obj
-
-        # Go through each element associated with the 'interactive_locations' key in the file
-        for interactive_loc_data in data['interactive_locations']:
-            interactive_location_obj = InteractiveLocation(interactive_loc_data['required_item'],
-                                                           interactive_loc_data['given_item'],
-                                                           interactive_loc_data['id'],
-                                                           interactive_loc_data['brief_description'],
-                                                           interactive_loc_data['long_description'],
-                                                           interactive_loc_data['available_directions'],
-                                                           interactive_loc_data['items'])
-            locations[interactive_location_obj.id_num] = interactive_location_obj
 
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
@@ -152,11 +137,16 @@ class AdventureGame:
         else:
             return self._locations[loc_id]
 
-    def get_item(self, given_item_name: str) -> Item:
-        """Retrieves item object by a given item name. If item object does not exist, do nothing."""
+    def get_item(self, item_name: str) -> Item | None:
+        """Retrieves item object by a given item name. If item object does not exist, return None.
+
+        Preconditions:
+        - item_name == item_name.lower.strip()
+        """
         for item_obj in self._items:
-            if item_obj.name == given_item_name:
+            if item_obj.name.lower().strip() == item_name:
                 return item_obj
+        return None
 
     def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
@@ -164,37 +154,35 @@ class AdventureGame:
         if current_game_log.is_empty() or current_game_log.first.next is None:
             print("No actions to undo.")
         else:
-            # comment wtvr happening here
+            # Undo the game log
             prev_event = current_game_log.last.prev
 
-            prev_command = prev_event.next_command
             prev_location_id = prev_event.id_num
-            prev_location = self.get_location(prev_event.id_num)
+            prev_location = self.get_location(prev_location_id)
 
             current_game_log.last = prev_event
 
+            # Retrieve the previous command
+            prev_command = prev_event.next_command
+            prev_action, prev_target = parse_command(prev_command, self.player.available_actions)
+
+            if prev_action == 'pick up':
+                self.player.drop_item(prev_location, prev_target)
+            elif prev_action == 'drop':
+                self.player.pick_up_item(prev_location, prev_target)
+            elif prev_action == 'use':
+                prev_item_obj = self.get_item(prev_target)
+                self.player.undo_use(prev_location, prev_item_obj)
+            else:
+                self.current_location_id = prev_location_id
+                print('You are back at ' + prev_location.name)
+
+            # Remove the most recent command
             current_game_log.last.next = None
             current_game_log.last.next_command = None
 
-            if prev_command.startswith('pick up'):
-                prev_item_name = prev_command[8:]
-                self.player.drop_item(prev_location, prev_item_name)
-            elif prev_command.startswith('drop'):
-                prev_item_name = prev_command[5:]
-                self.player.pick_up_item(prev_location, prev_item_name)
-            elif prev_command.startswith('use'):
-                prev_item_name = prev_command[4:]
-                prev_item_obj = self.get_item(prev_item_name)
-                self.player.undo_use(prev_location, prev_item_name, prev_item_obj)
-            else:
-                print('You have been move back to your previous location.')
-
-            self.current_location_id = prev_location_id
-            self.player.current_location = self._locations[prev_location_id]
-
 
 if __name__ == "__main__":
-
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
@@ -247,11 +235,11 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        handled_choice = handle_input(choice, game.player.available_actions, menu)
-        while not handled_choice:
+        parsed_choice = parse_command(choice, game.player.available_actions)
+        while not parsed_choice and choice not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            handled_choice = handle_input(choice, game.player.available_actions, menu)
+            parsed_choice = parse_command(choice, game.player.available_actions)
 
         print("========")
         print("You decided to:", choice)
@@ -274,7 +262,7 @@ if __name__ == "__main__":
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             # In this case, you always have 2 parts. An action and a target.
-            player_action, player_target = handled_choice
+            player_action, player_target = parsed_choice
 
             # Change to new location
             if player_action == 'go':
@@ -284,8 +272,7 @@ if __name__ == "__main__":
             elif player_action == 'pick up':
                 game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
-                game.player.use(location, player_target,
-                                game.get_item(player_target))
+                game.player.use(location, game.get_item(player_target))
             elif player_action == 'drop':
                 game.player.drop_item(location, player_target)
 
