@@ -327,7 +327,7 @@ if __name__ == "__main__":
                 result = game.player.go(location, player_target)
 
                 if game.current_location_id != result:
-                    game.add_minutes(30)
+                    game.add_minutes(10)
 
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
