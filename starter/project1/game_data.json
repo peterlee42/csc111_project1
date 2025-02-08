@@ -6,7 +6,7 @@
       "brief_description" : "You are in your dorm room at Chestnut Residence.",
       "long_description" : "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
       "available_directions" : {
-        "out of room" : 2
+        "out of dorm" : 2
       },
       "items" : [
         "toonie",
@@ -51,8 +51,6 @@
       "long_description" : "",
       "available_directions" : {
         "south" : 6,
-        "buy from brown food truck" : 6,
-        "buy from pink food truck" : 6,
         "north" : 3,
         "inside mclennan" : 13
       },
@@ -117,7 +115,7 @@
       "available_directions" : {
         "inside Bahen" : 8,
         "east" : 14,
-        "inside McLennan" : 13
+        "inside mclennan" : 13
       },
       "items" : [],
       "acquired_items" : []
@@ -240,7 +238,7 @@
       "brief_description" : "You have McLennan directly to the west",
       "long_description" : "",
       "available_directions" : {
-        "inside McLennan" : 13,
+        "inside mclennan" : 13,
         "north" : 23
       },
       "items" : [],

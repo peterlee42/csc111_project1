@@ -21,8 +21,6 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from scipy.constants import minute
-
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
@@ -33,21 +31,20 @@ from datetime import time
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-def parse_command(command: str, valid_actions: list[str]) -> Optional[tuple[str, str]]:
-    """If command is a menu command, return the command itself.
-    If the command's action is valid, parse it and return a tuple of the command's action and target.
-    If the command is not valid, return None.
+def handle_command(command: str) -> tuple[str, str]:
+    """If the command has an action but no target, return a tuple of command and an empty string.
+    If the command has an action and a target, parse it and return a tuple of the command's action and target.
+    Only the command's actions will always be returned in lowercase.
 
     Preconditions:
-    - command == command.lower().strip()
+    - command != ''
     """
-    for valid_action in valid_actions:
-        # Account for a space in the action.
-        if command.startswith(valid_action + ' '):
-            target = command[len(valid_action) + 1:].strip()
-            return valid_action, target
+    command_list = command.split(' ')
 
-    return None
+    if len(command_list) == 1:
+        return command, ''
+    else:
+        return command_list[0], ' '.join(command_list[1:])
 
 
 def format_time(time_obj: time) -> str:
@@ -93,7 +90,6 @@ class AdventureGame:
     ongoing: bool  # Suggested attribute, can be removed
     current_time: time
     deadline: time
-    """- # TODO total_moves"""
 
     def __init__(self, game_data_file: str, initial_location_id: int, start_time: time,
                  deadline: time) -> None:
@@ -189,13 +185,17 @@ class AdventureGame:
             prev_event = current_game_log.last.prev
 
             prev_location_id = prev_event.id_num
+
+            # always changes current location id to the previous one
+            self.current_location_id = prev_location_id
+
             prev_location = self.get_location(prev_location_id)
 
             current_game_log.last = prev_event
 
             # Retrieve the previous command
             prev_command = prev_event.next_command
-            prev_action, prev_target = parse_command(
+            prev_action, prev_target = handle_command(
                 prev_command, self.player.available_actions)
 
             if prev_action == 'pick up':
@@ -211,9 +211,6 @@ class AdventureGame:
                 self.player.inventory.pop()  # remove any acquired items
                 # add previous target item
                 self.player.inventory.append(prev_target)
-            else:
-                self.current_location_id = prev_location_id
-
             print('Action undone!')
 
             # Remove the most recent command
@@ -221,7 +218,9 @@ class AdventureGame:
             current_game_log.last.next_command = None
 
     def add_minutes(self, added_minutes: int) -> None:
-        """Adds specified minutes to self.current_time
+        """Adds specified minutes to self.current_time.
+        This method will also see if the game's current time is past the deadline time.
+        It will make self.ongoing False if the user passed the deadline and True otherwise.
 
         Preconditions:
         - 0 <= added_minutes <= 60
@@ -237,19 +236,17 @@ class AdventureGame:
         # If you add to many hours such that it goes to the next day, automatically stop the game.
         if current_hour // 24 == 0:
             self.current_time = time(current_hour, current_minute)
+
+            if self.current_time >= self.deadline:
+                print(f'It is {format_time(self.current_time)}!')
+                print('YOU MISSED THE DEADLINE!')
+                self.ongoing = False
         else:
             current_hour %= 24
             new_time = format_time(
                 time(hour=current_hour, minute=current_minute))
             print(
                 f'It is {new_time} the next day!')
-            print('YOU MISSED THE DEADLINE!')
-            self.ongoing = False
-
-    def check_lose(self) -> None:
-        """Check if the deadline has passed"""
-        if self.current_time >= self.deadline:
-            print(f'It is {format_time(self.current_time)}!')
             print('YOU MISSED THE DEADLINE!')
             self.ongoing = False
 
@@ -265,9 +262,9 @@ if __name__ == "__main__":
     # })
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
-    # load data, setting initial location ID to 1
+    # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
     game = AdventureGame('game_data.json', 1, time(hour=8, minute=0),
-                         time(hour=16, minute=00))
+                         time(hour=16, minute=0))
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit"}
     choice = None
@@ -297,30 +294,35 @@ if __name__ == "__main__":
 
         # Display Location's Item Name if there is any.
         for item in location.items:
-            if game.get_item(item):
-                print(f'- There is {game.get_item(item).full_name}')
+            # TODO: Maybe write a rep. inv. that shows item always has a corressponding obj
+            print(f'- There is {game.get_item(item).full_name}')
 
-        # display the current time
+        # Display the current time
         print(f"\nThe current time is {format_time(game.current_time)}.")
-        # Display possible actions at this location
+
+        # Display menu actions
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
+
+        # Display directions the player can go
         print("At this location, you can go:")
         for direction in location.available_directions:
-            print('-', direction.title())  # TODO: capitalize or title???
+            print('-', direction)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        parsed_choice = parse_command(choice, game.player.available_actions)
-        while not parsed_choice and choice not in menu:
+        handle_choice = handle_command(choice)
+        while handle_choice[0] not in game.player.available_actions and handle_choice[0] not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            parsed_choice = parse_command(
-                choice, game.player.available_actions)
+            handle_choice = handle_command(choice)
 
         print("========")
         print("You decided to:", choice)
 
-        if choice in menu:
+        # our handled choice has two components. An action and a target.
+        player_action, player_target = handle_choice
+
+        if player_action in menu:
             # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if choice == "log":
@@ -337,8 +339,6 @@ if __name__ == "__main__":
                 print(location.long_description)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-            # In this case, you always have 2 parts. An action and a target.
-            player_action, player_target = parsed_choice
             # TODO: Maybe handle this better
             player_target_obj = game.get_item(player_target)
 
@@ -346,6 +346,7 @@ if __name__ == "__main__":
             if player_action == 'go':
                 result = game.player.go(location, player_target)
 
+                # add to time if it is a new location
                 if game.current_location_id != result:
                     game.add_minutes(10)
 
@@ -360,8 +361,6 @@ if __name__ == "__main__":
             elif player_action == 'examine' and game.player.examine_item(player_target_obj):
                 game.add_minutes(1)
 
-        # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
+            # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
         print("========")
-
-        game.check_lose()
