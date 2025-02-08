@@ -9,7 +9,8 @@
         "out of room" : 2
       },
       "items" : [
-        "toonie"
+        "toonie",
+        "red bull"
       ],
       "acquired_items" : []
     },
@@ -24,10 +25,10 @@
       },
       "items" : [],
       "acquired_items" : [
-        "RedBull",
-        "Coca Cola",
-        "Nestea",
-        "Sprite"
+        "red bull",
+        "coca cola",
+        "nestea",
+        "sprite"
       ]
     },
     {
@@ -333,7 +334,7 @@
     },
     {
       "id" : 30,
-      "name": "Inside Myhal Centre",
+      "name" : "Inside Myhal Centre",
       "brief_description" : "You are now inside Myhal Centre",
       "long_description" : "You are now inside Myhal Centre, and see your charger plugged into an outlet and your bag sitting on a bench, but on closer inspection you realize that the bag is empty",
       "available_directions" : {
@@ -344,7 +345,7 @@
     },
     {
       "id" : 31,
-      "name": "Outside Robarts",
+      "name" : "Outside Robarts",
       "brief_description" : "You now have Robarts directly infront of you",
       "long_description" : "",
       "available_directions" : {
@@ -356,7 +357,7 @@
     },
     {
       "id" : 32,
-      "name": "Inside Robarts",
+      "name" : "Inside Robarts",
       "brief_description" : "You are now inside Robarts",
       "long_description" : "You remember that you were at two places, the cafe and remeber that you were last at a study table",
       "available_directions" : {
@@ -370,7 +371,7 @@
       "id" : 33,
       "name" : "Study Table",
       "brief_description" : "You are at your old study table in Robarts.",
-      "long_description" : "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your redbull",
+      "long_description" : "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your Red Bull",
       "available_directions" : {
         "upstairs to cafe" : 34,
         "back" : 32
@@ -402,101 +403,127 @@
       },
       "items" : [],
       "acquired_items" : [
-        "Lucky Mug"
+        "lucky mug"
       ]
     }
   ],
   "items" : [
     {
-      "name" : "Usb Drive",
+      "name" : "usb drive",
+      "full_name" : "your usb drive",
       "description" : "Your missing USB drive, containing the only copy of your project.",
       "start_position" : 4,
       "target_position" : 8,
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "objective"
     },
     {
-      "name" : "Backpack",
-      "description" : "Your missing backpack, should contain all your stuff",
+      "name" : "backpack",
+      "full_name" : "your backpack",
+      "description" : "Your missing backpack. Now you should be able to carry more things!",
       "start_position" : 30,
       "target_position" : 1,
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "container"
     },
     {
-      "name" : "Toonie",
+      "name" : "toonie",
+      "full_name" : "a shiny toonie",
       "description" : "A shiny toonie. Useful for vending machines!",
       "start_position" : 1,
       "target_position" : 2,
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     },
     {
-      "name" : "Random Student ID",
-      "description" : "A strangers student ID... Wonder what this could be used for...",
+      "name" : "random student ID",
+      "full_name" : "a random student id",
+      "description" : "A strangers student ID... Alex Carter... Wonder what this could be used for...",
       "start_position" : 30,
       "target_position" : 0,
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     },
     {
-      "name" : "Notebook",
+      "name" : "notebook",
+      "full_name" : "a notebook",
       "description" : "A notebook filled with notes from last night's study session.",
       "start_position" : 3,
       "target_position" : 0,
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "readable"
     },
     {
-      "name" : "Lucky Mug",
+      "name" : "lucky mug",
+      "full_name" : "your lucky UofT mug",
       "description" : "Your lucky UofT mug, essential for your caffeine-fueled success!",
       "start_position" : 6,
       "target_position" : 8,
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "objective"
     },
     {
-      "name" : "Laptop Charger",
+      "name" : "laptop charger",
+      "full_name" : "a laptop charger",
       "description" : "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
       "start_position" : 7,
       "target_position" : 8,
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "objective"
     },
     {
-      "name" : "Laptop",
-      "description" : "",
+      "name" : "laptop",
+      "full_name" : "your laptop",
+      "description" : "Your laptop that you used to work on your assignment! You better submit in time!",
       "start_position" : 27,
       "target_position" : 1,
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "objective"
     },
     {
-      "name" : "RedBull",
-      "description" : "A RedBull from the vending machine to help you focus.",
+      "name" : "red bull",
+      "full_name" : "a can of Red Bull",
+      "description" : "A Red Bull from the vending machine to help you focus.",
       "start_position" : "",
       "target_position" : "",
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     },
     {
-      "name" : "Crumpled Paper",
+      "name" : "crumpled paper",
+      "full_name" : "some crumpled paper",
       "description" : "",
       "start_position" : "",
       "target_position" : "",
-      "target_points" : 10
+      "target_points" : 10,
+      "item_type" : "readable"
     },
     {
-      "name" : "Coca Cola",
+      "name" : "coca cola",
+      "full_name" : "a bottle of Coca Cola",
       "description" : "A Coca Cola from the vending machine!",
       "start_position" : "",
       "target_position" : "",
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     },
     {
-      "name" : "Nestea",
-      "description" : "A Nestea from the vending machine!",
+      "name" : "nestea",
+      "full_name" : "a bottle of Nestea",
+      "description" : "A Nestea from the vending machine! These are rare to find these days...",
       "start_position" : "",
       "target_position" : "",
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     },
     {
-      "name" : "Sprite",
+      "name" : "sprite",
+      "full_name" : "a bottle of Sprite",
       "description" : "A Sprite from the vending machine!",
       "start_position" : "",
       "target_position" : "",
-      "target_points" : 0
+      "target_points" : 0,
+      "item_type" : "consumable"
     }
   ]
 }

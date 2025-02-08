@@ -21,8 +21,12 @@ from __future__ import annotations
 import json
 from typing import Optional
 
+from scipy.constants import minute
+
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
+
+from datetime import time
 
 
 # Note: You may add in other import statements here as needed
@@ -53,6 +57,8 @@ class AdventureGame:
         - # TODO add descriptions of public instance attributes as needed (DONE)
         - ongoing: a boolean representing whether the game is ongoing or not.
         - player: a Player object representing the player in the game.
+        - current_time: the current time in the game (24 hour time)
+        - deadline: the deadline of the assignment (24 hour time)
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
@@ -68,9 +74,12 @@ class AdventureGame:
     _items: list[Item]
     player = Player
     ongoing: bool  # Suggested attribute, can be removed
+    current_time: time
+    deadline: time
     """- # TODO total_moves"""
 
-    def __init__(self, game_data_file: str, initial_location_id: int) -> None:
+    def __init__(self, game_data_file: str, initial_location_id: int, start_time: tuple[int, int],
+                 deadline: tuple[int, int]) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
@@ -78,6 +87,11 @@ class AdventureGame:
 
         Preconditions:
         - game_data_file is the filename of a valid game data JSON file
+        - 0 <= start_time[0] <= 23
+        - 0 <= deadline[0] <= 23
+        - 0 <= start_time[1] <= 59
+        - 0 <= deadline[1] <= 59
+        - (start_time[0] < deadline[0] or (start_time[0] == deadline[0] and start_time[1] < deadline[1]))
         """
 
         # NOTES:
@@ -95,7 +109,10 @@ class AdventureGame:
         self.ongoing = True  # whether the game is ongoing
 
         # Player attribute
-        self.player = Player(initial_location_id)
+        self.player = Player()
+
+        self.current_time = time(hour=start_time[0], minute=start_time[1])
+        self.deadline = time(hour=deadline[0], minute=deadline[1])
 
     @staticmethod
     def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item]]:
@@ -117,8 +134,9 @@ class AdventureGame:
         items = []
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
         for item_data in data['items']:
-            item_obj = Item(item_data['name'], item_data['description'], item_data['start_position'],
-                            item_data['target_position'], item_data['target_points'])
+            item_obj = Item(item_data['name'], item_data['full_name'], item_data['description'],
+                            item_data['start_position'], item_data['target_position'], item_data['target_points'],
+                            item_data['item_type'])
             items.append(item_obj)
         # YOUR CODE BELOW
 
@@ -164,22 +182,58 @@ class AdventureGame:
 
             # Retrieve the previous command
             prev_command = prev_event.next_command
-            prev_action, prev_target = parse_command(prev_command, self.player.available_actions)
+            prev_action, prev_target = parse_command(
+                prev_command, self.player.available_actions)
 
             if prev_action == 'pick up':
-                self.player.drop_item(prev_location, prev_target)
+                self.player.inventory.remove(prev_target)
+                prev_location.items.append(prev_target)
             elif prev_action == 'drop':
-                self.player.pick_up_item(prev_location, prev_target)
+                self.player.inventory.remove(prev_target)
+                prev_location.items.append(prev_target)
             elif prev_action == 'use':
                 prev_item_obj = self.get_item(prev_target)
-                self.player.undo_use(prev_location, prev_item_obj)
+
+                self.player.score -= prev_item_obj.target_points
+                self.player.inventory.pop()  # remove any acquired items
+                self.player.inventory.append(prev_target)  # add previous target item
             else:
                 self.current_location_id = prev_location_id
-                print('You are back at ' + prev_location.name)
+
+            print('Action undone!')
 
             # Remove the most recent command
             current_game_log.last.next = None
             current_game_log.last.next_command = None
+
+    def add_minutes(self, added_minutes: int) -> None:
+        """Adds specified minutes to self.current_time
+
+        Preconditions:
+        - 0 <= added_minutes <= 60
+        """
+        current_hour = self.current_time.hour
+        current_minute = self.current_time.minute
+
+        current_minute += added_minutes
+
+        current_hour += current_minute // 60
+        current_minute %= 60
+
+        # If you add to many hours such that it goes to the next day, automatically stop the game.
+        if current_hour // 24 == 0:
+            self.current_time = time(current_hour, current_minute)
+        else:
+            current_hour %= 24
+            print(f'It is {time(hour=current_hour, minute=current_minute)} the next day!')
+            print('YOU MISSED THE DEADLINE! YOU FAILED!')
+            self.ongoing = False
+
+    def check_lose(self) -> None:
+        """Check if the deadline has passed"""
+        if self.current_time >= self.deadline:
+            print('YOU MISSED THE DEADLINE! YOU FAILED!')
+            self.ongoing = False
 
 
 if __name__ == "__main__":
@@ -194,7 +248,7 @@ if __name__ == "__main__":
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     # load data, setting initial location ID to 1
-    game = AdventureGame('game_data.json', 1)
+    game = AdventureGame('game_data.json', 1, (8, 0), (9, 30))
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit"}
     choice = None
@@ -219,19 +273,21 @@ if __name__ == "__main__":
         if location.visited:
             print(location.brief_description)
         else:
-            print(location.long_description)
+            print(location.long_description)  # TODO: this looks ugly
             location.visited = True
 
-        # Display Location's Item Descriptions if there is any.
+        # Display Location's Item Name if there is any.
         for item in location.items:
-            if game.get_item(item) is not None:
-                print('- ', game.get_item(item).description)
+            if game.get_item(item):
+                print(f'- There is {game.get_item(item).full_name}')
 
+        # display the current time
+        print(f"\nThe current time is {game.current_time}.")
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can go:")
         for direction in location.available_directions:
-            print('-', direction.title())
+            print('-', direction.title())  # TODO: capitalize or title???
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
@@ -239,7 +295,8 @@ if __name__ == "__main__":
         while not parsed_choice and choice not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            parsed_choice = parse_command(choice, game.player.available_actions)
+            parsed_choice = parse_command(
+                choice, game.player.available_actions)
 
         print("========")
         print("You decided to:", choice)
@@ -263,19 +320,28 @@ if __name__ == "__main__":
         else:
             # In this case, you always have 2 parts. An action and a target.
             player_action, player_target = parsed_choice
+            player_target_obj = game.get_item(player_target)  # TODO: Maybe handle this better
 
             # Change to new location
             if player_action == 'go':
                 result = game.player.go(location, player_target)
+
+                if game.current_location_id != result:
+                    game.add_minutes(30)
+
                 game.current_location_id = result
             # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
-            elif player_action == 'pick up':
-                game.player.pick_up_item(location, player_target)
-            elif player_action == 'use':
-                game.player.use(location, game.get_item(player_target))
-            elif player_action == 'drop':
-                game.player.drop_item(location, player_target)
+            elif player_action == 'pick up' and game.player.pick_up_item(location, player_target):
+                game.add_minutes(2)
+            elif player_action == 'use' and game.player.use(location, player_target_obj):
+                game.add_minutes(2)
+            elif player_action == 'drop' and game.player.drop_item(location, player_target):
+                game.add_minutes(2)
+            elif player_action == 'examine' and game.player.examine_item(player_target_obj):
+                game.add_minutes(1)
 
         # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
         print("========")
+
+        game.check_lose()
