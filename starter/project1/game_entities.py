@@ -126,6 +126,7 @@ class Player:
         - available_commands: a list of actions that the player can use
         - score: type player's score so far
         - messages: the output messages that the player receives after doing an action
+        - quests: a list of all quests that the player accepted
 
     Representation Invariants:
         - self.current_location_id >= 0
@@ -135,15 +136,16 @@ class Player:
     available_actions: list[str]
     score: int
     messages: dict[str, list[str]]
+    quests: list[str]
 
     def __init__(self) -> None:
         """Initialize a new player object."""
         self.inventory = []
-        """TODO : I want to add consume, give, and interact (maybe npc class)..."""
         self.available_actions = ['go', 'pick up',
-                                  'use', 'drop', 'examine', 'unlock']
+                                  'use', 'drop', 'examine', 'interact']
         self.score = 0
         self.messages = self._load_player_messages('player_messages.json')
+        self.quests = []
 
     def _get_random_message(self, message_type: str, item_name: Optional[str] = None) -> str:
         """Get a random message from the messages attribute based on the message type.
@@ -271,10 +273,84 @@ class Player:
                 'item_does_not_exist', item_name))
             return False
 
+    def display_quests(self) -> None:
+        if not self.quests:
+            print("You have no quests.")
+        else:
+            sorted_quests = sorted(self.quests)
+            print("You currently undertook these quests:")
+            for item in sorted_quests:
+                print('- ', item)
 
-# class Puzzle(Location):
-#     def __init__()
 
+class Npc:
+    """An NPC (Non-Player Character) that assigns and completes quests in our text adventure world.
+    Instance Attributes:
+        - name: the name of the NPC
+        - description: the description of the NPC
+        - quest: the quest the NPC gives to the player
+        - required_items: list of items required to complete the quest
+        - reward: the reward given when the quest is completed
+        - is_quest_completed: whether the quest has been completed
+
+    Representation Invariants:
+        - self.name != ''
+        - self.description != ''
+        - self.quest != ''
+        - self.required_items != []
+        - self.reward != ''
+    """
+
+    name: str
+    description: str
+    location_id: int
+    quest: str
+    quest_complete_message: str
+    required_items: list[str]
+    reward: str
+    is_quest_completed: bool
+
+    def __init__(self, name: str, description: str, location_id: int,
+                 quest: str, quest_complete_message: str, required_items: list[str], reward: str) -> None:
+        """Initialize the NPC"""
+        self.name = name
+        self.description = description
+        self.location_id = location_id
+        self.quest = quest
+        self.quest_complete_message = quest_complete_message
+        self.required_items = required_items
+        self.reward = reward
+        self.is_quest_completed = False
+        self.interacted = False
+
+    def interact(self, current_location_id: int, player: Player) -> bool:
+        """Handle interaction with the NPC. Return true if the interaction is successful. False otherwise."""
+        if current_location_id == self.location_id:
+            if self.is_quest_completed:
+                print(f"{self.name} says: '{self.quest_complete_message}'")
+            elif self.interacted:
+                print(self.complete_quest(player))
+            else:
+                print(f"{self.name} says: '{self.quest}'")
+                self.interacted = True
+                player.quests.append(self.quest)
+
+            return True
+        else:
+            print("Doesn't seem like that person is here...")
+            return False
+
+    def complete_quest(self, player: Player) -> str:
+        """Check if the player has all the required items to complete the quest."""
+        if all(item in player.inventory for item in self.required_items):
+            # The player has completed the quest!
+            self.is_quest_completed = True
+            # Give the reward
+            player.inventory.append(self.reward)
+            player.score += 5  # Add score
+            return f"{self.name} says: '{self.quest_complete_message}'\nYou received: {self.reward}'"
+        else:
+            return self.quest
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from game_entities import Location, Item, Player
+from game_entities import Location, Item, Player, Npc
 from proj1_event_logger import Event, EventList
 
 from datetime import time
@@ -70,6 +70,7 @@ class AdventureGame:
 
     _locations: dict[int, Location]
     _items: list[Item]
+    _npcs: list[Npc]
     player = Player
     ongoing: bool  # Suggested attribute, can be removed
     current_time: time
@@ -95,7 +96,8 @@ class AdventureGame:
         # 2. Make sure the Item class is used to represent each item.
 
         # Suggested helper method (you can remove and load these differently if you wish to do so):
-        self._locations, self._items = self._load_game_data(game_data_file)
+        self._locations, self._items, self._npcs = self._load_game_data(
+            game_data_file)
 
         # Suggested attributes (you can remove and track these differently if you wish to do so):
         self.current_location_id = initial_location_id  # game begins at this location
@@ -131,9 +133,13 @@ class AdventureGame:
                             item_data['start_position'], item_data['target_position'], item_data['target_points'],
                             item_data['item_type'])
             items.append(item_obj)
-        # YOUR CODE BELOW
 
-        return locations, items
+        npcs = []
+        for npc_data in data['npcs']:
+            npc_obj = Npc(npc_data['name'], npc_data['description'], npc_data['location_id'], npc_data['quest'],
+                          npc_data['quest_complete_message'], npc_data['required_items'], npc_data['reward'])
+            npcs.append(npc_obj)
+        return locations, items, npcs
 
     def get_location(self, loc_id: Optional[int] = None) -> Location:
         """Return Location object associated with the provided location ID.
@@ -157,6 +163,18 @@ class AdventureGame:
         for item_obj in self._items:
             if item_obj.name == item_name:
                 return item_obj
+
+        return None
+
+    def get_npc(self, npc_name: str) -> Optional[Npc]:
+        """Retrieves npc object by a given npc name. If npc object does not exist, return None.
+
+        Preconditions:
+        - npc_name == npc_name.lower.strip()
+        """
+        for npc_obj in self._npcs:
+            if npc_obj.name == npc_name:
+                return npc_obj
 
         return None
 
@@ -255,7 +273,7 @@ if __name__ == "__main__":
     game = AdventureGame('game_data.json', 1, time(hour=8, minute=0),
                          time(hour=16, minute=0))
     # Regular menu options available at each location
-    menu = {"look", "inventory", "score", "undo", "log", "quit"}
+    menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
     choice = None
     valid_move = True
     action_time = 0
@@ -332,6 +350,8 @@ if __name__ == "__main__":
                 print("Score:", game.player.score)
             elif player_action == "look":
                 print(location.long_description)
+            elif player_action == "quests":
+                game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             # Change to new location
@@ -349,21 +369,31 @@ if __name__ == "__main__":
 
                 game.current_location_id = result
 
-            elif player_action == 'pick up' and game.player.pick_up_item(location, player_target):
+            elif player_action == 'pick up':
                 action_time = 1
-                valid_move = True
-            elif player_action == 'use' and game.player.use(location, player_target, player_target_obj):
+                valid_move = game.player.pick_up_item(location, player_target)
+            elif player_action == 'use':
                 action_time = 3
-                valid_move = True
-            elif player_action == 'drop' and game.player.drop_item(location, player_target):
+                valid_move = game.player.use(
+                    location, player_target, player_target_obj)
+            elif player_action == 'drop':
                 action_time = 1
-                valid_move = True
-            elif player_action == 'examine' and game.player.examine_item(player_target, player_target_obj):
+                valid_move = game.player.drop_item(location, player_target)
+            elif player_action == 'examine':
                 action_time = 1
-                valid_move = True
-            else:
-                valid_move = False
+                valid_move = game.player.examine_item(
+                    player_target, player_target_obj)
 
-            # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
+            # TODO: CLEAN THIS CODE BELOW
+            elif player_action == 'interact':
+                npc_obj = game.get_npc(player_target)
+                if npc_obj:
+                    valid_move = npc_obj.interact(location.id_num, game.player)
+                    action_time = 5
+                else:
+                    valid_move = False
+                    print("Doesn't seem like that person is here...")
+
+        # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
         print("========")

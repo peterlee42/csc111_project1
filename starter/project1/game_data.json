@@ -9,9 +9,11 @@
         "out of dorm": 2
       },
       "items": [
+        "toonie",
+        "toonie",
         "toonie"
       ],
-      "acquired_items": []
+      "acquired_items": [""]
     },
     {
       "id": 2,
@@ -507,6 +509,18 @@
       "target_position" : 1,
       "target_points" : 10,
       "item_type" : "consumable"
+    }
+  ],
+  "npcs": [
+    {
+      "name" : "tired student",
+      "description": "A student who looks exausted after studying all night.",
+      "location_id": 1,
+      "quest": "Zzzzzzzzzzz.... R... Red... Bull...",
+      "quest_message": "Zzzzzzzzzzz.... R... Red... Bull...",
+      "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
+      "required_items": ["red bull"], 
+      "reward": "notebook"
     }
   ]
 }

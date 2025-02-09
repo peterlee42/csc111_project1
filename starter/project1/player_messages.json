@@ -1,5 +1,5 @@
 {
-  "message_types": [
+"message_types": [
     {
       "type": "item_used",
       "messages": [
