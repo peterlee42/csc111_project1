@@ -1,30 +1,29 @@
 {
-  "locations" : [
+  "locations": [
     {
-      "id" : 1,
-      "name" : "Your Dorm Room",
-      "brief_description" : "You are in your dorm room at Chestnut Residence.",
-      "long_description" : "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups, and your laptop—now dangerously low on battery. You need your USB drive, your laptop charger, and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
-      "available_directions" : {
-        "out of dorm" : 2
+      "id": 1,
+      "name": "Your Dorm Room",
+      "brief_description": "You are in your dorm room at Chestnut Residence.",
+      "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups. You need your USB drive, your laptop charger, your laptop and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
+      "available_directions": {
+        "out of dorm": 2
       },
-      "items" : [
-        "toonie",
-        "red bull"
+      "items": [
+        "toonie"
       ],
-      "acquired_items" : []
+      "acquired_items": []
     },
     {
-      "id" : 2,
-      "name" : "Chestnut Lobby",
-      "brief_description" : "You are in the lobby of Chestnut Residence.",
-      "long_description" : "The front desk assistant is busy with some paperwork, and a few students are chatting near the vending machines. Maybe you left something here when you grabbed a snack last night. There is a vending machine and an exit that leads to Elm Street, where you can head towards campus.",
-      "available_directions" : {
-        "outside" : 3,
-        "back to dorm" : 1
+      "id": 2,
+      "name": "Chestnut Lobby",
+      "brief_description": "You are in the lobby of Chestnut Residence.",
+      "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to gfo towards the campus",
+      "available_directions": {
+        "outside": 3,
+        "back to dorm": 1
       },
-      "items" : [],
-      "acquired_items" : [
+      "items": [],
+      "acquired_items": [
         "red bull",
         "coca cola",
         "nestea",
@@ -32,375 +31,361 @@
       ]
     },
     {
-      "id" : 3,
-      "name" : "Outside Chestnut",
-      "brief_description" : "You are outside Chestnut residence",
-      "long_description" : "",
-      "available_directions" : {
-        "south" : 4,
-        "east" : 5,
-        "west" : 28
+      "id": 3,
+      "name": "Outside Chestnut",
+      "brief_description": "You are outside Chestnut residence",
+      "long_description": "Stepping outside, you are greeted by the fresh air and the sprawling campus. Paths lead in multiple directions, hinting at the adventures that await.",
+      "available_directions": {
+        "south": 4,
+        "east": 28
       },
-      "items" : [],
-      "acquired_items" : []
+      "items": [],
+      "acquired_items": []
     },
     {
-      "id" : 4,
-      "name" : "Infront of Food Trucks",
-      "brief_description" : "You're in front of the prink and brown food trucks, and McLennan east of you",
-      "long_description" : "",
-      "available_directions" : {
-        "south" : 6,
-        "north" : 3,
-        "inside mclennan" : 13
+      "id": 4,
+      "name": "Infront of Food Trucks",
+      "brief_description": "You're in front of the prink and brown food trucks, and McLennan east of you",
+      "long_description": "The aroma from the food trucks fills the air as you stand in front of them. The building of McLennan to your east adds a touch of academia to the bustling scene.",
+      "available_directions": {
+        "south": 6,
+        "north": 3,
+        "inside mclennan": 13
       },
-      "items" : [],
-      "acquired_items" : []
+      "items": [],
+      "acquired_items": []
     },
     {
-      "id" : 6,
-      "name" : "At Food Trucks",
-      "brief_description" : "You don't have money",
-      "long_description" : "You have insuffient funds",
-      "available_directions" : {
-        "north" : 3,
-        "south" : 7
+      "id": 6,
+      "name": "At Food Trucks",
+      "brief_description": "You still don't have enough money",
+      "long_description": "You have insuffient funds",
+      "available_directions": {
+        "north": 3,
+        "south": 7
       },
-      "items" : [],
-      "acquired_items" : []
+      "items": [],
+      "acquired_items": []
     },
     {
-      "id" : 7,
-      "name" : "Outside Bahen",
-      "brief_description" : "You are infront of Bahen",
-      "long_description" : "",
-      "available_directions" : {
-        "inside" : 8,
-        "north" : 6
+      "id": 7,
+      "name": "Outside Bahen",
+      "brief_description": "You are infront of Bahen",
+      "long_description": "Outside Bahen, the building’s classic architecture meets modern student life. The entrance invites you in with promises of activity and hidden secrets.",
+      "available_directions": {
+        "inside": 8,
+        "north": 6
       },
-      "items" : [],
-      "acquired_items" : []
+      "items": [],
+      "acquired_items": []
     },
     {
-      "id" : 8,
-      "name" : "Bahen Lobby",
-      "brief_description" : "You are inside Bahen Lobby",
-      "long_description" : "",
-      "available_directions" : {
-        "to CSSU Longue" : 9,
-        "use vending machine" : 10,
-        "outside using front door" : 7,
-        "outside using side door" : 12
+      "id": 8,
+      "name": "Bahen Lobby",
+      "brief_description": "You are inside Bahen Lobby",
+      "long_description": "The Bahen Lobby is spacious and welcoming, with soft lighting and quiet corners that offer a moment of respite in a busy day.",
+      "available_directions": {
+        "to csssu lounge": 9,
+        "use vending machine": 10,
+        "outside using front door": 7,
+        "outside using side door": 12
       },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 11,
-      "name" : "CSSU Lounge",
-      "brief_description" : "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remebers you and says that you must answer the following question to get your bag back...",
-      "long_description" : "",
-      "available_directions" : {
-        "solve puzzle" : -1,
-        "to Lobby" : 8
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 12,
-      "name" : "Outside Bahen",
-      "brief_description" : "You are outside Bahen, McLennan is North and convocation hall is east",
-      "long_description" : "",
-      "available_directions" : {
-        "inside Bahen" : 8,
-        "east" : 14,
-        "inside mclennan" : 13
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 13,
-      "name" : "McLennan",
-      "brief_description" : "You are inside McLennan",
-      "long_description" : "",
-      "available_directions" : {
-        "outside south entrance" : 12,
-        "outside west entrance" : 16,
-        "outside east entrance" : 15
-      },
-      "items" : [
-        "notebook"
-      ],
-      "acquired_items" : []
-    },
-    {
-      "id" : 14,
-      "name" : "West of Kings Circle",
-      "brief_description" : "You are infront of Kings Circle, with Myhal Centre in the distant North, and the Convocation Hall is still East of you",
-      "long_description" : "",
-      "available_directions" : {
-        "north" : 16,
-        "east" : 15,
-        "west" : 12
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 15,
-      "name" : "Centre of Kings Circle",
-      "brief_description" : "You are now directly in the centre of Kings Circle, you see University College South, and the Convocation Hall east.",
-      "long_description" : "",
-      "available_directions" : {
-        "south" : 17,
-        "inside convocation hall" : 22,
-        "west" : 14
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 22,
-      "name" : "Infront of Convocation Hall",
-      "brief_description" : "You are now directly infront of Convocation Hall",
-      "long_description" : "",
-      "available_directions" : {
-        "outside" : 15
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 17,
-      "name" : "Between University College and Gerstein",
-      "brief_description" : "You now have University College south, and Gerstein to the west",
-      "long_description" : "",
-      "available_directions" : {
-        "west" : 18,
-        "south" : 19
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 18,
-      "name" : "Infront Gerstein",
-      "brief_description" : "You are now directly infont of Gerstein",
-      "long_description" : "",
-      "available_directions" : {
-        "inside gerstein" : 20,
-        "east" : 17
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 20,
-      "name" : "Gerstein",
-      "brief_description" : "You are now inside Gerstein",
-      "long_description" : "",
-      "available_directions" : {
-        "outside" : 18
-      },
-      "items" : [
-        "crumpled paper"
-      ],
-      "acquired_items" : []
-    },
-    {
-      "id" : 19,
-      "name" : "In front of University College",
-      "brief_description" : "You are now directly infront of University College",
-      "long_description" : "",
-      "available_directions" : {
-        "south" : 17,
-        "inside university college" : 21
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 20,
-      "name" : "University College",
-      "brief_description" : "You are now inside University College",
-      "long_description" : "",
-      "available_directions" : {
-        "outside" : 17
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 16,
-      "name" : "Infront of McLennan",
-      "brief_description" : "You have McLennan directly to the west",
-      "long_description" : "",
-      "available_directions" : {
-        "inside mclennan" : 13,
-        "north" : 23
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 23,
-      "name" : "middle",
-      "brief_description" : "You now have Sideny Smith to the East",
-      "long_description" : "",
-      "available_directions" : {
-        "east" : 24,
-        "north" : 25
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 24,
-      "name" : "Infront of Sideny Smith",
-      "brief_description" : "You are now directly infront of Sidney Smith",
-      "long_description" : "",
-      "available_directions" : {
-        "inside sidney smith" : 23,
-        "secret room" : 26
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 26,
-      "name" : "Secret Room",
-      "brief_description" : "You are now in secret room",
-      "long_description" : "",
-      "available_directions" : {
-        "out of this room" : 24
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 25,
-      "name" : "Infront of New College",
-      "brief_description" : "You now have New College directly east, and Myhal Centre some distance north",
-      "long_description" : "",
-      "available_directions" : {
-        "inside new college " : 27,
-        "North" : 29
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 27,
-      "name" : "New College",
-      "brief_description" : "You are now inside of New College.",
-      "long_description" : "You into New College and see a student with your laptop, you need to confront him.",
-      "available_directions" : {
-        "confront student" : 27,
-        "outside through west exit" : 25,
-        "outside through north exit" : 28
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 28,
-      "name" : "Top Road",
-      "brief_description" : "You now have New College directly south, and Robarts East",
-      "long_description" : "",
-      "available_directions" : {
-        "inside new college " : 27,
-        "east" : 29,
-        "west" : 3
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 29,
-      "name" : "Infront of Myhal Centre",
-      "brief_description" : "You now have Myhal Centre directly North, and Robarts East",
-      "long_description" : "",
-      "available_directions" : {
-        "inside Myhal Centre" : 30,
-        "East" : 31,
-        "west" : 28
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 30,
-      "name" : "Inside Myhal Centre",
-      "brief_description" : "You are now inside Myhal Centre",
-      "long_description" : "You are now inside Myhal Centre, and see your charger plugged into an outlet and your bag sitting on a bench, but on closer inspection you realize that the bag is empty",
-      "available_directions" : {
-        "outside Myhal Centre" : 29
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 31,
-      "name" : "Outside Robarts",
-      "brief_description" : "You now have Robarts directly infront of you",
-      "long_description" : "",
-      "available_directions" : {
-        "inside robarts" : 32,
-        "wast" : 29
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 32,
-      "name" : "Inside Robarts",
-      "brief_description" : "You are now inside Robarts",
-      "long_description" : "You remember that you were at two places, the cafe and remeber that you were last at a study table",
-      "available_directions" : {
-        "outside" : 31,
-        "to your last spot" : 33
-      },
-      "items" : [],
-      "acquired_items" : []
-    },
-    {
-      "id" : 33,
-      "name" : "Study Table",
-      "brief_description" : "You are at your old study table in Robarts.",
-      "long_description" : "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your Red Bull",
-      "available_directions" : {
-        "upstairs to cafe" : 34,
-        "back" : 32
-      },
-      "items" : [],
-      "acquired_items" : [
-        "Usb Drive"
+      "items": [],
+      "acquired_items": [
+        "red bull",
+        "coca cola",
+        "nestea",
+        "sprite"
       ]
     },
     {
-      "id" : 34,
-      "name" : "Robarts Café",
-      "brief_description" : "You are in Robarts Café on the second floor.",
-      "long_description" : "You remember stopping here for a caffeine boost. A barista is wiping down the counter. Maybe they saw your lucky mug?",
-      "available_directions" : {
-        "to the counter" : 35,
-        "downstairs" : 33
+      "id": 11,
+      "name": "CSSU Lounge",
+      "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
+      "long_description": "Inside the cozy CSSU Lounge, you notice the comfortable seating and ambient chatter. Sadia awaits with a puzzle that might unlock the location of your lost bag.",
+      "available_directions": {
+        "answer the question": 100,
+        "to Lobby": 8
       },
-      "items" : [],
-      "acquired_items" : []
+      "items": [],
+      "acquired_items": []
     },
     {
-      "id" : 35,
-      "name" : "Barista Counter",
-      "brief_description" : "You are at the counter in Robarts Café.",
-      "long_description" : "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you!",
-      "available_directions" : {
-        "downstairs" : 33
+      "id": 13,
+      "name": "McLennan",
+      "brief_description": "You are inside McLennan, ",
+      "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
+      "available_directions": {
+        "outside south entrance": 12,
+        "outside west entrance": 16,
+        "outside east entrance": 15
       },
-      "items" : [],
-      "acquired_items" : [
+      "items": [
+        "notebook"
+      ],
+      "acquired_items": []
+    },
+    {
+      "id": 14,
+      "name": "West of Kings Circle",
+      "brief_description": "You are infront of Kings Circle, with Myhal Centre in the distant North, and the Convocation Hall is still East of you",
+      "long_description": "From your vantage point west of Kings Circle, you witness the dynamic interplay of historic and contemporary campus life. The area is alive with movement and possibility.",
+      "available_directions": {
+        "north": 16,
+        "east": 15,
+        "west": 12
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 15,
+      "name": "Centre of Kings Circle",
+      "brief_description": "You are now directly in the centre of Kings Circle, you see University College South, and the Convocation Hall east.",
+      "long_description": "At the heart of Kings Circle, you find yourself surrounded by iconic campus landmarks and a vibrant atmosphere that exudes both tradition and modernity.",
+      "available_directions": {
+        "south": 17,
+        "inside convocation hall": 22,
+        "west": 14
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 22,
+      "name": "Infront of Convocation Hall",
+      "brief_description": "You are now directly infront of Convocation Hall",
+      "long_description": "Before you lies the majestic Convocation Hall, its grandeur a reminder of the institution's storied past and the academic excellence it represents.",
+      "available_directions": {
+        "outside": 15
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 17,
+      "name": "Between University College and Gerstein",
+      "brief_description": "You now have University College south, and Gerstein to the west",
+      "long_description": "Positioned between University College and Gerstein, you stand in awe of the beautiful architecture of the campus",
+      "available_directions": {
+        "west": 18,
+        "south": 19
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 18,
+      "name": "Infront Gerstein",
+      "brief_description": "You are now directly infont of Gerstein",
+      "long_description": "In front of Gerstein, you are captivated by the building's stately facade and the subtle hints of its storied history.",
+      "available_directions": {
+        "inside gerstein": 20,
+        "east": 17
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 20,
+      "name": "Gerstein",
+      "brief_description": "You are now inside Gerstein",
+      "long_description": "You are now inside Gerstein and a guard stops you! He says he remembers you from the last time that you were here, when you left a mess. You know that your charger is here, so what will you do?",
+      "available_directions": {
+        "outside": 18,
+        "speak to the guard": 101
+      },
+      "items": [
+        "crumpled paper"
+      ],
+      "acquired_items": []
+    },
+
+    {
+      "id": 19,
+      "name": "In front of University College",
+      "brief_description": "You are now directly in front of University College",
+      "long_description": "In front of University College, the historic architecture and solemn ambiance invite both awe and introspection.",
+      "available_directions": {
+        "north": 17,
+        "inside university college": 21
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 21,
+      "name": "University College",
+      "brief_description": "You are now inside University College",
+      "long_description": "Inside University College, quiet corridors and elegant design combine to create an atmosphere of academic focus and heritage.",
+      "available_directions": {
+        "outside": 19
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 16,
+      "name": "Infront of McLennan",
+      "brief_description": "You have McLennan directly to the west",
+      "long_description": "Facing McLennan, you observe a blend of contemporary style and timeless charm, reflecting the dynamic spirit of the campus.",
+      "available_directions": {
+        "inside mclennan": 13,
+        "north": 23,
+        "south": 14
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 23,
+      "name": "middle",
+      "brief_description": "You now have Sideny Smith to the East, and MyHall is far north",
+      "long_description": "Located at a central junction of campus landmarks, you find yourself poised between the vibrant energy of Sidney Smith and the quiet resolve of the surroundings.",
+      "available_directions": {
+        "inside sidney smith": 24,
+        "north": 25,
+        "south": 16
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 24,
+      "name": "Inside of Sideny Smith",
+      "brief_description": "You are now directly infront of Sidney Smith",
+      "long_description": "Inside Sidney Smith, the space is infused with history and modern touches, creating a unique blend of academic ambiance.",
+      "available_directions": {
+        "back outside": 23
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 25,
+      "name": "In front of New College",
+      "brief_description": "You now have New College directly west, and Myhal Centre some distance north",
+      "long_description": "In front of New College, the area buzzes with activity and the promise of academic discovery, while nearby landmarks add to the campus mosaic.",
+      "available_directions": {
+        "inside new college": 27,
+        "north": 29,
+        "south": 23
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 27,
+      "name": "New College",
+      "brief_description": "You are now inside of New College.",
+      "long_description": "You into New College and see a student with your laptop, you need to confront him.",
+      "available_directions": {
+        "outside through west exit": 25,
+        "outside through north exit": 28
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 28,
+      "name": "Infront of New College",
+      "brief_description": "You now have New College directly south, and Robarts East",
+      "long_description": "Standing in front of New College, you are surrounded by academic vigor and the steady presence of Robarts East, each telling its own story.",
+      "available_directions": {
+        "inside new college": 27,
+        "east": 29,
+        "west": 3
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 29,
+      "name": "Infront of Myhal Centre",
+      "brief_description": "You now have Myhal Centre directly North, and Robarts East",
+      "long_description": "Before you, Myhal Centre stands as a testament to modern design and academic purpose, its presence both inspiring and reassuring.",
+      "available_directions": {
+        "inside Myhal Centre": 30,
+        "east": 31,
+        "west": 28,
+        "south": 23
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 30,
+      "name": "Inside Myhal Centre",
+      "brief_description": "You are now inside Myhal Centre",
+      "long_description": "You are now inside Myhal Centre, you see your bag at the front of the classroom the Saida told you, but on closer inspection you realize that the bag is empty",
+      "available_directions": {
+        "outside Myhal Centre": 29
+      },
+      "items": [
+        "backpack"
+      ],
+      "acquired_items": []
+    },
+    {
+      "id": 31,
+      "name": "Outside Robarts",
+      "brief_description": "You now have Robarts directly infront of you",
+      "long_description": "Outside Robarts, the sleek exterior contrasts with the historic campus surroundings, evoking both modern energy and a sense of nostalgia.",
+      "available_directions": {
+        "inside robarts": 32,
+        "wast": 29
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 32,
+      "name": "Inside Robarts",
+      "brief_description": "You are now inside Robarts",
+      "long_description": "You remember that you were at two places, the cafe and your last spot was a study table",
+      "available_directions": {
+        "outside": 31,
+        "to study table": 33
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 33,
+      "name": "Study Table",
+      "brief_description": "You are at your old study table in Robarts.",
+      "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your Red Bull",
+      "available_directions": {
+        "upstairs to cafe": 34,
+        "back": 32
+      },
+      "items": [],
+      "acquired_items": [
+        "usb drive"
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Robarts Café",
+      "brief_description": "You are in Robarts Café on the second floor.",
+      "long_description": "You remember stopping here for a caffeine boost. A barista is wiping down the counter. Maybe they saw your lucky mug?",
+      "available_directions": {
+        "to the counter": 35,
+        "downstairs": 33
+      },
+      "items": [],
+      "acquired_items": []
+    },
+    {
+      "id": 35,
+      "name": "Barista Counter",
+      "brief_description": "You are at the counter in Robarts Café.",
+      "long_description": "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you! But she requires you to solve a puzzle before you leave",
+      "available_directions": {
+        "leave counter": 34
+      },
+      "items": [],
+      "acquired_items": [
         "lucky mug"
       ]
     }
@@ -410,8 +395,8 @@
       "name" : "usb drive",
       "full_name" : "your usb drive",
       "description" : "Your missing USB drive, containing the only copy of your project.",
-      "start_position" : 4,
-      "target_position" : 8,
+      "start_position" : 33,
+      "target_position" : 1,
       "target_points" : 10,
       "item_type" : "objective"
     },
@@ -438,15 +423,15 @@
       "full_name" : "a random student id",
       "description" : "A strangers student ID... Alex Carter... Wonder what this could be used for...",
       "start_position" : 30,
-      "target_position" : 0,
+      "target_position" : 27,
       "target_points" : 0,
       "item_type" : "consumable"
     },
     {
       "name" : "notebook",
       "full_name" : "a notebook",
-      "description" : "A notebook filled with notes from last night's study session.",
-      "start_position" : 3,
+      "description" : "A notebook filled with notes",
+      "start_position" : 13,
       "target_position" : 0,
       "target_points" : 0,
       "item_type" : "readable"
@@ -455,8 +440,8 @@
       "name" : "lucky mug",
       "full_name" : "your lucky UofT mug",
       "description" : "Your lucky UofT mug, essential for your caffeine-fueled success!",
-      "start_position" : 6,
-      "target_position" : 8,
+      "start_position" : 35,
+      "target_position" : 1,
       "target_points" : 10,
       "item_type" : "objective"
     },
@@ -482,17 +467,17 @@
       "name" : "red bull",
       "full_name" : "a can of Red Bull",
       "description" : "A Red Bull from the vending machine to help you focus.",
-      "start_position" : "",
-      "target_position" : "",
-      "target_points" : 0,
+      "start_position" : 2,
+      "target_position" : 1,
+      "target_points" : 10,
       "item_type" : "consumable"
     },
     {
       "name" : "crumpled paper",
       "full_name" : "some crumpled paper",
-      "description" : "",
-      "start_position" : "",
-      "target_position" : "",
+      "description" : 0,
+      "start_position" : 0,
+      "target_position" : 0,
       "target_points" : 10,
       "item_type" : "readable"
     },
@@ -500,27 +485,27 @@
       "name" : "coca cola",
       "full_name" : "a bottle of Coca Cola",
       "description" : "A Coca Cola from the vending machine!",
-      "start_position" : "",
-      "target_position" : "",
-      "target_points" : 0,
+      "start_position" : 2,
+      "target_position" : 1,
+      "target_points" : 10,
       "item_type" : "consumable"
     },
     {
       "name" : "nestea",
       "full_name" : "a bottle of Nestea",
       "description" : "A Nestea from the vending machine! These are rare to find these days...",
-      "start_position" : "",
-      "target_position" : "",
-      "target_points" : 0,
+      "start_position" : 2,
+      "target_position" : 1,
+      "target_points" : 10,
       "item_type" : "consumable"
     },
     {
       "name" : "sprite",
       "full_name" : "a bottle of Sprite",
       "description" : "A Sprite from the vending machine!",
-      "start_position" : "",
-      "target_position" : "",
-      "target_points" : 0,
+      "start_position" : 2,
+      "target_position" : 1,
+      "target_points" : 10,
       "item_type" : "consumable"
     }
   ]
