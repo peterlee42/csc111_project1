@@ -18,7 +18,7 @@
     {
       "id": 2,
       "name": "Chestnut Lobby",
-      "brief_description": "You are in the lobby of Chestnut Residence.",
+      "brief_description": "You are in the lobby of Chestnut Residence. There is also a vending machine.",
       "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to go towards the campus",
       "available_directions": {
         "outside": 3,
@@ -88,7 +88,6 @@
       "long_description": "The Bahen Lobby is spacious and welcoming, with soft lighting and quiet corners that offer a moment of respite in a busy day.",
       "available_directions": {
         "to csssu lounge": 9,
-        "use vending machine": 10,
         "outside using front door": 7,
         "outside using side door": 12
       },
@@ -101,10 +100,10 @@
       ]
     },
     {
-      "id": 11,
+      "id": 9,
       "name": "CSSU Lounge",
       "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
-      "long_description": "Inside the cozy CSSU Lounge, you notice the comfortable seating and ambient chatter. Sadia awaits with a puzzle that might unlock the location of your lost bag.",
+      "long_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
       "available_directions": {
         "answer the question": 100,
         "to Lobby": 8
