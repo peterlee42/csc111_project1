@@ -20,11 +20,13 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from __future__ import annotations
 import json
 from typing import Optional
-
+import difflib
 from game_entities import Location, Item, Player
 from proj1_event_logger import Event, EventList
 
 from datetime import time
+
+import difflib
 
 
 # Note: You may add in other import statements here as needed
@@ -44,7 +46,18 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
 
-    return command, ''
+    words = command.split()
+
+    user_input = words[0].strip().lower()
+    matches = difflib.get_close_matches(user_input, valid_actions, n=1, cutoff=0.5)
+    if matches:
+        print(f"Interpreting '{user_input}' as '{matches[0]}'.")
+        target = " ".join(words[1:]) if len(words) > 1 else ""
+        return matches[0], target
+    else:
+        return command, ""
+
+
 
 
 class AdventureGame:
@@ -240,6 +253,8 @@ class AdventureGame:
             self.ongoing = False
 
 
+
+
 if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
@@ -270,6 +285,10 @@ if __name__ == "__main__":
         # TODO: Add new Event to game log to represent current game location (DONE)
         #  Note that the <choice> variable should be the command which led to this event
         # YOUR CODE HERE
+
+
+
+
         if choice not in menu and valid_move:
             game_log.add_event(
                 Event(location.id_num, location.brief_description), choice, game.current_time)
@@ -303,12 +322,11 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        parsed_choice = parse_command(choice, game.player.available_actions)
+        parsed_choice = parse_command(choice, list(game.player.available_actions) + list(menu))
         while parsed_choice[0] not in game.player.available_actions and parsed_choice[0] not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            parsed_choice = parse_command(
-                choice, game.player.available_actions)
+            parsed_choice = parse_command(choice, list(game.player.available_actions) + list(menu))
 
         print("========")
         print("You decided to:", choice)
