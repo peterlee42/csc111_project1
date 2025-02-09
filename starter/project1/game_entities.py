@@ -175,16 +175,20 @@ class Player:
 
         return player_messages
 
-    def use(self, current_location: Location, item_obj: Optional[Item]) -> bool:
+    def use(self, current_location: Location, item_name: str, item_obj: Optional[Item]) -> bool:
         """Use an item in the player's inventory. Return true if the player sucessfully used the item. Return false
-        otherwise."""
-        if not item_obj or item_obj.name not in self.inventory:
+        otherwise.
+
+        Precondition:
+        - not item_obj and item_name == item_obj.name
+        """
+        if item_name not in self.inventory:
             print(self._get_random_message(
-                'item_does_not_exist', item_obj.name))
+                'item_does_not_exist', item_name))
             return False
         elif current_location.id_num == item_obj.target_position:
-            item_name = item_obj.name
             print(self._get_random_message('item_used', item_name))
+
             random_index = randrange(len(current_location.acquired_items))
             acquired_item = current_location.acquired_items[random_index]
             self.score += item_obj.target_points
@@ -194,15 +198,12 @@ class Player:
             return True
         else:
             print(self._get_random_message(
-                'item_cannot_be_used', item_obj.name))
+                'item_cannot_be_used', item_name))
             return False
 
     def drop_item(self, current_location: Location, item_name: str) -> bool:
         """Remove an item from the player's inventory. Return true if the player sucessfully dropped the item.
         Return false otherwise.
-
-        Preconditions:
-        - item_name == item_name.lower().split()
         """
         if item_name in self.inventory:
             self.inventory.remove(item_name)
@@ -219,9 +220,6 @@ class Player:
 
     def go(self, current_location: Location, direction: str) -> int:
         """Return the id of the new location if the direction is valid. Return the current location id otherwise.
-
-        Preconditions:
-        - direction == direction.lower().split()
         """
         if direction in current_location.available_directions:
             return current_location.available_directions[direction]
@@ -232,9 +230,6 @@ class Player:
     def pick_up_item(self, current_location: Location, item_name: str) -> bool:
         """Add an item to the player's inventory. Reward the player with 1 point. Return true if the player sucessfully
         picked up the item. Return false otherwise.
-
-        Preconditions:
-        - item_name == item_name.lower().split()
         """
         if item_name in current_location.items:
 
@@ -259,18 +254,27 @@ class Player:
             sorted_inventory = sorted(self.inventory)
             print(self._get_random_message('currently_have'))
             for item in sorted_inventory:
-                print('- ', item.title())
+                print('- ', item)
 
-    def examine_item(self, item_obj: Item) -> bool:
+    def examine_item(self, item_name: str, item_obj: Optional[Item]) -> bool:
         """Examine the item and display the item's description. Return true if the player sucessfully examined the item.
-        Return false otherwise."""
-        if item_obj:
+        Return false otherwise.
+
+        Precondition:
+        - not item_obj and item_name == item_obj.name
+        """
+        if item_name in self.inventory:
             print(item_obj.description)
             return True
         else:
             print(self._get_random_message(
-                'item_does_not_exist', item_obj.name))
+                'item_does_not_exist', item_name))
             return False
+
+
+# class Puzzle(Location):
+#     def __init__()
+
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

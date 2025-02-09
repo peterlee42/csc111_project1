@@ -31,36 +31,20 @@ from datetime import time
 
 # Note: You may add helper functions, classes, etc. below as needed
 
-def handle_command(command: str) -> tuple[str, str]:
-    """If the command has an action but no target, return a tuple of command and an empty string.
-    If the command has an action and a target, parse it and return a tuple of the command's action and target.
-    Only the command's actions will always be returned in lowercase.
+def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
+    """If the command's action is valid, parse it and return a tuple of the command's action and target.
+    Otherwise, return a tuple of the original command and an empty string..
 
     Preconditions:
     - command != ''
     """
-    command_list = command.split(' ')
+    for valid_action in valid_actions:
+        # Account for a space in the action.
+        if command.startswith(valid_action + ' '):
+            target = command[len(valid_action) + 1:].strip()
+            return valid_action, target
 
-    if len(command_list) == 1:
-        return command, ''
-    else:
-        return command_list[0], ' '.join(command_list[1:])
-
-
-def format_time(time_obj: time) -> str:
-    """Takes in a datetime.time object and formats it to 12 hour time into a string. Return this formatted time."""
-    hour, minute = time_obj.hour, time_obj.minute
-
-    if hour < 12:
-        time_period = "AM"
-    else:
-        time_period = "PM"
-
-    hour = hour % 12
-    if hour == 0:
-        hour = 12
-
-    return f"{hour}:{minute:02d} {time_period}"
+    return command, ''
 
 
 class AdventureGame:
@@ -164,15 +148,16 @@ class AdventureGame:
         else:
             return self._locations[loc_id]
 
-    def get_item(self, item_name: str) -> Item | None:
+    def get_item(self, item_name: str) -> Optional[Item]:
         """Retrieves item object by a given item name. If item object does not exist, return None.
 
         Preconditions:
         - item_name == item_name.lower.strip()
         """
         for item_obj in self._items:
-            if item_obj.name.lower().strip() == item_name:
+            if item_obj.name == item_name:
                 return item_obj
+
         return None
 
     def undo(self, current_game_log: EventList) -> None:
@@ -184,6 +169,9 @@ class AdventureGame:
             # Undo the game log
             prev_event = current_game_log.last.prev
 
+            # Change current time to the time of the previous action
+            self.current_time = prev_event.event_time
+
             prev_location_id = prev_event.id_num
 
             # always changes current location id to the previous one
@@ -193,9 +181,9 @@ class AdventureGame:
 
             current_game_log.last = prev_event
 
-            # Retrieve the previous command
+            # Retrieve the previous command and since we know it already exists, we don't have to check anything.
             prev_command = prev_event.next_command
-            prev_action, prev_target = handle_command(
+            prev_action, prev_target = parse_command(
                 prev_command, self.player.available_actions)
 
             if prev_action == 'pick up':
@@ -216,11 +204,12 @@ class AdventureGame:
             # Remove the most recent command
             current_game_log.last.next = None
             current_game_log.last.next_command = None
+            current_game_log.last.event_time = None
 
     def add_minutes(self, added_minutes: int) -> None:
         """Adds specified minutes to self.current_time.
         This method will also see if the game's current time is past the deadline time.
-        It will make self.ongoing False if the user passed the deadline and True otherwise.
+        It will make self.ongoing False if the user passed the deadline.
 
         Preconditions:
         - 0 <= added_minutes <= 60
@@ -238,13 +227,13 @@ class AdventureGame:
             self.current_time = time(current_hour, current_minute)
 
             if self.current_time >= self.deadline:
-                print(f'It is {format_time(self.current_time)}!')
+                print(f'It is {self.current_time.strftime("%I:%M %p")}!')
                 print('YOU MISSED THE DEADLINE!')
                 self.ongoing = False
         else:
             current_hour %= 24
-            new_time = format_time(
-                time(hour=current_hour, minute=current_minute))
+            new_time = time(hour=current_hour,
+                            minute=current_minute).strftime("%I:%M %p")
             print(
                 f'It is {new_time} the next day!')
             print('YOU MISSED THE DEADLINE!')
@@ -268,6 +257,8 @@ if __name__ == "__main__":
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit"}
     choice = None
+    valid_move = True
+    action_time = 0
 
     # Note: You may modify the code below as needed; the following starter code is just a suggestion
     while game.ongoing:
@@ -279,9 +270,10 @@ if __name__ == "__main__":
         # TODO: Add new Event to game log to represent current game location (DONE)
         #  Note that the <choice> variable should be the command which led to this event
         # YOUR CODE HERE
-        if choice not in menu:
+        if choice not in menu and valid_move:
             game_log.add_event(
-                Event(location.id_num, location.brief_description), choice)
+                Event(location.id_num, location.brief_description), choice, game.current_time)
+            game.add_minutes(action_time)
 
         # TODO: Depending on whether or not it's been visited before, (DONE)
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
@@ -293,12 +285,13 @@ if __name__ == "__main__":
             location.visited = True
 
         # Display Location's Item Name if there is any.
-        for item in location.items:
-            # TODO: Maybe write a rep. inv. that shows item always has a corressponding obj
-            print(f'- There is {game.get_item(item).full_name}')
+        for location_item in location.items:
+            # TODO: Maybe write a rep. inv. that shows item always has a corresponding obj
+            print(f'- There is {game.get_item(location_item).full_name}')
 
         # Display the current time
-        print(f"\nThe current time is {format_time(game.current_time)}.")
+        print(
+            f"\nThe current time is {game.current_time.strftime("%I:%M %p")}.")
 
         # Display menu actions
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
@@ -310,56 +303,66 @@ if __name__ == "__main__":
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        handle_choice = handle_command(choice)
-        while handle_choice[0] not in game.player.available_actions and handle_choice[0] not in menu:
+        parsed_choice = parse_command(choice, game.player.available_actions)
+        while parsed_choice[0] not in game.player.available_actions and parsed_choice[0] not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            handle_choice = handle_command(choice)
+            parsed_choice = parse_command(
+                choice, game.player.available_actions)
 
         print("========")
         print("You decided to:", choice)
 
         # our handled choice has two components. An action and a target.
-        player_action, player_target = handle_choice
+        player_action, player_target = parsed_choice
 
         if player_action in menu:
             # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
-            if choice == "log":
+            if player_action == "log":
                 game_log.display_events()
-            elif choice == "quit":
+            elif player_action == "quit":
+                print('Bye bye!')
                 game.ongoing = False
-            elif choice == "undo":
+            elif player_action == "undo":
                 game.undo(game_log)
-            elif choice == "inventory":
+            elif player_action == "inventory":
                 game.player.display_inventory()
-            elif choice == "score":
+            elif player_action == "score":
                 print("Score:", game.player.score)
-            elif choice == "look":
+            elif player_action == "look":
                 print(location.long_description)
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-            # TODO: Maybe handle this better
+            # Change to new location
             player_target_obj = game.get_item(player_target)
 
-            # Change to new location
             if player_action == 'go':
                 result = game.player.go(location, player_target)
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    game.add_minutes(10)
+                    action_time = 10
+                    valid_move = True
+                else:
+                    valid_move = False
 
                 game.current_location_id = result
-            # TODO: Add in code to deal with actions which do not change the location (e.g. taking or using an item)
+
             elif player_action == 'pick up' and game.player.pick_up_item(location, player_target):
-                game.add_minutes(2)
-            elif player_action == 'use' and game.player.use(location, player_target_obj):
-                game.add_minutes(5)
+                action_time = 1
+                valid_move = True
+            elif player_action == 'use' and game.player.use(location, player_target, player_target_obj):
+                action_time = 3
+                valid_move = True
             elif player_action == 'drop' and game.player.drop_item(location, player_target):
-                game.add_minutes(2)
-            elif player_action == 'examine' and game.player.examine_item(player_target_obj):
-                game.add_minutes(1)
+                action_time = 1
+                valid_move = True
+            elif player_action == 'examine' and game.player.examine_item(player_target, player_target_obj):
+                action_time = 1
+                valid_move = True
+            else:
+                valid_move = False
 
             # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 

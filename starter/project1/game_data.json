@@ -17,7 +17,7 @@
       "id": 2,
       "name": "Chestnut Lobby",
       "brief_description": "You are in the lobby of Chestnut Residence.",
-      "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to gfo towards the campus",
+      "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to go towards the campus",
       "available_directions": {
         "outside": 3,
         "back to dorm": 1
@@ -333,7 +333,7 @@
       "long_description": "Outside Robarts, the sleek exterior contrasts with the historic campus surroundings, evoking both modern energy and a sense of nostalgia.",
       "available_directions": {
         "inside robarts": 32,
-        "wast": 29
+        "west": 29
       },
       "items": [],
       "acquired_items": []

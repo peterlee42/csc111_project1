@@ -24,7 +24,7 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
-
+from datetime import time
 
 # TODO: Copy/paste your ex1_event_logger code below, and modify it if needed to fit your game
 
@@ -37,6 +37,7 @@ class Event:
     Instance Attributes:
     - id_num: Integer id of this event's location
     - description: Long description of this event's location
+    - event_time: The time the event took in minutes
     - next_command: String command which leads this event to the next event, None if this is the last game event
     - next: Event object representing the next event in the game, or None if this is the last game event
     - prev: Event object representing the previous event in the game, None if this is the first game event
@@ -52,6 +53,7 @@ class Event:
     id_num: int
     description: str
     next_command: Optional[str] = None
+    event_time: Optional[time] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
@@ -81,7 +83,8 @@ class EventList:
         """Display all events in chronological order."""
         curr = self.first
         while curr:
-            print(f"Location: {curr.id_num}, Command: {curr.next_command}")
+            print(
+                f"Location: {curr.id_num}, Command: {curr.next_command}, Time of Event: {curr.event_time}")
             curr = curr.next
 
     # TODO: Complete the methods below, based on the given descriptions.
@@ -94,7 +97,7 @@ class EventList:
         else:
             return False
 
-    def add_event(self, event: Event, command: Optional[str] = None) -> None:
+    def add_event(self, event: Event, command: Optional[str] = None, event_time: Optional[time] = None) -> None:
         """Add the given new event to the end of this event list.
         The given command is the command which was used to reach this new event, or None if this is the first
         event in the game.
@@ -108,6 +111,7 @@ class EventList:
             event.prev = self.last
             self.last.next = event
             self.last.next_command = command
+            self.last.event_time = event_time
             self.last = event
 
     def remove_last_event(self) -> None:
