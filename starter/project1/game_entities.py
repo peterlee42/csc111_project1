@@ -24,7 +24,7 @@ from dataclasses import dataclass
 from random import randrange
 from typing import Optional
 import json
-import difflib
+# import difflib
 
 
 @dataclass
@@ -40,7 +40,6 @@ class Location:
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
         - given_items: a list of items that the location can give if the player uses the correct item
-        - npcs: a list of npcs at this location
 
     Representation Invariants:
         - self.id_num >= 0
@@ -60,25 +59,24 @@ class Location:
     long_description: str
     available_directions: dict[str, int]
     items: list[str]
-    visited: bool
     given_items: list[str]
-    npcs: list[str]
+    visited: bool = False
 
-    def __init__(self, location_id, name, brief_description, long_description, available_directions, items,
-                 given_items, visited=False) -> None:
-        """Initialize a new location.
-
-        # TODO Add more details here about the initialization if needed
-        """
-
-        self.id_num = location_id
-        self.name = name
-        self.brief_description = brief_description
-        self.long_description = long_description
-        self.available_directions = available_directions
-        self.items = items
-        self.visited = visited
-        self.given_items = given_items
+    # def __init__(self, location_id, name, brief_description, long_description, available_directions, items,
+    #              given_items, visited=False) -> None:
+    #     """Initialize a new location.
+    #
+    #     # Add more details here about the initialization if needed
+    #     """
+    #
+    #     self.id_num = location_id
+    #     self.name = name
+    #     self.brief_description = brief_description
+    #     self.long_description = long_description
+    #     self.available_directions = available_directions
+    #     self.items = items
+    #     self.visited = visited
+    #     self.given_items = given_items
 
 
 @dataclass
@@ -188,14 +186,14 @@ class Player:
         Precondition:
         - not item_obj and item_name == item_obj.name
         """
-        if item_name not in self.inventory:
-            # Attempt fuzzy matching in the player's inventory.
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=7)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
+        # if item_name not in self.inventory:
+        #     # Attempt fuzzy matching in the player's inventory.
+        #     corrected = difflib.get_close_matches(
+        #         item_name, self.inventory, n=1, cutoff=7)
+        #     if corrected:
+        #         corrected_item = corrected[0]
+        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
+        #         item_name = corrected_item
 
         if item_name not in self.inventory:
             print(self._get_random_message(
@@ -220,13 +218,13 @@ class Player:
         """Remove an item from the player's inventory. Return true if the player sucessfully dropped the item.
         Return false otherwise.
         """
-        if item_name not in self.inventory:
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.7)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
+        # if item_name not in self.inventory:
+        #     corrected = difflib.get_close_matches(
+        #         item_name, self.inventory, n=1, cutoff=0.7)
+        #     if corrected:
+        #         corrected_item = corrected[0]
+        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
+        #         item_name = corrected_item
         if item_name in self.inventory:
             self.inventory.remove(item_name)
             current_location.items.append(item_name)
@@ -246,30 +244,30 @@ class Player:
         if direction in current_location.available_directions:
             return current_location.available_directions[direction]
         else:
-            possible_dirs = list(current_location.available_directions.keys())
-            corrected = difflib.get_close_matches(
-                direction, possible_dirs, n=1, cutoff=0.7)
-            if corrected:
-                corrected_direction = corrected[0]
-                print(
-                    f"Interpreting '{direction}' as '{corrected_direction}'.")
-                return current_location.available_directions[corrected_direction]
-            else:
-                print("Looks like that isn't a valid direction...")
-                return current_location.id_num
+            # possible_dirs = list(current_location.available_directions.keys())
+            # corrected = difflib.get_close_matches(
+            #     direction, possible_dirs, n=1, cutoff=0.7)
+            # if corrected:
+            #     corrected_direction = corrected[0]
+            #     print(
+            #         f"Interpreting '{direction}' as '{corrected_direction}'.")
+            #     return current_location.available_directions[corrected_direction]
+            # else:
+            print("Looks like that isn't a valid direction...")
+            return current_location.id_num
 
     def pick_up_item(self, current_location: Location, item_name: str) -> bool:
         """Add an item to the player's inventory. Reward the player with 1 point. Return true if the player sucessfully
         picked up the item. Return false otherwise.
         """
 
-        if item_name not in current_location.items:
-            corrected = difflib.get_close_matches(
-                item_name, current_location.items, n=1, cutoff=0.7)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
+        # if item_name not in current_location.items:
+        #     corrected = difflib.get_close_matches(
+        #         item_name, current_location.items, n=1, cutoff=0.7)
+        #     if corrected:
+        #         corrected_item = corrected[0]
+        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
+        #         item_name = corrected_item
         if item_name in current_location.items:
 
             self.inventory.append(item_name)  # add to inventory
@@ -302,13 +300,13 @@ class Player:
         Precondition:
         - not item_obj and item_name == item_obj.name
         """
-        if item_name not in self.inventory:
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.7)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
+        # if item_name not in self.inventory:
+        #     corrected = difflib.get_close_matches(
+        #         item_name, self.inventory, n=1, cutoff=0.7)
+        #     if corrected:
+        #         corrected_item = corrected[0]
+        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
+        #         item_name = corrected_item
         if item_name in self.inventory:
             print(item_obj.description)
             return True
@@ -318,6 +316,7 @@ class Player:
             return False
 
     def display_quests(self) -> None:
+        """Display all of the player's current quests"""
         if not self.quests:
             print("You have no quests.")
         else:
@@ -337,7 +336,7 @@ class Npc:
         - reward: the reward given when the quest is completed
         - is_quest_completed: whether the quest has been completed
         - points: the number of points given when the quest has been completed
-        - taken_item_index: keeps track of the index of the taken items in the player's inventory 
+        - taken_item_index: keeps track of the index of the taken items in the player's inventory
 
     Representation Invariants:
         - self.name != ''
@@ -385,10 +384,10 @@ class Npc:
                 is_quest_complete = self.complete_quest(player)
                 if is_quest_complete:
                     print(
-                        f"'{self.quest_complete_message}'\nYou received: {self.reward}")
+                        f"{self.name} says: '{self.quest_complete_message}'\nYou received: {self.reward}")
                     return True
                 else:
-                    print(f"You have already spoken to {self.name}.")
+                    print(f"You have already spoken to {self.name}. Finish the quest and interact again.")
                     return False
             else:
                 print(f"{self.name} says: '{self.quest}'")
@@ -401,7 +400,8 @@ class Npc:
 
     def complete_quest(self, player: Player) -> bool:
         """Check if the player has all the required items to complete the quest."""
-        if all(item in player.inventory for item in self.required_items):
+        items_found = all({item in player.inventory for item in self.required_items})
+        if items_found:
             # The player has completed the quest!
             self.is_quest_completed = True
             # Give the reward
@@ -425,12 +425,12 @@ class Npc:
 
 
 if __name__ == "__main__":
-    pass
+    # pass
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })

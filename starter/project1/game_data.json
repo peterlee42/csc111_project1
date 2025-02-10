@@ -24,10 +24,7 @@
       },
       "items": [],
       "given_items": [
-        "red bull",
-        "coca cola",
-        "sprite",
-        "nestea"
+        "red bull"
       ]
     },
     {
@@ -474,7 +471,7 @@
     {
       "name" : "crumpled paper",
       "full_name" : "some crumpled paper",
-      "description" : 0,
+      "description" : "some crumpled paper",
       "start_position" : 0,
       "target_position" : 0,
       "target_points" : 10,
@@ -548,7 +545,7 @@
     },
     {
       "name" : "Security Guard",
-      "description": "You ask the Secuirty Guard at Gerstein if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
+      "description": "You ask the Security Guard at Gerstein if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
       "location_id": 20,
       "quest": "Buy this Security Guard a meal from the pink food truck",
       "quest_message": "Before I can give you your belongings you must buy me a meal from the pink food truck",

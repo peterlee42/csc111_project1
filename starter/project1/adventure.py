@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-import difflib
+# import difflib
 
 from game_entities import Location, Item, Player, Npc
 
@@ -47,18 +47,17 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
 
-    # TODO: this doesn't seem to work for valid actions?...
-    words = command.split()
+    # words = command.split()
 
-    user_input = words[0].strip().lower()
-    matches = difflib.get_close_matches(
-        user_input, valid_actions, n=1, cutoff=0.7)
-    if matches:
-        print(f"Interpreting '{user_input}' as '{matches[0]}'.")
-        target = " ".join(words[1:]) if len(words) > 1 else ""
-        return matches[0], target
-    else:
-        return command, ""
+    # user_input = words[0].strip().lower()
+    # matches = difflib.get_close_matches(
+    #     user_input, valid_actions, n=1, cutoff=0.7)
+    # if matches:
+    #     print(f"Interpreting '{user_input}' as '{matches[0]}'.")
+    #     target = " ".join(words[1:]) if len(words) > 1 else ""
+    #     return matches[0], target
+    # else:
+    return command, ""
 
 
 class AdventureGame:
@@ -124,7 +123,7 @@ class AdventureGame:
         self.deadline = deadline
 
     @staticmethod
-    def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item]]:
+    def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item], list[Npc]]:
         """Load locations and items from a JSON file with the given filename and
         return a tuple consisting of (1) a dictionary of locations mapping each game location's ID to a Location object,
         and (2) a list of all Item objects."""
@@ -141,7 +140,7 @@ class AdventureGame:
             locations[loc_data['id']] = location_obj
 
         items = []
-        # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above (DONE)
+
         for item_data in data['items']:
             item_obj = Item(item_data['name'], item_data['full_name'], item_data['description'],
                             item_data['start_position'], item_data['target_position'], item_data['target_points'],
@@ -222,8 +221,8 @@ class AdventureGame:
                 self.player.inventory.remove(prev_target)
                 prev_location.items.append(prev_target)
             elif prev_action == 'drop':
-                self.player.inventory.remove(prev_target)
-                prev_location.items.append(prev_target)
+                self.player.inventory.append(prev_target)
+                prev_location.items.remove(prev_target)
             elif prev_action == 'use':
                 prev_item_obj = self.get_item(prev_target)
 
@@ -244,7 +243,7 @@ class AdventureGame:
                             inventory_index, taken_item)
 
                     prev_npc.complete_quest = False
-                    self.player.quests.append(npc_obj.quest)
+                    self.player.quests.append(prev_npc.quest)
                 else:
                     prev_npc.interact = False
                     self.player.quests.pop()
@@ -421,9 +420,9 @@ if __name__ == "__main__":
 
             # TODO: CLEAN THIS CODE BELOW
             elif player_action == 'interact':
-                npc_obj = game.get_npc(player_target)
-                if npc_obj:
-                    valid_move = npc_obj.interact(location.id_num, game.player)
+                target_npc_obj = game.get_npc(player_target)
+                if target_npc_obj:
+                    valid_move = target_npc_obj.interact(location.id_num, game.player)
                     action_time = 5
                 else:
                     valid_move = False
