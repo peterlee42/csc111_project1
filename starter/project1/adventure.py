@@ -110,7 +110,8 @@ class AdventureGame:
         # 2. Make sure the Item class is used to represent each item.
 
         # Suggested helper method (you can remove and load these differently if you wish to do so):
-        self._locations, self._items, self._npcs = self._load_game_data(game_data_file)
+        self._locations, self._items, self._npcs = self._load_game_data(
+            game_data_file)
 
         # Suggested attributes (you can remove and track these differently if you wish to do so):
         self.current_location_id = initial_location_id  # game begins at this location
@@ -186,7 +187,7 @@ class AdventureGame:
         - npc_name == npc_name.lower.strip()
         """
         for npc_obj in self._npcs:
-            if npc_obj.name == npc_name:
+            if npc_obj.name.lower() == npc_name:
                 return npc_obj
 
         return None
@@ -230,6 +231,24 @@ class AdventureGame:
                 self.player.inventory.pop()  # remove any given items
                 # add previous target item
                 self.player.inventory.append(prev_target)
+            elif prev_action == 'interact':
+                prev_npc = self.get_npc(prev_target)
+                if prev_npc.complete_quest:
+                    self.player.inventory.pop()
+
+                    for i in range(len(prev_npc.required_items)):
+                        # TODO: make this a dict
+                        inventory_index = prev_npc.taken_item_index[i]
+                        taken_item = prev_npc.required_items[i]
+                        self.player.inventory.insert(
+                            inventory_index, taken_item)
+
+                    prev_npc.complete_quest = False
+                    self.player.quests.append(npc_obj.quest)
+                else:
+                    prev_npc.interact = False
+                    self.player.quests.pop()
+
             print('Action undone!')
 
             # Remove the most recent command

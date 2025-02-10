@@ -40,6 +40,7 @@ class Location:
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
         - given_items: a list of items that the location can give if the player uses the correct item
+        - npcs: a list of npcs at this location
 
     Representation Invariants:
         - self.id_num >= 0
@@ -61,6 +62,7 @@ class Location:
     items: list[str]
     visited: bool
     given_items: list[str]
+    npcs: list[str]
 
     def __init__(self, location_id, name, brief_description, long_description, available_directions, items,
                  given_items, visited=False) -> None:
@@ -203,11 +205,11 @@ class Player:
             print(self._get_random_message('item_used', item_name))
 
             random_index = randrange(len(current_location.given_items))
-            acquired_item = current_location.given_items[random_index]
+            given_item = current_location.given_items[random_index]
             self.score += item_obj.target_points
             self.inventory.remove(item_name)
-            self.inventory.append(acquired_item)
-            print(f'You received: {acquired_item}')
+            self.inventory.append(given_item)
+            print(f'You received: {given_item}')
             return True
         else:
             print(self._get_random_message(
@@ -334,6 +336,8 @@ class Npc:
         - required_items: list of items required to complete the quest
         - reward: the reward given when the quest is completed
         - is_quest_completed: whether the quest has been completed
+        - points: the number of points given when the quest has been completed
+        - taken_item_index: keeps track of the index of the taken items in the player's inventory 
 
     Representation Invariants:
         - self.name != ''
@@ -341,6 +345,8 @@ class Npc:
         - self.quest != ''
         - self.required_items != []
         - self.reward != ''
+        - self.points > 0
+        - all({index >= 0 for index in taken_item_index})
     """
 
     name: str
@@ -351,6 +357,8 @@ class Npc:
     required_items: list[str]
     reward: str
     is_quest_completed: bool
+    points: int
+    taken_item_index: list[int]
 
     def __init__(self, name: str, description: str, location_id: int,
                  quest: str, quest_complete_message: str, required_items: list[str], reward: str) -> None:
@@ -364,39 +372,51 @@ class Npc:
         self.reward = reward
         self.is_quest_completed = False
         self.interacted = False
+        self.points = 15
+        self.taken_item_index = []
 
     def interact(self, current_location_id: int, player: Player) -> bool:
         """Handle interaction with the NPC. Return true if the interaction is successful. False otherwise."""
         if current_location_id == self.location_id:
             if self.is_quest_completed:
                 print(f"{self.name} says: '{self.quest_complete_message}'")
+                return True
             elif self.interacted:
-                print(f"{self.name} says: '{self.complete_quest(player)}'")
+                is_quest_complete = self.complete_quest(player)
+                if is_quest_complete:
+                    print(
+                        f"'{self.quest_complete_message}'\nYou received: {self.reward}")
+                    return True
+                else:
+                    print(f"You have already spoken to {self.name}.")
+                    return False
             else:
                 print(f"{self.name} says: '{self.quest}'")
                 self.interacted = True
                 player.quests.append(self.quest)
-
-            return True
+                return True
         else:
             print("Doesn't seem like that person is here...")
             return False
 
-    def complete_quest(self, player: Player) -> str:
+    def complete_quest(self, player: Player) -> bool:
         """Check if the player has all the required items to complete the quest."""
         if all(item in player.inventory for item in self.required_items):
             # The player has completed the quest!
             self.is_quest_completed = True
             # Give the reward
             player.inventory.append(self.reward)
-            player.score += 5  # Add score
+            player.score += self.points  # Add score
 
             for required_item in self.required_items:
+                self.taken_item_index.append(
+                    player.inventory.index(required_item))
                 player.inventory.remove(required_item)
 
-            return f"{self.name} says: '{self.quest_complete_message}'\nYou received: {self.reward}'"
-        else:
-            return self.quest
+            player.quests.remove(self.quest)  # remove the quest
+
+            return True
+        return False
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

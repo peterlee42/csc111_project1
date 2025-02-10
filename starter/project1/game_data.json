@@ -11,16 +11,12 @@
       "items": [
         "toonie"
       ],
-<<<<<<< HEAD
       "given_items": []
-=======
-      "acquired_items": []
->>>>>>> 14497cd922f1f497d62044917a0208e19f5fa5f3
     },
     {
       "id": 2,
       "name": "Chestnut Lobby",
-      "brief_description": "You are in the lobby of Chestnut Residence. There is also a vending machine.",
+      "brief_description": "You are in the lobby of Chestnut Residence.",
       "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to go towards the campus",
       "available_directions": {
         "outside": 3,
@@ -243,7 +239,7 @@
     {
       "id": 23,
       "name": "middle",
-      "brief_description": "You now have Sideny Smith to the East, and MyHall is far north",
+      "brief_description": "You now have Sidney Smith to the East, and MyHall is far north",
       "long_description": "Located at a central junction of campus landmarks, you find yourself poised between the vibrant energy of Sidney Smith and the quiet resolve of the surroundings.",
       "available_directions": {
         "inside sidney smith": 24,
@@ -255,7 +251,7 @@
     },
     {
       "id": 24,
-      "name": "Inside of Sideny Smith",
+      "name": "Inside of Sidney Smith",
       "brief_description": "You are now directly infront of Sidney Smith",
       "long_description": "Inside Sidney Smith, the space is infused with history and modern touches, creating a unique blend of academic ambiance.",
       "available_directions": {
@@ -532,12 +528,12 @@
   ],
   "npcs": [
     {
-      "name" : "tired student",
+      "name" : "Tired Student",
       "description": "A tired student who looks exausted after studying all night.",
-      "location_id": 33,
+      "location_id": 1,
       "quest": "Zzzzzzzzzzz.... R... Red... Bull...",
       "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
-      "required_items": ["nestea", "sprite", "red bull", "coca cola"],
+      "required_items": ["red bull"],
       "reward": "pass"
     },
     {
@@ -552,7 +548,7 @@
     },
     {
       "name" : "Security Guard",
-      "description": "You ask the Secuirty Guard at Gerstien if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
+      "description": "You ask the Secuirty Guard at Gerstein if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
       "location_id": 20,
       "quest": "Buy this Security Guard a meal from the pink food truck",
       "quest_message": "Before I can give you your belongings you must buy me a meal from the pink food truck",
