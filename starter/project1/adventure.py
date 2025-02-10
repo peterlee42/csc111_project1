@@ -51,7 +51,7 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
 
     user_input = words[0].strip().lower()
     matches = difflib.get_close_matches(
-        user_input, valid_actions, n=1, cutoff=0.5)
+        user_input, valid_actions, n=1, cutoff=0.7)
     if matches:
         print(f"Interpreting '{user_input}' as '{matches[0]}'.")
         target = " ".join(words[1:]) if len(words) > 1 else ""
@@ -109,8 +109,7 @@ class AdventureGame:
         # 2. Make sure the Item class is used to represent each item.
 
         # Suggested helper method (you can remove and load these differently if you wish to do so):
-        self._locations, self._items, self._npcs = self._load_game_data(
-            game_data_file)
+        self._locations, self._items, self._npcs = self._load_game_data(game_data_file)
 
         # Suggested attributes (you can remove and track these differently if you wish to do so):
         self.current_location_id = initial_location_id  # game begins at this location

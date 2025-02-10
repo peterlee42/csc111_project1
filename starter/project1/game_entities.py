@@ -188,7 +188,7 @@ class Player:
         if item_name not in self.inventory:
             # Attempt fuzzy matching in the player's inventory.
             corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
+                item_name, self.inventory, n=1, cutoff=7)
             if corrected:
                 corrected_item = corrected[0]
                 print(f"Interpreting '{item_name}' as '{corrected_item}'.")
@@ -219,7 +219,7 @@ class Player:
         """
         if item_name not in self.inventory:
             corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
+                item_name, self.inventory, n=1, cutoff=0.7)
             if corrected:
                 corrected_item = corrected[0]
                 print(f"Interpreting '{item_name}' as '{corrected_item}'.")
@@ -246,7 +246,7 @@ class Player:
         else:
             possible_dirs = list(current_location.available_directions.keys())
             corrected = difflib.get_close_matches(
-                direction, possible_dirs, n=1, cutoff=0.5)
+                direction, possible_dirs, n=1, cutoff=0.7)
             if corrected:
                 corrected_direction = corrected[0]
                 print(
@@ -263,7 +263,7 @@ class Player:
 
         if item_name not in current_location.items:
             corrected = difflib.get_close_matches(
-                item_name, current_location.items, n=1, cutoff=0.5)
+                item_name, current_location.items, n=1, cutoff=0.7)
             if corrected:
                 corrected_item = corrected[0]
                 print(f"Interpreting '{item_name}' as '{corrected_item}'.")
@@ -302,7 +302,7 @@ class Player:
         """
         if item_name not in self.inventory:
             corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
+                item_name, self.inventory, n=1, cutoff=0.7)
             if corrected:
                 corrected_item = corrected[0]
                 print(f"Interpreting '{item_name}' as '{corrected_item}'.")

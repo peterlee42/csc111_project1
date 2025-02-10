@@ -9,11 +9,9 @@
         "out of dorm": 2
       },
       "items": [
-        "toonie",
-        "toonie",
         "toonie"
       ],
-      "acquired_items": [""]
+      "acquired_items": []
     },
     {
       "id": 2,
@@ -46,13 +44,14 @@
     },
     {
       "id": 4,
-      "name": "Infront of Food Trucks",
-      "brief_description": "You're in front of the prink and brown food trucks, and McLennan east of you",
+      "name": "Infront of Trucks",
+      "brief_description": "You're in front of the coffee and pink food trucks, with McLennan east of you",
       "long_description": "The aroma from the food trucks fills the air as you stand in front of them. The building of McLennan to your east adds a touch of academia to the bustling scene.",
       "available_directions": {
-        "south": 6,
+        "south": 7,
         "north": 3,
-        "inside mclennan": 13
+        "inside mclennan": 13,
+        "to food trucks": 6
       },
       "items": [],
       "acquired_items": []
@@ -60,7 +59,7 @@
     {
       "id": 6,
       "name": "At Food Trucks",
-      "brief_description": "You still don't have enough money",
+      "brief_description": "You can buy some coffee or buy a donut both for ",
       "long_description": "You have insuffient funds",
       "available_directions": {
         "north": 3,
@@ -105,7 +104,6 @@
       "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
       "long_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
       "available_directions": {
-        "answer the question": 100,
         "to Lobby": 8
       },
       "items": [],
@@ -508,6 +506,24 @@
       "target_position" : 1,
       "target_points" : 10,
       "item_type" : "consumable"
+    },
+    {
+      "name" : "pass",
+      "full_name" : "a pass that lets you through a door",
+      "description" : "a pass that may or may not unlock a secret door at Sidney Smith",
+      "start_position" : 2,
+      "target_position" : 1,
+      "target_points" : 10,
+      "item_type" : ""
+    },
+    {
+      "name" : "meal",
+      "full_name" : "",
+      "description" : "a meal from the pink food truck",
+      "start_position" : 6,
+      "target_position" : 20,
+      "target_points" : 10,
+      "item_type" : "consumable"
     }
   ],
   "npcs": [
@@ -518,8 +534,29 @@
       "quest": "Zzzzzzzzzzz.... R... Red... Bull...",
       "quest_message": "Zzzzzzzzzzz.... R... Red... Bull...",
       "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
-      "required_items": ["red bull"], 
+      "required_items": ["nestea", "sprite", "red bull", "coca cola"],
+      "reward": "pass"
+    },
+    {
+      "name" : "Prof. Sadia",
+      "description": "Prof. Sadia knows where your bag is but you must buy her a red bull before she can tell you where your items are",
+      "location_id": 9,
+      "quest": "Buy Prof. Sadia a coffee",
+      "quest_message": "Before I can tell you where you left your stuff you must buy me a red bull",
+      "quest_complete_message": "Wow! Thank you so much for this redbull. Here is this notebook, it should let you know where your belongings are",
+      "required_items": ["red bull"],
       "reward": "notebook"
+    },
+    {
+      "name" : "Security Guard",
+      "description": "You ask the Secuirty Guard at Gerstien if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
+      "location_id": 20,
+      "quest": "Buy this Security Guard a meal from the pink food truck",
+      "quest_message": "Before I can give you your belongings you must buy me a meal from the pink food truck",
+      "quest_complete_message": "Thanks for the meal! Here is what I have left of your belongings... A crumpled paper, and a laptop charger",
+      "required_items": ["meal"],
+      "reward": "crumpled paper, laptop charger"
     }
+
   ]
 }
