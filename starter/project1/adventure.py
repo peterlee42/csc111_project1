@@ -19,24 +19,20 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from __future__ import annotations
 import json
+from dataclasses import dataclass
 from typing import Optional
 
+# My imports
 # import difflib
-
-from game_entities import Location, Item, Player, Npc
-
-from proj1_event_logger import Event, EventList
-
 from datetime import time
 
-# Note: You may add in other import statements here as needed
-
-# Note: You may add helper functions, classes, etc. below as needed
+from game_entities import Location, Item, Player, Npc
+from proj1_event_logger import Event, EventList
 
 
 def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
     """If the command's action is valid, parse it and return a tuple of the command's action and target.
-    Otherwise, return a tuple of the original command and an empty string..
+    Otherwise, return a tuple of the original command and an empty string.
 
     Preconditions:
     - command != ''
@@ -60,37 +56,47 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
     return command, ""
 
 
+@dataclass
+class TimeWindow:
+    """A dataclass representing the current time and the deadline time
+
+    Instance Attributes:
+        - current_time: The current time of this time window
+        - deadline: The deadline of this time window
+    """
+
+    current_time: time
+    deadline: time
+
+
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
     Instance Attributes:
-        - # TODO add descriptions of public instance attributes as needed (DONE)
         - ongoing: a boolean representing whether the game is ongoing or not.
         - player: a Player object representing the player in the game.
-        - current_time: the current time in the game (in 24 hour time)
-        - deadline: the deadline of the assignment (in 24 hour time)
+        - time_window: A TimeWindow object representing the current time and deadline in the game.
 
     Representation Invariants:
-        - # TODO add any appropriate representation invariants as needed
         - self.current_location_id in self._locations
-        - self.current_time < self.deadline
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
     #   - _locations: a mapping from location id to Location object.
     #                       This represents all the locations in the game.
     #   - _items: a list of Item objects, representing all items in the game.
+    #   - _npcs: a list of Npc objects, reprsenting all none playable characters in the game.
 
     _locations: dict[int, Location]
     _items: list[Item]
     _npcs: list[Npc]
-    player = Player
+    current_location_id: int
+    player: Player
+    time_window: TimeWindow
     ongoing: bool  # Suggested attribute, can be removed
-    current_time: time
-    deadline: time
 
-    def __init__(self, game_data_file: str, initial_location_id: int, start_time: time,
-                 deadline: time) -> None:
+    def __init__(self, game_data_file: str, player_message_file: str, initial_location_id: int,
+                 time_window: TimeWindow) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
@@ -108,19 +114,18 @@ class AdventureGame:
         # 1. Make sure the Location class is used to represent each location.
         # 2. Make sure the Item class is used to represent each item.
 
-        # Suggested helper method (you can remove and load these differently if you wish to do so):
-        self._locations, self._items, self._npcs = self._load_game_data(
-            game_data_file)
+        # Game data
+        self._locations, self._items, self._npcs = self._load_game_data(game_data_file)
 
-        # Suggested attributes (you can remove and track these differently if you wish to do so):
-        self.current_location_id = initial_location_id  # game begins at this location
-        self.ongoing = True  # whether the game is ongoing
+        self.current_location_id = initial_location_id
 
         # Player attribute
-        self.player = Player()
+        self.player = Player(player_message_file)
 
-        self.current_time = start_time
-        self.deadline = deadline
+        # Game start time and deadline time.
+        self.time_window = time_window
+
+        self.ongoing = True  # whether the game is ongoing
 
     @staticmethod
     def _load_game_data(filename: str) -> tuple[dict[int, Location], list[Item], list[Npc]]:
@@ -134,8 +139,8 @@ class AdventureGame:
         locations = {}
         # Go through each element associated with the 'locations' key in the file
         for loc_data in data['locations']:
-            location_obj = Location(loc_data['id'], loc_data['name'], loc_data['brief_description'],
-                                    loc_data['long_description'], loc_data['available_directions'],
+            location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'],
+                                    loc_data['long_description']), loc_data['available_directions'],
                                     loc_data['items'], loc_data['given_items'])
             locations[loc_data['id']] = location_obj
 
@@ -143,8 +148,7 @@ class AdventureGame:
 
         for item_data in data['items']:
             item_obj = Item(item_data['name'], item_data['full_name'], item_data['description'],
-                            item_data['start_position'], item_data['target_position'], item_data['target_points'],
-                            item_data['item_type'])
+                            item_data['start_position'], item_data['target_position'], item_data['target_points'])
             items.append(item_obj)
 
         npcs = []
@@ -152,13 +156,13 @@ class AdventureGame:
             npc_obj = Npc(npc_data['name'], npc_data['description'], npc_data['location_id'], npc_data['quest'],
                           npc_data['quest_complete_message'], npc_data['required_items'], npc_data['reward'])
             npcs.append(npc_obj)
+
         return locations, items, npcs
 
     def get_location(self, loc_id: Optional[int] = None) -> Location:
         """Return Location object associated with the provided location ID.
-        If no ID is provided, return the Location object associated with the current location.
+        If no ID is provided, return the Location object associated with the player's current location.
         """
-        # TODO: Complete this method as specified
         # YOUR CODE BELOW
         if loc_id is None:
             return self._locations[self.current_location_id]
@@ -196,64 +200,54 @@ class AdventureGame:
         # Make current location id the id of the previous event. Remove the last event from the game log.
         if current_game_log.is_empty() or current_game_log.first.next is None:
             print("No actions to undo.")
-        else:
-            # Undo the game log
-            prev_event = current_game_log.last.prev
+            return
 
-            # Change current time to the time of the previous action
-            self.current_time = prev_event.event_time
+        # Undo the game log
+        prev_event = current_game_log.last.prev
 
-            prev_location_id = prev_event.id_num
+        # Change current time to the time of the previous action
+        self.time_window.current_time = prev_event.event_time
 
-            # always changes current location id to the previous one
-            self.current_location_id = prev_location_id
+        prev_location_id = prev_event.id_num
 
-            prev_location = self.get_location(prev_location_id)
+        # always changes current location id to the previous one
+        self.current_location_id = prev_location_id
 
-            current_game_log.last = prev_event
+        prev_location = self.get_location(prev_location_id)
 
-            # Retrieve the previous command and since we know it already exists, we don't have to check anything.
-            prev_command = prev_event.next_command
-            prev_action, prev_target = parse_command(
-                prev_command, self.player.available_actions)
+        current_game_log.last = prev_event
 
-            if prev_action == 'pick up':
-                self.player.inventory.remove(prev_target)
-                prev_location.items.append(prev_target)
-            elif prev_action == 'drop':
-                self.player.inventory.append(prev_target)
-                prev_location.items.remove(prev_target)
-            elif prev_action == 'use':
-                prev_item_obj = self.get_item(prev_target)
+        # Retrieve the previous command and since we know it already exists, we don't have to check anything.
+        prev_command = prev_event.next_command
+        prev_action, prev_target = parse_command(
+            prev_command, self.player.available_actions)
 
-                self.player.score -= prev_item_obj.target_points
-                self.player.inventory.pop()  # remove any given items
-                # add previous target item
-                self.player.inventory.append(prev_target)
-            elif prev_action == 'interact':
-                prev_npc = self.get_npc(prev_target)
-                if prev_npc.complete_quest:
-                    self.player.inventory.pop()
+        if prev_action == 'pick up':
+            self.player.inventory.remove(prev_target)
+            prev_location.items.append(prev_target)
+        elif prev_action == 'drop':
+            self.player.inventory.append(prev_target)
+            prev_location.items.remove(prev_target)
+        elif prev_action == 'use':
+            prev_item_obj = self.get_item(prev_target)
 
-                    for i in range(len(prev_npc.required_items)):
-                        # TODO: make this a dict
-                        inventory_index = prev_npc.taken_item_index[i]
-                        taken_item = prev_npc.required_items[i]
-                        self.player.inventory.insert(
-                            inventory_index, taken_item)
+            self.player.score -= prev_item_obj.target_points
 
-                    prev_npc.complete_quest = False
-                    self.player.quests.append(prev_npc.quest)
-                else:
-                    prev_npc.interact = False
-                    self.player.quests.pop()
+            for given_item in prev_location.given_items:
+                self.player.inventory.remove(given_item)  # remove any given items
 
-            print('Action undone!')
+            # add previous target item
+            self.player.inventory.append(prev_target)
+        elif prev_action == 'interact':
+            prev_npc = self.get_npc(prev_target)
+            prev_npc.undo_interaction(self.player)
 
-            # Remove the most recent command
-            current_game_log.last.next = None
-            current_game_log.last.next_command = None
-            current_game_log.last.event_time = None
+        print('Action undone!')
+
+        # Remove the most recent command
+        current_game_log.last.next = None
+        current_game_log.last.next_command = None
+        current_game_log.last.event_time = None
 
     def add_minutes(self, added_minutes: int) -> None:
         """Adds specified minutes to self.current_time.
@@ -263,24 +257,29 @@ class AdventureGame:
         Preconditions:
         - 0 <= added_minutes <= 60
         """
-        current_hour = self.current_time.hour
-        current_minute = self.current_time.minute
+
+        current_hour = self.time_window.current_time.hour
+        current_minute = self.time_window.current_time.minute
 
         current_minute += added_minutes
 
-        current_hour += current_minute // 60
-        current_minute %= 60
+        hour_in_minutes = 60
+        # add the number of hours (60 minutes is one hour).
+        current_hour += current_minute // hour_in_minutes
+        # find the number of remaining minutes (60 minutes is one hour)
+        current_minute %= hour_in_minutes
 
         # If you add to many hours such that it goes to the next day, automatically stop the game.
-        if current_hour // 24 == 0:
-            self.current_time = time(current_hour, current_minute)
+        day_in_hours = 24
+        if current_hour // day_in_hours == 0:  # our current hour is before midnight
+            self.time_window.current_time = time(current_hour, current_minute)
 
-            if self.current_time >= self.deadline:
-                print(f'It is {self.current_time.strftime("%I:%M %p")}!')
+            if self.time_window.current_time >= self.time_window.deadline:
+                print(f'It is {self.time_window.current_time.strftime("%I:%M %p")}!')
                 print('YOU MISSED THE DEADLINE!')
                 self.ongoing = False
         else:
-            current_hour %= 24
+            current_hour %= day_in_hours
             new_time = time(hour=current_hour,
                             minute=current_minute).strftime("%I:%M %p")
             print(
@@ -294,6 +293,7 @@ if __name__ == "__main__":
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
     # import python_ta
+    #
     # python_ta.check_all(config={
     #     'max-line-length': 120,
     #     'disable': ['R1705', 'E9998', 'E9999']
@@ -301,8 +301,8 @@ if __name__ == "__main__":
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
-    game = AdventureGame('game_data.json', 1, time(hour=8, minute=0),
-                         time(hour=16, minute=0))
+    game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
+    game = AdventureGame('game_data.json', 'player_messages.json', 1, game_time_window)
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
     choice = None
@@ -316,22 +316,20 @@ if __name__ == "__main__":
 
         location = game.get_location()
 
-        # TODO: Add new Event to game log to represent current game location (DONE)
         #  Note that the <choice> variable should be the command which led to this event
         # YOUR CODE HERE
 
         if choice not in menu and valid_move:
             game_log.add_event(
-                Event(location.id_num, location.brief_description), choice, game.current_time)
+                Event(location.id_num, location.descriptions[0]), choice, game.time_window.current_time)
             game.add_minutes(action_time)
 
-        # TODO: Depending on whether or not it's been visited before, (DONE)
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
         # YOUR CODE HERE
         if location.visited:
-            print(location.brief_description)
+            print(location.descriptions[0])
         else:
-            print(location.long_description)  # TODO: this looks ugly
+            print(location.descriptions[1])
             location.visited = True
 
         # Display Location's Item Name if there is any.
@@ -341,8 +339,7 @@ if __name__ == "__main__":
         # Display interactive NPCs if there is any.
 
         # Display the current time
-        print(
-            f"\nThe current time is {game.current_time.strftime("%I:%M %p")}.")
+        print(f"\nThe current time is {game.time_window.current_time.strftime("%I:%M %p")}.")
 
         # Display menu actions
         print("What to do? Choose from: look, quests, inventory, score, undo, log, quit")
@@ -369,7 +366,6 @@ if __name__ == "__main__":
         player_action, player_target = parsed_choice
 
         if player_action in menu:
-            # TODO: Handle each menu command as appropriate
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
             if player_action == "log":
                 game_log.display_events()
@@ -383,7 +379,7 @@ if __name__ == "__main__":
             elif player_action == "score":
                 print("Score:", game.player.score)
             elif player_action == "look":
-                print(location.long_description)
+                print(location.descriptions[1])
             elif player_action == "quests":
                 game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
@@ -427,7 +423,5 @@ if __name__ == "__main__":
                 else:
                     valid_move = False
                     print("Doesn't seem like that person is here...")
-
-        # TODO: Add in code to deal with special locations (e.g. puzzles) as needed for your game
 
         print("========")

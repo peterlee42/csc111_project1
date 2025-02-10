@@ -3,29 +3,29 @@
     {
       "type": "item_used",
       "messages": [
-        "You have used {item}.",
-        "You successfully used {item}.",
-        "You use {item} with confidence.",
-        "You skillfully use {item} to great effect."
+        "You have used {target}.",
+        "You successfully used {target}.",
+        "You use {target} with confidence.",
+        "You skillfully use {target} to great effect."
       ]
     },
     {
       "type": "item_cannot_be_used",
       "messages": [
-        "Hmmm... Maybe {item} has a better use.",
-        "I think I'm going to save {item} for later...",
-        "I might need {item} for something else...",
-        "{item} isn't useful in this situation."
+        "Hmmm... Maybe {target} has a better use.",
+        "I think I'm going to save {target} for later...",
+        "I might need {target} for something else...",
+        "{target} isn't useful in this situation."
       ]
     },
     {
       "type": "item_does_not_exist",
       "messages": [
-        "{item}? That doesn't seem to exist.",
-        "You can't find any trace of {item}.",
-        "{item} isn’t part of this world… or is it?",
-        "There’s no such thing as {item} here.",
-        "Your mind conjures {item}, but reality disagrees.",
+        "{target}? That doesn't seem to exist.",
+        "You can't find any trace of {target}.",
+        "{target} isn’t part of this world… or is it?",
+        "There’s no such thing as {target} here.",
+        "Your mind conjures {target}, but reality disagrees.",
         "Hmmm... Maybe look somewhere else.",
         "You reach out, but grasp only empty air.",
         "You search thoroughly but find nothing of the sort.",
@@ -37,22 +37,22 @@
     {
       "type": "item_picked_up",
       "messages": [
-        "{item} has been added to your inventory.",
-        "You have picked up {item}.",
-        "{item} is in your inventory.",
-        "{item} is now safely in your possession.",
-        "You carefully stow {item} into your inventory.",
-        "{item} is now yours."
+        "{target} has been added to your inventory.",
+        "You have picked up {target}.",
+        "{target} is in your inventory.",
+        "{target} is now safely in your possession.",
+        "You carefully stow {target} into your inventory.",
+        "{target} is now yours."
       ]
     },
     {
       "type": "item_removed_from_inventory",
       "messages": [
-        "{item} has been removed from your inventory.",
-        "You dropped {item}.",
-        "{item} is no longer in your possession.",
-        "You carefully set down {item}.",
-        "You let go of {item}, leaving it behind."
+        "{target} has been removed from your inventory.",
+        "You dropped {target}.",
+        "{target} is no longer in your possession.",
+        "You carefully set down {target}.",
+        "You let go of {target}, leaving it behind."
       ]
     },
     {

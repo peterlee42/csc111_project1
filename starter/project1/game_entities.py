@@ -34,8 +34,8 @@ class Location:
     Instance Attributes:
         - id_num: the unique identifier of the location
         - name: the name of the locations
-        - brief_description: a short description for quick rederence
-        - long_description: a longer description of the location displayed upon entering
+        - descriptions: A tuple of two types of descriptions in this order. a short description for quick rederence and
+                        a longer description of the location displayed upon entering
         - available_directions: a dictionary of available directions in the location
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
@@ -44,8 +44,9 @@ class Location:
     Representation Invariants:
         - self.id_num >= 0
         - self.name != ''
-        - self.brief_description != ''
-        - self.long_description != ''
+        - self.descriptions[0] != ''
+        - self.descriptions[1] != ''
+        - len(self.desciptions[0]) < len(self.descriptions[1])
     """
 
     # This is just a suggested starter class for Location.
@@ -55,29 +56,11 @@ class Location:
     # All locations in your game MUST be represented as an instance of this class.
     id_num: int
     name: str
-    brief_description: str
-    long_description: str
+    descriptions: tuple[str, str]
     available_directions: dict[str, int]
     items: list[str]
     given_items: list[str]
     visited: bool = False
-
-    # def __init__(self, location_id, name, brief_description, long_description, available_directions, items,
-    #              given_items, visited=False) -> None:
-    #     """Initialize a new location.
-    #
-    #     # Add more details here about the initialization if needed
-    #     """
-    #
-    #     self.id_num = location_id
-    #     self.name = name
-    #     self.brief_description = brief_description
-    #     self.long_description = long_description
-    #     self.available_directions = available_directions
-    #     self.items = items
-    #     self.visited = visited
-    #     self.given_items = given_items
-
 
 @dataclass
 class Item:
@@ -91,7 +74,6 @@ class Item:
         - start_position:
         - target_position:
         - target_points: points awarded when the item is placed at its correct location
-        - item_type: the type of item (ie a consumable, tool, etc)
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -101,7 +83,6 @@ class Item:
         - self.start_position >= 0
         - self.target_position >= 0
         - self.target_points >= 0
-        - self.item_type != ''
     """
 
     # NOTES:
@@ -117,7 +98,6 @@ class Item:
     start_position: int
     target_position: int
     target_points: int
-    item_type: str
 
 
 class Player:
@@ -127,57 +107,65 @@ class Player:
         - inventory: a list of items the player has
         - available_commands: a list of actions that the player can use
         - score: type player's score so far
-        - messages: the output messages that the player receives after doing an action
         - quests: a list of all quests that the player accepted
 
     Representation Invariants:
-        - self.current_location_id >= 0
         - self.score >= 0
     """
+
+    # Private Instance Attributes:
+    # - _messages: a dictionary mapping all types of output messages to a list of output messages of that type.
+
+    _messages: dict[str, list[str]]
     inventory: list[str]
     available_actions: list[str]
     score: int
-    messages: dict[str, list[str]]
     quests: list[str]
 
-    def __init__(self) -> None:
+    def __init__(self, message_data_file: str) -> None:
         """Initialize a new player object."""
         self.inventory = []
         self.available_actions = ['go', 'pick up',
                                   'use', 'drop', 'examine', 'interact']
         self.score = 0
-        self.messages = self._load_player_messages('player_messages.json')
         self.quests = []
 
-    def _get_random_message(self, message_type: str, item_name: Optional[str] = None) -> str:
-        """Get a random message from the messages attribute based on the message type.
-        If the type does not exist, do nothing."""
-        if message_type in self.messages:
-            random_index = randrange(len(self.messages[message_type]))
-            random_message = self.messages[message_type][random_index]
-
-            if item_name is None or '{item}' not in random_message:
-                return random_message
-            else:
-                formatted_message = random_message.format(item=item_name)
-                return formatted_message[0].upper() + formatted_message[1:]
+        # Message data
+        self._messages = self._load_message_data(message_data_file)
 
     @staticmethod
-    def _load_player_messages(filename: str) -> dict[str, list[str]]:
-        """Load locations and items from a JSON file with the given filename and
-        return a tuple consisting of (1) a dictionary of locations mapping each game location's ID to a Location object,
-        and (2) a list of all Item objects."""
+    def _load_message_data(filename: str) -> dict[str, list[str]]:
+        """Load messages from a JSON file with the given filename and
+        return dictionary mapping all types of message to a list of the messages of that type."""
 
         with open(filename, 'r') as f:
             data = json.load(f)  # This loads all the data from the JSON file
 
-        player_messages = {}
+        game_messages = {}
         # Go through each element associated with the 'message_types' key in the file
         # Map each type of message to the list of all messages of that type.
         for message_type in data['message_types']:
-            player_messages[message_type['type']] = message_type['messages']
+            game_messages[message_type['type']] = message_type['messages']
 
-        return player_messages
+        return game_messages
+
+    def _get_random_message(self, message_type: str, target: Optional[str] = None) -> str:
+        """Get a random message from the messages attribute based on the message type.
+        If the message does not exist, raise an error
+
+        Preconditions:
+        - target is not None and any({'{target}' in message for message in self._messages[message_type]})
+        """
+        if message_type in self._messages:
+            random_index = randrange(len(self._messages[message_type]))
+            random_message = self._messages[message_type][random_index]
+
+            if not target:
+                return random_message
+            else:
+                formatted_message = random_message.format(target=target)
+                return formatted_message[0].upper() + formatted_message[1:]
+        raise ValueError('This message type does not exist.')
 
     def use(self, current_location: Location, item_name: str, item_obj: Optional[Item]) -> bool:
         """Use an item in the player's inventory. Return true if the player sucessfully used the item. Return false
@@ -316,7 +304,7 @@ class Player:
             return False
 
     def display_quests(self) -> None:
-        """Display all of the player's current quests"""
+        """Display all the player's current quests"""
         if not self.quests:
             print("You have no quests.")
         else:
@@ -328,71 +316,62 @@ class Player:
 
 class Npc:
     """An NPC (Non-Player Character) that assigns and completes quests in our text adventure world.
+
     Instance Attributes:
         - name: the name of the NPC
         - description: the description of the NPC
-        - quest: the quest the NPC gives to the player
-        - required_items: list of items required to complete the quest
+        - location_id: the location where the NPC is found
+        - messages: a tuple containing the quest message and the quest completion message
+        - required_items: A list of items required to complete the quest.
         - reward: the reward given when the quest is completed
         - is_quest_completed: whether the quest has been completed
-        - points: the number of points given when the quest has been completed
-        - taken_item_index: keeps track of the index of the taken items in the player's inventory
 
     Representation Invariants:
         - self.name != ''
         - self.description != ''
-        - self.quest != ''
+        - self.messages[0] != ''
+        - self.messages[1] != ''
         - self.required_items != []
         - self.reward != ''
-        - self.points > 0
-        - all({index >= 0 for index in taken_item_index})
     """
 
     name: str
     description: str
     location_id: int
-    quest: str
-    quest_complete_message: str
+    messages: tuple[str, str]
     required_items: list[str]
     reward: str
     is_quest_completed: bool
-    points: int
-    taken_item_index: list[int]
 
     def __init__(self, name: str, description: str, location_id: int,
-                 quest: str, quest_complete_message: str, required_items: list[str], reward: str) -> None:
-        """Initialize the NPC"""
+                 quest_message: str, quest_complete_message: str,
+                 required_items: list[str], reward: str) -> None:
+        """Initialize the NPC."""
         self.name = name
         self.description = description
         self.location_id = location_id
-        self.quest = quest
-        self.quest_complete_message = quest_complete_message
+        self.messages = (quest_message, quest_complete_message)
         self.required_items = required_items
         self.reward = reward
         self.is_quest_completed = False
-        self.interacted = False
-        self.points = 15
-        self.taken_item_index = []
 
     def interact(self, current_location_id: int, player: Player) -> bool:
-        """Handle interaction with the NPC. Return true if the interaction is successful. False otherwise."""
+        """Handle interaction with the NPC. Return True if interaction is successful, False otherwise."""
         if current_location_id == self.location_id:
             if self.is_quest_completed:
-                print(f"{self.name} says: '{self.quest_complete_message}'")
+                print(f"{self.name} says: '{self.messages[1]}'")
                 return True
-            elif self.interacted:
+            elif self.messages[0] in player.quests:
                 is_quest_complete = self.complete_quest(player)
                 if is_quest_complete:
-                    print(
-                        f"{self.name} says: '{self.quest_complete_message}'\nYou received: {self.reward}")
+                    print(f"{self.name} says: '{self.messages[1]}'\nYou received: {self.reward}")
                     return True
                 else:
                     print(f"You have already spoken to {self.name}. Finish the quest and interact again.")
                     return False
             else:
-                print(f"{self.name} says: '{self.quest}'")
-                self.interacted = True
-                player.quests.append(self.quest)
+                print(f"{self.name} says: '{self.messages[0]}'")
+                player.quests.append(self.messages[0])
                 return True
         else:
             print("Doesn't seem like that person is here...")
@@ -400,23 +379,33 @@ class Npc:
 
     def complete_quest(self, player: Player) -> bool:
         """Check if the player has all the required items to complete the quest."""
-        items_found = all({item in player.inventory for item in self.required_items})
-        if items_found:
-            # The player has completed the quest!
+        if all(item in player.inventory for item in self.required_items):
             self.is_quest_completed = True
-            # Give the reward
-            player.inventory.append(self.reward)
-            player.score += self.points  # Add score
+            player.inventory.append(self.reward)  # Give the reward
+            player.score += 15  # Add score (assuming a fixed value)
 
             for required_item in self.required_items:
-                self.taken_item_index.append(
-                    player.inventory.index(required_item))
                 player.inventory.remove(required_item)
 
-            player.quests.remove(self.quest)  # remove the quest
-
+            player.quests.remove(self.messages[0])  # Remove the quest
             return True
         return False
+
+    def undo_interaction(self, player: Player) -> None:
+        """Undo the last interaction with the NPC."""
+        if self.is_quest_completed:
+            player.inventory.remove(self.reward)
+            player.score -= 15  # Remove points
+
+            for required_item in self.required_items:
+                player.inventory.append(required_item)
+
+            player.quests.append(self.messages[0])  # Re-add the quest
+            self.is_quest_completed = False
+        else:
+            if self.messages[0] in player.quests:
+                player.quests.remove(self.messages[0])
+
 
 # Note: Other entities you may want to add, depending on your game plan:
 # - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)

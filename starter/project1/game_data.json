@@ -9,7 +9,12 @@
         "out of dorm": 2
       },
       "items": [
-        "toonie"
+        "toonie",
+        "sprite",
+        "toonie",
+        "coca cola",
+        "red bull",
+        "notebook"
       ],
       "given_items": []
     },
@@ -393,8 +398,7 @@
       "description" : "Your missing USB drive, containing the only copy of your project.",
       "start_position" : 33,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "objective"
+      "target_points" : 10
     },
     {
       "name" : "backpack",
@@ -402,8 +406,7 @@
       "description" : "Your missing backpack. Now you should be able to carry more things!",
       "start_position" : 30,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "container"
+      "target_points" : 10
     },
     {
       "name" : "toonie",
@@ -411,8 +414,7 @@
       "description" : "A shiny toonie. Useful for vending machines!",
       "start_position" : 1,
       "target_position" : 2,
-      "target_points" : 0,
-      "item_type" : "consumable"
+      "target_points" : 0
     },
     {
       "name" : "random student ID",
@@ -420,8 +422,7 @@
       "description" : "A strangers student ID... Alex Carter... Wonder what this could be used for...",
       "start_position" : 30,
       "target_position" : 27,
-      "target_points" : 0,
-      "item_type" : "consumable"
+      "target_points" : 0
     },
     {
       "name" : "notebook",
@@ -429,8 +430,7 @@
       "description" : "A notebook filled with notes",
       "start_position" : 13,
       "target_position" : 0,
-      "target_points" : 0,
-      "item_type" : "readable"
+      "target_points" : 0
     },
     {
       "name" : "lucky mug",
@@ -438,8 +438,7 @@
       "description" : "Your lucky UofT mug, essential for your caffeine-fueled success!",
       "start_position" : 35,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "objective"
+      "target_points" : 10
     },
     {
       "name" : "laptop charger",
@@ -447,8 +446,7 @@
       "description" : "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
       "start_position" : 7,
       "target_position" : 8,
-      "target_points" : 10,
-      "item_type" : "objective"
+      "target_points" : 10
     },
     {
       "name" : "laptop",
@@ -456,8 +454,7 @@
       "description" : "Your laptop that you used to work on your assignment! You better submit in time!",
       "start_position" : 27,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "objective"
+      "target_points" : 10
     },
     {
       "name" : "red bull",
@@ -465,8 +462,7 @@
       "description" : "A Red Bull from the vending machine to help you focus.",
       "start_position" : 2,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "consumable"
+      "target_points" : 10
     },
     {
       "name" : "crumpled paper",
@@ -474,8 +470,7 @@
       "description" : "some crumpled paper",
       "start_position" : 0,
       "target_position" : 0,
-      "target_points" : 10,
-      "item_type" : "readable"
+      "target_points" : 10
     },
     {
       "name" : "coca cola",
@@ -483,8 +478,7 @@
       "description" : "A Coca Cola from the vending machine!",
       "start_position" : 2,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "consumable"
+      "target_points" : 10
     },
     {
       "name" : "nestea",
@@ -492,8 +486,7 @@
       "description" : "A Nestea from the vending machine! These are rare to find these days...",
       "start_position" : 2,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "consumable"
+      "target_points" : 10
     },
     {
       "name" : "sprite",
@@ -501,8 +494,7 @@
       "description" : "A Sprite from the vending machine!",
       "start_position" : 2,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : "consumable"
+      "target_points" : 10
     },
     {
       "name" : "pass",
@@ -510,8 +502,7 @@
       "description" : "a pass that may or may not unlock a secret door at Sidney Smith",
       "start_position" : 2,
       "target_position" : 1,
-      "target_points" : 10,
-      "item_type" : ""
+      "target_points" : 10
     },
     {
       "name" : "meal",
@@ -519,8 +510,7 @@
       "description" : "a meal from the pink food truck",
       "start_position" : 6,
       "target_position" : 20,
-      "target_points" : 10,
-      "item_type" : "consumable"
+      "target_points" : 10
     }
   ],
   "npcs": [
@@ -530,7 +520,7 @@
       "location_id": 1,
       "quest": "Zzzzzzzzzzz.... R... Red... Bull...",
       "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
-      "required_items": ["red bull"],
+      "required_items": ["red bull", "sprite", "coca cola"],
       "reward": "pass"
     },
     {
@@ -553,6 +543,5 @@
       "required_items": ["meal"],
       "reward": "crumpled paper, laptop charger"
     }
-
   ]
 }
