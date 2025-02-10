@@ -21,7 +21,6 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from dataclasses import dataclass
 
 # My imports
-import difflib
 from random import randrange
 from typing import Optional
 import json
@@ -33,12 +32,13 @@ class Location:
 
     Instance Attributes:
         - id_num: the unique identifier of the location
-        - name: the name of the location
+        - name: the name of the locations
         - brief_description: a short description for quick rederence
         - long_description: a longer description of the location displayed upon entering
         - available_directions: a dictionary of available directions in the location
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
+        - given_items: a list of items that the location can give if the player uses the correct item
 
     Representation Invariants:
         - self.id_num >= 0
@@ -59,10 +59,10 @@ class Location:
     available_directions: dict[str, int]
     items: list[str]
     visited: bool
-    acquired_items: list[str]
+    given_items: list[str]
 
     def __init__(self, location_id, name, brief_description, long_description, available_directions, items,
-                 acquired_items, visited=False) -> None:
+                 given_items, visited=False) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
@@ -74,8 +74,8 @@ class Location:
         self.long_description = long_description
         self.available_directions = available_directions
         self.items = items
-        self.acquired_items = acquired_items
         self.visited = visited
+        self.given_items = given_items
 
 
 @dataclass
@@ -186,23 +186,14 @@ class Player:
         - not item_obj and item_name == item_obj.name
         """
         if item_name not in self.inventory:
-            # Attempt fuzzy matching in the player's inventory.
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
-
-        if item_name not in self.inventory:
             print(self._get_random_message(
                 'item_does_not_exist', item_name))
             return False
         elif current_location.id_num == item_obj.target_position:
             print(self._get_random_message('item_used', item_name))
 
-            random_index = randrange(len(current_location.acquired_items))
-            acquired_item = current_location.acquired_items[random_index]
+            random_index = randrange(len(current_location.given_items))
+            acquired_item = current_location.given_items[random_index]
             self.score += item_obj.target_points
             self.inventory.remove(item_name)
             self.inventory.append(acquired_item)
@@ -217,13 +208,6 @@ class Player:
         """Remove an item from the player's inventory. Return true if the player sucessfully dropped the item.
         Return false otherwise.
         """
-        if item_name not in self.inventory:
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
         if item_name in self.inventory:
             self.inventory.remove(item_name)
             current_location.items.append(item_name)
@@ -240,34 +224,16 @@ class Player:
     def go(self, current_location: Location, direction: str) -> int:
         """Return the id of the new location if the direction is valid. Return the current location id otherwise.
         """
-
         if direction in current_location.available_directions:
             return current_location.available_directions[direction]
         else:
-            possible_dirs = list(current_location.available_directions.keys())
-            corrected = difflib.get_close_matches(
-                direction, possible_dirs, n=1, cutoff=0.5)
-            if corrected:
-                corrected_direction = corrected[0]
-                print(
-                    f"Interpreting '{direction}' as '{corrected_direction}'.")
-                return current_location.available_directions[corrected_direction]
-            else:
-                print("Looks like that isn't a valid direction...")
-                return current_location.id_num
+            print("Looks like that isn't a valid direction...")
+            return current_location.id_num
 
     def pick_up_item(self, current_location: Location, item_name: str) -> bool:
         """Add an item to the player's inventory. Reward the player with 1 point. Return true if the player sucessfully
         picked up the item. Return false otherwise.
         """
-
-        if item_name not in current_location.items:
-            corrected = difflib.get_close_matches(
-                item_name, current_location.items, n=1, cutoff=0.5)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
         if item_name in current_location.items:
 
             self.inventory.append(item_name)  # add to inventory
@@ -300,13 +266,6 @@ class Player:
         Precondition:
         - not item_obj and item_name == item_obj.name
         """
-        if item_name not in self.inventory:
-            corrected = difflib.get_close_matches(
-                item_name, self.inventory, n=1, cutoff=0.5)
-            if corrected:
-                corrected_item = corrected[0]
-                print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-                item_name = corrected_item
         if item_name in self.inventory:
             print(item_obj.description)
             return True
@@ -371,7 +330,7 @@ class Npc:
             if self.is_quest_completed:
                 print(f"{self.name} says: '{self.quest_complete_message}'")
             elif self.interacted:
-                print(self.complete_quest(player))
+                print(f"{self.name} says: '{self.complete_quest(player)}'")
             else:
                 print(f"{self.name} says: '{self.quest}'")
                 self.interacted = True
@@ -390,6 +349,10 @@ class Npc:
             # Give the reward
             player.inventory.append(self.reward)
             player.score += 5  # Add score
+
+            for required_item in self.required_items:
+                player.inventory.remove(required_item)
+
             return f"{self.name} says: '{self.quest_complete_message}'\nYou received: {self.reward}'"
         else:
             return self.quest

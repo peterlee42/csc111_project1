@@ -47,6 +47,7 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
 
+    # TODO: this doesn't seem to work for valid actions?...
     words = command.split()
 
     user_input = words[0].strip().lower()
@@ -136,7 +137,7 @@ class AdventureGame:
         for loc_data in data['locations']:
             location_obj = Location(loc_data['id'], loc_data['name'], loc_data['brief_description'],
                                     loc_data['long_description'], loc_data['available_directions'],
-                                    loc_data['items'], loc_data['acquired_items'])
+                                    loc_data['items'], loc_data['given_items'])
             locations[loc_data['id']] = location_obj
 
         items = []
@@ -227,7 +228,7 @@ class AdventureGame:
                 prev_item_obj = self.get_item(prev_target)
 
                 self.player.score -= prev_item_obj.target_points
-                self.player.inventory.pop()  # remove any acquired items
+                self.player.inventory.pop()  # remove any given items
                 # add previous target item
                 self.player.inventory.append(prev_target)
             print('Action undone!')
@@ -318,15 +319,16 @@ if __name__ == "__main__":
 
         # Display Location's Item Name if there is any.
         for location_item in location.items:
-            # TODO: Maybe write a rep. inv. that shows item always has a corresponding obj
             print(f'- There is {game.get_item(location_item).full_name}')
+
+        # Display interactive NPCs if there is any.
 
         # Display the current time
         print(
             f"\nThe current time is {game.current_time.strftime("%I:%M %p")}.")
 
         # Display menu actions
-        print("What to do? Choose from: look, inventory, score, undo, log, quit")
+        print("What to do? Choose from: look, quests, inventory, score, undo, log, quit")
 
         # Display directions the player can go
         print("At this location, you can go:")

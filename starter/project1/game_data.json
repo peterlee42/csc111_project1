@@ -9,11 +9,9 @@
         "out of dorm": 2
       },
       "items": [
-        "toonie",
-        "toonie",
         "toonie"
       ],
-      "acquired_items": [""]
+      "given_items": []
     },
     {
       "id": 2,
@@ -25,11 +23,11 @@
         "back to dorm": 1
       },
       "items": [],
-      "acquired_items": [
+      "given_items": [
         "red bull",
         "coca cola",
-        "nestea",
-        "sprite"
+        "sprite",
+        "nestea"
       ]
     },
     {
@@ -42,7 +40,7 @@
         "east": 28
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 4,
@@ -54,8 +52,8 @@
         "north": 3,
         "inside mclennan": 13
       },
-      "items": [],
-      "acquired_items": []
+      "items": ["toonie"],
+      "given_items": []
     },
     {
       "id": 6,
@@ -67,7 +65,7 @@
         "south": 7
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 7,
@@ -79,7 +77,7 @@
         "north": 6
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 8,
@@ -92,7 +90,7 @@
         "outside using side door": 12
       },
       "items": [],
-      "acquired_items": [
+      "given_items": [
         "red bull",
         "coca cola",
         "nestea",
@@ -109,7 +107,7 @@
         "to Lobby": 8
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 13,
@@ -124,7 +122,7 @@
       "items": [
         "notebook"
       ],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 14,
@@ -137,7 +135,7 @@
         "west": 12
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 15,
@@ -150,7 +148,7 @@
         "west": 14
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 22,
@@ -161,7 +159,7 @@
         "outside": 15
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 17,
@@ -173,7 +171,7 @@
         "south": 19
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 18,
@@ -185,7 +183,7 @@
         "east": 17
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 20,
@@ -199,7 +197,7 @@
       "items": [
         "crumpled paper"
       ],
-      "acquired_items": []
+      "given_items": []
     },
 
     {
@@ -212,7 +210,7 @@
         "inside university college": 21
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 21,
@@ -223,7 +221,7 @@
         "outside": 19
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 16,
@@ -236,7 +234,7 @@
         "south": 14
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 23,
@@ -249,7 +247,7 @@
         "south": 16
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 24,
@@ -260,7 +258,7 @@
         "back outside": 23
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 25,
@@ -273,7 +271,7 @@
         "south": 23
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 27,
@@ -285,7 +283,7 @@
         "outside through north exit": 28
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 28,
@@ -298,7 +296,7 @@
         "west": 3
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 29,
@@ -312,20 +310,20 @@
         "south": 23
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 30,
       "name": "Inside Myhal Centre",
       "brief_description": "You are now inside Myhal Centre",
-      "long_description": "You are now inside Myhal Centre, you see your bag at the front of the classroom the Saida told you, but on closer inspection you realize that the bag is empty",
+      "long_description": "You are now inside Myhal Centre, you see your bag at the front of the classroom the Sadia told you, but on closer inspection you realize that the bag is empty",
       "available_directions": {
         "outside Myhal Centre": 29
       },
       "items": [
         "backpack"
       ],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 31,
@@ -337,7 +335,7 @@
         "west": 29
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 32,
@@ -349,19 +347,19 @@
         "to study table": 33
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 33,
       "name": "Study Table",
       "brief_description": "You are at your old study table in Robarts.",
-      "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions. You should maybe give him your Red Bull",
+      "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions.",
       "available_directions": {
         "upstairs to cafe": 34,
         "back": 32
       },
       "items": [],
-      "acquired_items": [
+      "given_items": [
         "usb drive"
       ]
     },
@@ -375,7 +373,7 @@
         "downstairs": 33
       },
       "items": [],
-      "acquired_items": []
+      "given_items": []
     },
     {
       "id": 35,
@@ -386,7 +384,7 @@
         "leave counter": 34
       },
       "items": [],
-      "acquired_items": [
+      "given_items": [
         "lucky mug"
       ]
     }
@@ -513,10 +511,9 @@
   "npcs": [
     {
       "name" : "tired student",
-      "description": "A student who looks exausted after studying all night.",
-      "location_id": 1,
+      "description": "A tired student who looks exausted after studying all night.",
+      "location_id": 33,
       "quest": "Zzzzzzzzzzz.... R... Red... Bull...",
-      "quest_message": "Zzzzzzzzzzz.... R... Red... Bull...",
       "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
       "required_items": ["red bull"], 
       "reward": "notebook"
