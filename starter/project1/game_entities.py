@@ -62,6 +62,7 @@ class Location:
     given_items: list[str]
     visited: bool = False
 
+
 @dataclass
 class Item:
     """An item in our text adventure game world.
@@ -321,7 +322,7 @@ class Npc:
         - name: the name of the NPC
         - description: the description of the NPC
         - location_id: the location where the NPC is found
-        - messages: a tuple containing the quest message and the quest completion message
+        - quest_messages: a tuple containing the quest message and the quest completion message
         - required_items: A list of items required to complete the quest.
         - reward: the reward given when the quest is completed
         - is_quest_completed: whether the quest has been completed
@@ -329,7 +330,7 @@ class Npc:
     Representation Invariants:
         - self.name != ''
         - self.description != ''
-        - self.messages[0] != ''
+        - self.quest_messages[0] != ''
         - self.messages[1] != ''
         - self.required_items != []
         - self.reward != ''
@@ -338,19 +339,19 @@ class Npc:
     name: str
     description: str
     location_id: int
-    messages: tuple[str, str]
+    quest_messages: tuple[str, str]
     required_items: list[str]
     reward: str
     is_quest_completed: bool
 
     def __init__(self, name: str, description: str, location_id: int,
-                 quest_message: str, quest_complete_message: str,
+                 quest_messages: tuple[str, str],
                  required_items: list[str], reward: str) -> None:
         """Initialize the NPC."""
         self.name = name
         self.description = description
         self.location_id = location_id
-        self.messages = (quest_message, quest_complete_message)
+        self.quest_messages = quest_messages
         self.required_items = required_items
         self.reward = reward
         self.is_quest_completed = False
@@ -359,19 +360,19 @@ class Npc:
         """Handle interaction with the NPC. Return True if interaction is successful, False otherwise."""
         if current_location_id == self.location_id:
             if self.is_quest_completed:
-                print(f"{self.name} says: '{self.messages[1]}'")
+                print(f"{self.name} says: '{self.quest_messages[1]}'")
                 return True
-            elif self.messages[0] in player.quests:
+            elif self.quest_messages[0] in player.quests:
                 is_quest_complete = self.complete_quest(player)
                 if is_quest_complete:
-                    print(f"{self.name} says: '{self.messages[1]}'\nYou received: {self.reward}")
+                    print(f"{self.name} says: '{self.quest_messages[1]}'\nYou received: {self.reward}")
                     return True
                 else:
                     print(f"You have already spoken to {self.name}. Finish the quest and interact again.")
                     return False
             else:
-                print(f"{self.name} says: '{self.messages[0]}'")
-                player.quests.append(self.messages[0])
+                print(f"{self.name} says: '{self.quest_messages[0]}'")
+                player.quests.append(self.quest_messages[0])
                 return True
         else:
             print("Doesn't seem like that person is here...")
@@ -387,7 +388,7 @@ class Npc:
             for required_item in self.required_items:
                 player.inventory.remove(required_item)
 
-            player.quests.remove(self.messages[0])  # Remove the quest
+            player.quests.remove(self.quest_messages[0])  # Remove the quest
             return True
         return False
 
@@ -400,11 +401,11 @@ class Npc:
             for required_item in self.required_items:
                 player.inventory.append(required_item)
 
-            player.quests.append(self.messages[0])  # Re-add the quest
+            player.quests.append(self.quest_messages[0])  # Re-add the quest
             self.is_quest_completed = False
         else:
-            if self.messages[0] in player.quests:
-                player.quests.remove(self.messages[0])
+            if self.quest_messages[0] in player.quests:
+                player.quests.remove(self.quest_messages[0])
 
 
 # Note: Other entities you may want to add, depending on your game plan:
@@ -414,12 +415,12 @@ class Npc:
 
 
 if __name__ == "__main__":
-    # pass
+    pass
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    import python_ta
-    python_ta.check_all(config={
-        'max-line-length': 120,
-        'disable': ['R1705', 'E9998', 'E9999']
-    })
+    # import python_ta
+    # python_ta.check_all(config={
+    #     'max-line-length': 120,
+    #     'disable': ['R1705', 'E9998', 'E9999']
+    # })

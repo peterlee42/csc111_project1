@@ -153,8 +153,9 @@ class AdventureGame:
 
         npcs = []
         for npc_data in data['npcs']:
-            npc_obj = Npc(npc_data['name'], npc_data['description'], npc_data['location_id'], npc_data['quest'],
-                          npc_data['quest_complete_message'], npc_data['required_items'], npc_data['reward'])
+            npc_obj = Npc(npc_data['name'], npc_data['description'], npc_data['location_id'],
+                          (npc_data['quest_message'], npc_data['quest_complete_message']),
+                          npc_data['required_items'], npc_data['reward'])
             npcs.append(npc_obj)
 
         return locations, items, npcs
