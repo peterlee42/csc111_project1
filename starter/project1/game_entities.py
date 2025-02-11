@@ -40,13 +40,14 @@ class Location:
         - items: a list of items available in the location
         - visited: a boolean that indicates if the location has been visited
         - given_items: a list of items that the location can give if the player uses the correct item
+        - npcs: a list of npcs (non-playable characters) in the location
 
     Representation Invariants:
         - self.id_num >= 0
         - self.name != ''
         - self.descriptions[0] != ''
         - self.descriptions[1] != ''
-        - len(self.desciptions[0]) < len(self.descriptions[1])
+        - len(self.desciptions[0]) <= len(self.descriptions[1])
     """
 
     # This is just a suggested starter class for Location.
@@ -60,6 +61,7 @@ class Location:
     available_directions: dict[str, int]
     items: list[str]
     given_items: list[str]
+    npcs: list[str]
     visited: bool = False
 
 
@@ -164,7 +166,7 @@ class Player:
             if not target:
                 return random_message
             else:
-                formatted_message = random_message.format(target=target)
+                formatted_message = random_message.format(target=target.title())
                 return formatted_message[0].upper() + formatted_message[1:]
         raise ValueError('This message type does not exist.')
 
@@ -228,7 +230,7 @@ class Player:
             return False
 
     def go(self, current_location: Location, direction: str) -> int:
-        """Return the id of the new location if the direction is valid. Return the current location id otherwise.
+        """Return the id of the new location if the direction is valid. Return otherwise, return False.
         """
         if direction in current_location.available_directions:
             return current_location.available_directions[direction]
@@ -365,10 +367,12 @@ class Npc:
             elif self.quest_messages[0] in player.quests:
                 is_quest_complete = self.complete_quest(player)
                 if is_quest_complete:
-                    print(f"{self.name} says: '{self.quest_messages[1]}'\nYou received: {self.reward}")
+                    print(
+                        f"{self.name} says: '{self.quest_messages[1]}'\nYou received: {self.reward}")
                     return True
                 else:
-                    print(f"You have already spoken to {self.name}. Finish the quest and interact again.")
+                    print(
+                        f"You have already spoken to {self.name}. Finish the quest and interact again.")
                     return False
             else:
                 print(f"{self.name} says: '{self.quest_messages[0]}'")

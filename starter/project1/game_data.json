@@ -541,5 +541,8 @@
       "required_items": ["meal"],
       "reward": "crumpled paper, laptop charger"
     }
+  ],
+  "special_locations": [
+
   ]
 }

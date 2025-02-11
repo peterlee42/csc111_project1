@@ -141,7 +141,7 @@ class AdventureGame:
         for loc_data in data['locations']:
             location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'],
                                     loc_data['long_description']), loc_data['available_directions'],
-                                    loc_data['items'], loc_data['given_items'])
+                                    loc_data['items'], loc_data['given_items'], loc_data['npcs'])
             locations[loc_data['id']] = location_obj
 
         items = []
@@ -303,7 +303,8 @@ if __name__ == "__main__":
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
     game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-    game = AdventureGame('game_data.json', 'player_messages.json', 1, game_time_window)
+    game = AdventureGame('game_data.json', 'player_messages.json', 1,
+                         game_time_window)
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
     choice = None
@@ -334,10 +335,16 @@ if __name__ == "__main__":
             location.visited = True
 
         # Display Location's Item Name if there is any.
-        for location_item in location.items:
-            print(f'- There is {game.get_item(location_item).full_name}')
+        if not location.items:
+            print("At this location, you can pick up:")
+            for location_item in location.items:
+                print(f'- There is {game.get_item(location_item).full_name}')
 
         # Display interactive NPCs if there is any.
+        if not location.npcs:
+            print("At this location, you can interact with:")
+            for location_npc in location.npcs:
+                print(f'- {game.get_npc(location_npc).name}')
 
         # Display the current time
         print(f"\nThe current time is {game.time_window.current_time.strftime("%I:%M %p")}.")
@@ -385,10 +392,9 @@ if __name__ == "__main__":
                 game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-            # Change to new location
-            player_target_obj = game.get_item(player_target)
 
             if player_action == 'go':
+
                 result = game.player.go(location, player_target)
 
                 # add to time if it is a new location
@@ -397,13 +403,13 @@ if __name__ == "__main__":
                     valid_move = True
                 else:
                     valid_move = False
-
+                # Change to new location (or the same)
                 game.current_location_id = result
-
             elif player_action == 'pick up':
                 action_time = 1
                 valid_move = game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
+                player_target_obj = game.get_item(player_target)
                 action_time = 3
                 valid_move = game.player.use(
                     location, player_target, player_target_obj)
@@ -411,6 +417,7 @@ if __name__ == "__main__":
                 action_time = 1
                 valid_move = game.player.drop_item(location, player_target)
             elif player_action == 'examine':
+                player_target_obj = game.get_item(player_target)
                 action_time = 1
                 valid_move = game.player.examine_item(
                     player_target, player_target_obj)
