@@ -10,13 +10,10 @@
       },
       "items": [
         "toonie",
-        "sprite",
-        "toonie",
-        "coca cola",
-        "red bull",
-        "notebook"
+        "five dollars"
       ],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 2,
@@ -30,7 +27,8 @@
       "items": [],
       "given_items": [
         "red bull"
-      ]
+      ],
+      "npc": []
     },
     {
       "id": 3,
@@ -42,7 +40,8 @@
         "east": 28
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 4,
@@ -55,20 +54,21 @@
         "inside mclennan": 13,
         "to food trucks": 6
       },
-      "items": ["toonie"],
-      "given_items": []
+      "items": [],
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 6,
       "name": "At Food Trucks",
-      "brief_description": "You can buy some coffee or buy a donut both for ",
-      "long_description": "You have insuffient funds",
+      "brief_description": "You can buy a meal",
+      "long_description": "You are the the best food trucks on campus, you can use a five dollars to buy a meal if you please.",
       "available_directions": {
-        "north": 3,
-        "south": 7
+        "back": 4
       },
       "items": [],
-      "given_items": []
+      "given_items": ["meal"],
+      "npc": []
     },
     {
       "id": 7,
@@ -77,10 +77,11 @@
       "long_description": "Outside Bahen, the building’s classic architecture meets modern student life. The entrance invites you in with promises of activity and hidden secrets.",
       "available_directions": {
         "inside": 8,
-        "north": 6
+        "north": 4
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 8,
@@ -94,11 +95,8 @@
       },
       "items": [],
       "given_items": [
-        "red bull",
-        "coca cola",
-        "nestea",
-        "sprite"
-      ]
+      ],
+      "npc": []
     },
     {
       "id": 9,
@@ -109,7 +107,21 @@
         "to Lobby": 8
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": ["Prof. Saida"]
+    },
+    {
+      "id": 12,
+      "name": "Infront of Bahen and Mclennan",
+      "brief_description": "You are inside McLennan, ",
+      "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
+      "available_directions": {
+        "to mclennan": 13,
+        "to bahen": 8
+      },
+      "items": [],
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 13,
@@ -122,9 +134,10 @@
         "outside east entrance": 15
       },
       "items": [
-        "notebook"
+        "cat"
       ],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 14,
@@ -137,7 +150,8 @@
         "west": 12
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 15,
@@ -150,7 +164,8 @@
         "west": 14
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 22,
@@ -161,7 +176,8 @@
         "outside": 15
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 17,
@@ -173,7 +189,8 @@
         "south": 19
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 18,
@@ -185,7 +202,8 @@
         "east": 17
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 20,
@@ -193,15 +211,12 @@
       "brief_description": "You are now inside Gerstein",
       "long_description": "You are now inside Gerstein and a guard stops you! He says he remembers you from the last time that you were here, when you left a mess. You know that your charger is here, so what will you do?",
       "available_directions": {
-        "outside": 18,
-        "speak to the guard": 101
+        "outside": 18
       },
-      "items": [
-        "crumpled paper"
-      ],
-      "given_items": []
+      "items": [],
+      "given_items": [],
+      "npc": ["security guard"]
     },
-
     {
       "id": 19,
       "name": "In front of University College",
@@ -212,7 +227,8 @@
         "inside university college": 21
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 21,
@@ -223,7 +239,8 @@
         "outside": 19
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 16,
@@ -236,11 +253,12 @@
         "south": 14
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 23,
-      "name": "middle",
+      "name": "Middle",
       "brief_description": "You now have Sidney Smith to the East, and MyHall is far north",
       "long_description": "Located at a central junction of campus landmarks, you find yourself poised between the vibrant energy of Sidney Smith and the quiet resolve of the surroundings.",
       "available_directions": {
@@ -249,18 +267,20 @@
         "south": 16
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 24,
       "name": "Inside of Sidney Smith",
-      "brief_description": "You are now directly infront of Sidney Smith",
-      "long_description": "Inside Sidney Smith, the space is infused with history and modern touches, creating a unique blend of academic ambiance.",
+      "brief_description": "You are now directly inside of Sidney Smith, there is a secret door that requires a pass",
+      "long_description": "Inside Sidney Smith, you see the best coffee place on campus right as you walk in, along with a secret door. But it looks like you need some sort of pass to access it.",
       "available_directions": {
         "back outside": 23
       },
       "items": [],
-      "given_items": []
+      "given_items": ["usb drive"],
+      "npc": []
     },
     {
       "id": 25,
@@ -273,7 +293,8 @@
         "south": 23
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 27,
@@ -285,7 +306,8 @@
         "outside through north exit": 28
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": ["Alex Carter"]
     },
     {
       "id": 28,
@@ -298,7 +320,8 @@
         "west": 3
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 29,
@@ -312,7 +335,8 @@
         "south": 23
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 30,
@@ -325,7 +349,8 @@
       "items": [
         "backpack"
       ],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 31,
@@ -337,7 +362,8 @@
         "west": 29
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 32,
@@ -349,7 +375,8 @@
         "to study table": 33
       },
       "items": [],
-      "given_items": []
+      "given_items": [],
+      "npc": []
     },
     {
       "id": 33,
@@ -362,8 +389,8 @@
       },
       "items": [],
       "given_items": [
-        "usb drive"
-      ]
+      ],
+      "npc": ["Tired Student"]
     },
     {
       "id": 34,
@@ -385,9 +412,8 @@
       "available_directions": {
         "leave counter": 34
       },
-      "items": [],
+      "items": ["lucky mug"],
       "given_items": [
-        "lucky mug"
       ]
     }
   ],
@@ -396,30 +422,30 @@
       "name" : "usb drive",
       "full_name" : "your usb drive",
       "description" : "Your missing USB drive, containing the only copy of your project.",
-      "start_position" : 33,
+      "start_position" : 24,
       "target_position" : 1,
       "target_points" : 10
     },
     {
       "name" : "backpack",
       "full_name" : "your backpack",
-      "description" : "Your missing backpack. Now you should be able to carry more things!",
+      "description" : "Your missing backpack. It's empty :( But at least now you should be able to carry more things!",
       "start_position" : 30,
       "target_position" : 1,
       "target_points" : 10
     },
     {
       "name" : "toonie",
-      "full_name" : "a shiny toonie",
+      "full_name" : "a toonie",
       "description" : "A shiny toonie. Useful for vending machines!",
       "start_position" : 1,
       "target_position" : 2,
       "target_points" : 0
     },
     {
-      "name" : "random student ID",
-      "full_name" : "a random student id",
-      "description" : "A strangers student ID... Alex Carter... Wonder what this could be used for...",
+      "name" : "student id",
+      "full_name" : "a student id",
+      "description" : "A strangers student ID... Alex Carter... New College... Wonder what this could be used for...",
       "start_position" : 30,
       "target_position" : 27,
       "target_points" : 0
@@ -427,14 +453,14 @@
     {
       "name" : "notebook",
       "full_name" : "a notebook",
-      "description" : "A notebook filled with notes",
-      "start_position" : 13,
-      "target_position" : 0,
+      "description" : "In the first semester, we would gathered as one,\nFirst-year students filled seats left and right.\nFind this place, where first-years reside.\nOnce you pick up, your quest's not through,\nA lost ID is waiting for you.\nWhere should you go? ",
+      "start_position" : 9,
+      "target_position" : 30,
       "target_points" : 0
     },
     {
       "name" : "lucky mug",
-      "full_name" : "your lucky UofT mug",
+      "full_name" : "your lucky mug",
       "description" : "Your lucky UofT mug, essential for your caffeine-fueled success!",
       "start_position" : 35,
       "target_position" : 1,
@@ -442,94 +468,86 @@
     },
     {
       "name" : "laptop charger",
-      "full_name" : "a laptop charger",
+      "full_name" : "your laptop charger",
       "description" : "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
-      "start_position" : 7,
-      "target_position" : 8,
+      "start_position" : 20,
+      "target_position" : 1,
       "target_points" : 10
     },
     {
       "name" : "laptop",
       "full_name" : "your laptop",
-      "description" : "Your laptop that you used to work on your assignment! You better submit in time!",
+      "description" : "Your laptop that you used to work on your assignment! But Oh NO it's dead, you will need your laptop charger.",
       "start_position" : 27,
       "target_position" : 1,
       "target_points" : 10
     },
     {
       "name" : "red bull",
-      "full_name" : "a can of Red Bull",
+      "full_name" : "a Red Bull",
       "description" : "A Red Bull from the vending machine to help you focus.",
-      "start_position" : 2,
-      "target_position" : 1,
+      "start_position" : 1,
+      "target_position" : 2,
       "target_points" : 10
     },
     {
       "name" : "crumpled paper",
-      "full_name" : "some crumpled paper",
-      "description" : "some crumpled paper",
+      "full_name" : "a crumpled paper",
+      "description" : "In the most crowded study spot around,\nWhere pages turn and pens abound,\nGo back to where you last took a seat,\nA tired student you’re sure to meet.",
       "start_position" : 0,
       "target_position" : 0,
       "target_points" : 10
     },
     {
-      "name" : "coca cola",
-      "full_name" : "a bottle of Coca Cola",
-      "description" : "A Coca Cola from the vending machine!",
-      "start_position" : 2,
-      "target_position" : 1,
-      "target_points" : 10
-    },
-    {
-      "name" : "nestea",
-      "full_name" : "a bottle of Nestea",
-      "description" : "A Nestea from the vending machine! These are rare to find these days...",
-      "start_position" : 2,
-      "target_position" : 1,
-      "target_points" : 10
-    },
-    {
-      "name" : "sprite",
-      "full_name" : "a bottle of Sprite",
-      "description" : "A Sprite from the vending machine!",
-      "start_position" : 2,
-      "target_position" : 1,
-      "target_points" : 10
-    },
-    {
       "name" : "pass",
-      "full_name" : "a pass that lets you through a door",
+      "full_name" : "a pass",
       "description" : "a pass that may or may not unlock a secret door at Sidney Smith",
-      "start_position" : 2,
-      "target_position" : 1,
+      "start_position" : 33,
+      "target_position" : 24,
       "target_points" : 10
     },
     {
       "name" : "meal",
       "full_name" : "",
-      "description" : "a meal from the pink food truck",
+      "description" : "a meal",
       "start_position" : 6,
       "target_position" : 20,
+      "target_points" : 10
+    },
+    {
+      "name" : "cat",
+      "full_name" : "a cat",
+      "description" : "Prof. Sadia's lost cat",
+      "start_position" : 13,
+      "target_position" : 9,
+      "target_points" : 10
+    },
+    {
+      "name": "five dollars",
+      "full_name": "a five dollar bill",
+      "description" : "A five dollar bill that you can use to buy something, maybe a meal",
+      "start_position" : 1,
+      "target_position" : 6,
       "target_points" : 10
     }
   ],
   "npcs": [
     {
       "name" : "Tired Student",
-      "description": "A tired student who looks exausted after studying all night.",
-      "location_id": 1,
-      "quest_message": "Zzzzzzzzzzz.... R... Red... Bull...",
-      "quest_complete_message": "Oh my goodness. Thank you so much for the Red Bull! Now I'll be able to finish my work.",
+      "description": "A tired student who looks exhausted after studying all night.",
+      "location_id": 33,
+      "quest_message": "Zzzzzzzzzzz.... Energy... Drink...kk",
+      "quest_complete_message": "Oh my goodness. Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts maybe try going to the cafe. Also I think this pass may be helpful in your search.",
       "required_items": ["red bull", "sprite", "coca cola"],
       "reward": "pass"
     },
     {
       "name" : "Prof. Sadia",
-      "description": "Prof. Sadia knows where your bag is but you must buy her a red bull before she can tell you where your items are",
+      "description": "Prof Sadia will help you find your bag only if you find her cat",
       "location_id": 9,
-      "quest_message": "I would really like to find my cat...",
-      "quest_complete_message": "Wow! Thank you so much for this redbull. Here is this notebook, it should let you know where your belongings are",
-      "required_items": ["red bull"],
+      "quest_message": "Oh! I recognizes you, your the one who forgot their belongings, I can help you find them if you are able to find my cat",
+      "quest_complete_message": "Wow! Thank you so much for my cat! Here is this notebook, it should let you know where your belongings are",
+      "required_items": ["cat"],
       "reward": "notebook"
     },
     {
@@ -540,6 +558,15 @@
       "quest_complete_message": "Thanks for the meal! Here is what I have left of your belongings... A crumpled paper, and a laptop charger",
       "required_items": ["meal"],
       "reward": "crumpled paper, laptop charger"
+    },
+    {
+      "name" : "Alex Carter",
+      "description": "A student in New College, who is looking for his ID but he also has your laptop",
+      "location_id": 27,
+      "quest_message": "Hey, I see that you now realize that I have your laptop, but I will only give it to you if you can find my student ID",
+      "quest_complete_message": "Thanks so much! I will now give you your laptop. As for the rest of your belongings maybe go to Gerstein",
+      "required_items": ["student id"],
+      "reward": "laptop"
     }
   ]
 }
