@@ -177,14 +177,6 @@ class Player:
         Precondition:
         - not item_obj and item_name == item_obj.name
         """
-        # if item_name not in self.inventory:
-        #     # Attempt fuzzy matching in the player's inventory.
-        #     corrected = difflib.get_close_matches(
-        #         item_name, self.inventory, n=1, cutoff=7)
-        #     if corrected:
-        #         corrected_item = corrected[0]
-        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-        #         item_name = corrected_item
 
         if item_name not in self.inventory:
             print(self._get_random_message(
@@ -209,13 +201,7 @@ class Player:
         """Remove an item from the player's inventory. Return true if the player sucessfully dropped the item.
         Return false otherwise.
         """
-        # if item_name not in self.inventory:
-        #     corrected = difflib.get_close_matches(
-        #         item_name, self.inventory, n=1, cutoff=0.7)
-        #     if corrected:
-        #         corrected_item = corrected[0]
-        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-        #         item_name = corrected_item
+
         if item_name in self.inventory:
             self.inventory.remove(item_name)
             current_location.items.append(item_name)
@@ -235,15 +221,6 @@ class Player:
         if direction in current_location.available_directions:
             return current_location.available_directions[direction]
         else:
-            # possible_dirs = list(current_location.available_directions.keys())
-            # corrected = difflib.get_close_matches(
-            #     direction, possible_dirs, n=1, cutoff=0.7)
-            # if corrected:
-            #     corrected_direction = corrected[0]
-            #     print(
-            #         f"Interpreting '{direction}' as '{corrected_direction}'.")
-            #     return current_location.available_directions[corrected_direction]
-            # else:
             print("Looks like that isn't a valid direction...")
             return current_location.id_num
 
@@ -252,13 +229,6 @@ class Player:
         picked up the item. Return false otherwise.
         """
 
-        # if item_name not in current_location.items:
-        #     corrected = difflib.get_close_matches(
-        #         item_name, current_location.items, n=1, cutoff=0.7)
-        #     if corrected:
-        #         corrected_item = corrected[0]
-        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-        #         item_name = corrected_item
         if item_name in current_location.items:
 
             self.inventory.append(item_name)  # add to inventory
@@ -291,13 +261,7 @@ class Player:
         Precondition:
         - not item_obj and item_name == item_obj.name
         """
-        # if item_name not in self.inventory:
-        #     corrected = difflib.get_close_matches(
-        #         item_name, self.inventory, n=1, cutoff=0.7)
-        #     if corrected:
-        #         corrected_item = corrected[0]
-        #         print(f"Interpreting '{item_name}' as '{corrected_item}'.")
-        #         item_name = corrected_item
+
         if item_name in self.inventory:
             print(item_obj.description)
             return True
@@ -412,10 +376,7 @@ class Npc:
                 player.quests.remove(self.quest_messages[0])
 
 
-# Note: Other entities you may want to add, depending on your game plan:
-# - Puzzle class to represent special locations (could inherit from Location class if it seems suitable)
-# - Player class
-# etc.
+
 
 
 if __name__ == "__main__":

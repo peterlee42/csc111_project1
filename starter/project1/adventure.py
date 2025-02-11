@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 # My imports
-# import difflib
+import difflib
 from datetime import time
 
 from game_entities import Location, Item, Player, Npc
@@ -42,18 +42,6 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
         if command.startswith(valid_action + ' '):
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
-
-    # words = command.split()
-
-    # user_input = words[0].strip().lower()
-    # matches = difflib.get_close_matches(
-    #     user_input, valid_actions, n=1, cutoff=0.7)
-    # if matches:
-    #     print(f"Interpreting '{user_input}' as '{matches[0]}'.")
-    #     target = " ".join(words[1:]) if len(words) > 1 else ""
-    #     return matches[0], target
-    # else:
-    return command, ""
 
 
 @dataclass
