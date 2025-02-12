@@ -46,13 +46,13 @@
     },
     {
       "id": 4,
-      "name": "Infront of Trucks",
+      "name": "In front of Trucks",
       "brief_description": "You're in front of the coffee and pink food trucks, with McLennan east of you",
       "long_description": "The aroma from the food trucks fills the air as you stand in front of them. The building of McLennan to your east adds a touch of academia to the bustling scene.",
       "available_directions": {
         "south": 7,
         "north": 3,
-        "inside mclennan": 13,
+        "to McLennan": 13,
         "to food trucks": 6
       },
       "items": [],
@@ -90,7 +90,7 @@
       "brief_description": "You are inside Bahen Lobby",
       "long_description": "The Bahen Lobby is spacious and welcoming, with soft lighting and quiet corners that offer a moment of respite in a busy day.",
       "available_directions": {
-        "to csssu lounge": 9,
+        "to CSSU lounge": 9,
         "outside using front door": 7,
         "outside using side door": 12
       },
@@ -109,11 +109,11 @@
       },
       "items": [],
       "given_items": [],
-      "npcs": ["Prof. Saida"]
+      "npcs": ["Prof. Sadia"]
     },
     {
       "id": 12,
-      "name": "Infront of Bahen and Mclennan",
+      "name": "Infront of Bahen and McLennan",
       "brief_description": "You are south of mclennan and east of bahen",
       "long_description": "You are between mclennan and bahen, with the side door door to bahen to your west",
       "available_directions": {
@@ -196,8 +196,8 @@
     },
     {
       "id": 18,
-      "name": "Infront Gerstein",
-      "brief_description": "You are now directly infont of Gerstein",
+      "name": "In front Gerstein",
+      "brief_description": "You are now directly in font of Gerstein",
       "long_description": "In front of Gerstein, you are captivated by the building's stately facade and the subtle hints of its storied history.",
       "available_directions": {
         "inside gerstein": 20,
@@ -430,7 +430,7 @@
       "description" : "A shiny toonie. Useful for vending machines!",
       "start_position" : 1,
       "target_position" : 2,
-      "target_points" : 0
+      "target_points" : 10
     },
     {
       "name" : "student id",
@@ -438,7 +438,7 @@
       "description" : "A strangers student ID... Alex Carter... New College... Wonder what this could be used for...",
       "start_position" : 30,
       "target_position" : 27,
-      "target_points" : 0
+      "target_points" : 10
     },
     {
       "name" : "notebook",
@@ -446,7 +446,7 @@
       "description" : "In the first semester, we would gathered as one,\nFirst-year students filled seats left and right.\nFind this place, where first-years reside.\nOnce you pick up, your quest's not through,\nA lost ID is waiting for you.\nWhere should you go? ",
       "start_position" : 9,
       "target_position" : 30,
-      "target_points" : 0
+      "target_points" : 10
     },
     {
       "name" : "lucky mug",
@@ -476,16 +476,16 @@
       "name" : "red bull",
       "full_name" : "a Red Bull",
       "description" : "A Red Bull from the vending machine to help you focus.",
-      "start_position" : 1,
-      "target_position" : 2,
+      "start_position" : 2,
+      "target_position" : 33,
       "target_points" : 10
     },
     {
       "name" : "crumpled paper",
       "full_name" : "a crumpled paper",
       "description" : "In the most crowded study spot around,\nWhere pages turn and pens abound,\nGo back to where you last took a seat,\nA tired student you’re sure to meet.",
-      "start_position" : 0,
-      "target_position" : 0,
+      "start_position" : 20,
+      "target_position" : 32,
       "target_points" : 10
     },
     {
@@ -525,7 +525,7 @@
     {
       "name" : "Tired Student",
       "description": "A tired student who looks exhausted after studying all night.",
-      "location_id": 1,
+      "location_id": 33,
       "quest_message": "Zzzzzzzzzzz.... Energy... Drink...kk",
       "quest_complete_message": "Oh my goodness. Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts maybe try going to the cafe. Also I think this pass may be helpful in your search.",
       "required_items": ["Red Bull"],

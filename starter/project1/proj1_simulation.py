@@ -126,9 +126,9 @@ if __name__ == "__main__":
 
     # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
     # Create a list of all the commands needed to walk through your game to win it
-    win_walkthrough = ["pick up toonie", "leave room", "solve puzzle", "use toonie", "solve puzzle", "go to Robarts",
-                       "solve puzzle", "check table", "pick up usb driver", "go back", "go upstairs", "talk to barista",
-                       "pick coffe mug", "go downstairs", "go home", "solve puzzle", "finish assignment"
+    win_walkthrough = ["pick up toonie", "pick up five dollars", "go out of dorm", "use toonie", "go outside", "go south",
+                       "go to food trucks", "use five dollars", "go back", "go inside mclennan", "pick up cat", "go outside west entrance",
+                       "go to bahen", "go to CSSU lounge", "go home", "solve puzzle", "finish assignment"
                        ]
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = []
