@@ -10,10 +10,11 @@
       },
       "items": [
         "toonie",
-        "five dollar bill"
+        "five dollar bill",
+        "Pocoyo"
       ],
       "given_items": [],
-      "npcs": ["Tired Student"]
+      "npcs": ["Prof Sadia"]
     },
     {
       "id": 2,
@@ -52,7 +53,7 @@
       "available_directions": {
         "south": 7,
         "north": 3,
-        "to McLennan": 13,
+        "inside McLennan": 13,
         "to food trucks": 6
       },
       "items": [],
@@ -62,7 +63,7 @@
     {
       "id": 6,
       "name": "At Food Trucks",
-      "brief_description": "You can buy a meal",
+      "brief_description": "You are in front of the food trucks.",
       "long_description": "You are the the best food trucks on campus, you can use a five dollar bill to buy a meal if you please.",
       "available_directions": {
         "back": 4
@@ -77,7 +78,7 @@
       "brief_description": "You are infront of Bahen",
       "long_description": "Outside Bahen, the large 8 floor building and primarily used by the Department of Computer Science. There's usually many students going in and out, but it seems oddly empty at this hour...",
       "available_directions": {
-        "inside": 8,
+        "inside Bahen": 8,
         "north": 4
       },
       "items": [],
@@ -103,9 +104,9 @@
       "id": 9,
       "name": "CSSU Lounge",
       "brief_description": "Inside the CSSU Lounge, a cozy space with drinks and snacks available.",
-      "long_description": "You step into the CSSU Lounge, a relaxed hub for students to unwind.\n few students are chatting at a table, their laptops open. Nearby, a shelf holds an assortment of snacks.\nAs you glance around, you spot Prof Sadia, who greets you with a warm smile.",
+      "long_description": "You step into the CSSU Lounge, a relaxed hub for students to unwind.\nA few students are chatting at a table, their laptops open. Nearby, a shelf holds an assortment of snacks.\nAs you glance around, you spot Prof Sadia, who greets you with a warm smile.",
       "available_directions": {
-        "lobby": 8
+        "to lobby": 8
       },
       "items": [],
       "given_items": [],
@@ -131,11 +132,11 @@
       "brief_description": "You are inside McLennan, ",
       "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
       "available_directions": {
-        "outside south entrance": 12,
-        "outside west entrance": 4
+        "to south exit": 12,
+        "to west exit": 4
       },
       "items": [
-        "cat"
+        "Pocoyo"
       ],
       "given_items": [],
       "npcs": []
@@ -518,16 +519,16 @@
     {
       "name" : "Tired Student",
       "dialogue": "Zzzzzzzzzzz.... Energy... Drink...kk",
-      "location_id": 1,
+      "location_id": 33,
       "quest_message": "Bring tired student an energy drink.",
       "quest_complete_message": "Oh my goodness! Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts. Maybe try going to the cafe. Also, I think this pass may be helpful in your search. Also, give this note to the Barista.",
       "required_items": ["Red Bull"],
       "reward": ["admin pass"]
     },
     {
-      "name" : "Prof. Sadia",
+      "name" : "Prof Sadia",
       "dialogue": "Oh! I recognize you, your the one who forgot their belongings, I can help you find them if you are able to find my cat named Pocoyo!",
-      "location_id": 9,
+      "location_id": 1,
       "quest_message": "Find and bring Prof. Sadia's cat Pocoyo.",
       "quest_complete_message": "Wow! Thank you so much for my cat! Here is this notebook, it should let you know where your belongings are",
       "required_items": ["Pocoyo"],

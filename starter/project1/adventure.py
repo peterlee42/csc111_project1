@@ -25,6 +25,8 @@ from typing import Optional
 # My imports
 from datetime import time
 
+from hypothesis import target
+
 from game_entities import Location, Item, Player, Npc, LocationEntities
 from proj1_event_logger import Event, EventList
 
@@ -211,11 +213,14 @@ class AdventureGame:
             prev_command, self.player.available_actions)
 
         if prev_action == 'pick up':
-            self.player.inventory.remove(prev_target)
-            prev_location.location_entities.items.append(prev_target)
+            prev_item_obj = self.get_item(prev_target)
+
+            self.player.inventory.remove(prev_item_obj.name)
+            prev_location.location_entities.items.append(prev_item_obj.name)
         elif prev_action == 'drop':
-            self.player.inventory.append(prev_target)
-            prev_location.location_entities.items.remove(prev_target)
+            prev_item_obj = self.get_item(prev_target)
+            self.player.inventory.append(prev_item_obj.name)
+            prev_location.location_entities.items.remove(prev_item_obj.name)
         elif prev_action == 'use':
             prev_item_obj = self.get_item(prev_target)
 
@@ -425,7 +430,9 @@ if __name__ == "__main__":
 
             elif player_action == 'interact':
                 target_npc_obj = game.get_npc(player_target)
-                rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items])
+                rewarded_points = 0
+                if target_npc_obj:
+                    rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items])
                 valid_move = game.player.interact(location.id_num, target_npc_obj, rewarded_points)
 
                 action_time = 5
