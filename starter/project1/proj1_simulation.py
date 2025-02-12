@@ -21,9 +21,12 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from __future__ import annotations
+from datetime import time
 from proj1_event_logger import Event, EventList
 from adventure import AdventureGame
 from game_entities import Location
+
+from adventure import TimeWindow, parse_command
 
 
 class AdventureGameSimulation:
@@ -36,7 +39,8 @@ class AdventureGameSimulation:
     _events: EventList
 
     # TODO: Copy/paste your code from ex1_simulation below, and make adjustments as needed
-    def __init__(self, game_data_file: str, initial_location_id: int, commands: list[str]) -> None:
+    def __init__(self, game_data_file: str, player_message_file: str, initial_location_id: int, time_window: TimeWindow,
+                 commands: list[str]) -> None:
         """Initialize a new game simulation based on the given game data, that runs through the given commands.
 
         Preconditions:
@@ -44,14 +48,13 @@ class AdventureGameSimulation:
         - all commands in the given list are valid commands at each associated location in the game
         """
         self._events = EventList()
-        self._game = AdventureGame(game_data_file, initial_location_id)
+        self._game = AdventureGame(game_data_file, player_message_file, initial_location_id, time_window)
 
         # TODO: Add first event (initial location, no previous command)
         # Hint: self._game.get_location() gives you back the current location
         start_location = self._game.get_location()
         self._events.add_event(
-            # not completely sure how this works
-            Event(start_location.id_num, start_location.long_description))
+                Event(start_location.id_num, start_location.descriptions[0]))
 
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
@@ -70,28 +73,56 @@ class AdventureGameSimulation:
         # Hint: current_location.available_commands[command] will return the next location ID
         # which executing <command> while in <current_location_id> leads to
 
+        menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
+        location = current_location
         for command in commands:
-            next_location_id = current_location.available_commands[command]
-            new_location = self._game.get_location()
-            self._game.set_location(next_location_id)
-            # not sure if this is right
-            new_event = Event(new_location.id_num,
-                              new_location.long_description, command)
-            self._events.add_event(new_event)
-            current_location = new_location
+            parsed_command = parse_command(command, list(
+                self._game.player.available_actions))
+
+            player_action, player_target = parsed_command
+            if player_action not in menu:
+                action_time = 0
+                if player_action == 'go':
+
+                    result = self._game.player.go(location, player_target)
+
+                    # add to time if it is a new location
+                    if self._game.current_location_id != result:
+                        action_time = 6
+
+                    # Change to new location (or the same)current_location.available_commands[command]
+                    self._game.current_location_id = result
+
+                    location = self._game.get_location(result)
+                elif player_action == 'pick up':
+                    action_time = 2
+                elif player_action == 'use':
+                    action_time = 3
+                elif player_action == 'drop':
+                    action_time = 2
+                elif player_action == 'examine':
+                    action_time = 2
+                elif player_action == 'interact':
+                    action_time = 5
+
+                self._game.add_minutes(action_time)
+                self._events.add_event(Event(location.id_num, location.descriptions[0]), command,
+                                       self._game.time_window.current_time)
 
     def get_id_log(self) -> list[int]:
         """
         Get back a list of all location IDs in the order that they are visited within a game simulation
         that follows the given commands.
 
-        >>> sim = AdventureGameSimulation('sample_locations.json', 1, ["go east"])
+        >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
+        >>> sim = AdventureGameSimulation('game_data.json', 'player_messages.json', 1, sim_time_window, ["go to lobby", "go to dorm"])
         >>> sim.get_id_log()
-        [1, 2]
+        [1, 2, 1]
 
-        >>> sim = AdventureGameSimulation('sample_locations.json', 1, ["go east", "go east", "buy coffee"])
+        >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
+        >>> sim = AdventureGameSimulation('game_data.json', 'player_messages.json', 1, sim_time_window, ["pick up toonie", "score", "go to lobby", "use toonie", "go to dorm", "interact tired student", "interact tired student"])
         >>> sim.get_id_log()
-        [1, 2, 3, 3]
+        [1, 1, 2, 2, 1, 1, 1]
         """
 
         # Note: We have completed this method for you. Do NOT modify it for ex1.
@@ -118,22 +149,28 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
 
     # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
+
+    game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
+
     # Create a list of all the commands needed to walk through your game to win it
-    win_walkthrough = ["pick up toonie", "pick up five dollars", "go out of dorm", "use toonie", "go outside", "go south",
-                       "go to food trucks", "use five dollars", "go back", "go inside mclennan", "pick up cat", "go outside west entrance",
+    win_walkthrough = ["pick up toonie", "pick up five dollars", "go out of dorm", "use toonie", "go outside",
+                       "go south",
+                       "go to food trucks", "use five dollars", "go back", "go inside mclennan", "pick up pocoyo",
+                       "go outside west entrance",
                        "go to bahen", "go to CSSU lounge", "go home", "solve puzzle", "finish assignment"
                        ]
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = []
     # Uncomment the line below to test your walkthrough
-    win_sim = AdventureGameSimulation('game_data.json', 1, win_walkthrough)
+    win_sim = AdventureGameSimulation('game_data.json', 'player_messages.json', 1, game_time_window, win_walkthrough)
     assert expected_log == win_sim.get_id_log()
 
     # Create a list of all the commands needed to walk through your game to reach a 'game over' state
@@ -141,7 +178,7 @@ if __name__ == "__main__":
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = [-1]
     # Uncomment the line below to test your demo
-    lose_sim = AdventureGameSimulation('game_data.json', 1, lose_demo)
+    lose_sim = AdventureGameSimulation('game_data.json', 'player_messages.json', 1, game_time_window, lose_demo)
     assert expected_log == lose_sim.get_id_log()
 
     # TODO: Add code below to provide walkthroughs that show off certain features of the game

@@ -116,7 +116,7 @@ class Npc:
 
     Instance Attributes:
         - name: the name of the NPC
-        - description: the description of the NPC
+        - dialgoue: the dialogue with the NPC
         - location_id: the location where the NPC is found
         - quest_messages: a tuple containing the quest message and the quest completion message
         - required_items: A list of items required to complete the quest.
@@ -125,7 +125,7 @@ class Npc:
 
     Representation Invariants:
         - self.name != ''
-        - self.description != ''
+        - self.dialogue != ''
         - self.quest_messages[0] != ''
         - self.quest_messages[1] != ''
         - self.required_items != []
@@ -133,11 +133,11 @@ class Npc:
     """
 
     name: str
-    description: str
+    dialogue: str
     location_id: int
     quest_messages: tuple[str, str]
     required_items: list[str]
-    reward: str
+    reward: list[str]
     is_quest_completed: bool = False
 
 
@@ -204,8 +204,9 @@ class Player:
             if not target:
                 return random_message
             else:
-                formatted_message = random_message.format(target=target.title())
+                formatted_message = random_message.format(target=target)
                 return formatted_message[0].upper() + formatted_message[1:]
+
         raise ValueError('This message type does not exist.')
 
     def use(self, current_location: Location, item_obj: Optional[Item]) -> bool:
@@ -223,17 +224,18 @@ class Player:
             item_name = item_obj.name
             print(self._get_random_message('item_used', item_name))
 
-            random_index = randrange(len(current_location.location_entities.given_items))
-            given_item = current_location.location_entities.given_items[random_index]
+            for item in current_location.location_entities.given_items:
+                self.inventory.append(item)
+                print(f'You received: {item}')
+
             self.score += item_obj.target_points
             self.inventory.remove(item_name)
-            self.inventory.append(given_item)
-            print(f'You received: {given_item}')
+
             return True
         else:
             item_name = item_obj.name
             print(self._get_random_message(
-                'item_cannot_be_used'), item_name)
+                'item_cannot_be_used', item_name))
             return False
 
     def drop_item(self, current_location: Location, item_name: str) -> bool:
@@ -252,7 +254,7 @@ class Player:
 
                 return True
 
-        print(self._get_random_message('item_does_not_exist', item_name))
+        print(self._get_random_message('item_does_not_exist'))
         return False
 
     def go(self, current_location: Location, direction: str) -> int:
@@ -282,7 +284,7 @@ class Player:
                 print(self._get_random_message('item_picked_up', loc_item))
                 return True
 
-        print(self._get_random_message('item_does_not_exist', item_name))
+        print(self._get_random_message('item_does_not_exist'))
         return False
 
     def display_inventory(self) -> None:
@@ -321,48 +323,54 @@ class Player:
             for item in sorted_quests:
                 print('- ', item)
 
-    def interact(self, current_location_id: int, npc: Npc) -> bool:
+    def interact(self, current_location_id: int, npc: Npc, rewarded_points: int) -> bool:
         """Handle interaction with the NPC. Return True if interaction is successful, False otherwise."""
-        if current_location_id == npc.location_id:
-            if npc.is_quest_completed:
-                print(f"{npc.name} says: '{npc.quest_messages[1]}'")
-                return True
-            elif npc.quest_messages[0] in self.quests:
-                is_quest_complete = self.complete_quest(npc)
-                if is_quest_complete:
-                    print(
-                        f"{npc.name} says: '{npc.quest_messages[1]}'\nYou received: {npc.reward}")
-                    return True
-                else:
-                    print(
-                        f"You have already spoken to {npc.name}.\nFinish the quest and interact again when completed.")
-                    return False
-            else:
-                print(f"{npc.name} says: '{npc.quest_messages[0]}'")
-                print("Finish the quest and interact again when completed.")
-                self.quests.append(npc.quest_messages[0])
-                return True
-        print("Doesn't seem like that person is here...")
-        return False
+        if current_location_id != npc.location_id:
+            print("Doesn't seem like that person is here...")
+            return False
 
-    def complete_quest(self, npc: Npc) -> bool:
-        """Check if the player has all the required items to complete the quest."""
-        if all(item in self.inventory for item in npc.required_items):
-            npc.is_quest_completed = True
-            self.inventory.append(npc.reward)  # Give the reward
-            self.score += 15  # Add score (assuming a fixed value)
-
-            for required_item in npc.required_items:
-                self.inventory.remove(required_item)
-
-            self.quests.remove(npc.quest_messages[0])  # Remove the quest
+        elif npc.quest_messages[0] not in self.quests:
+            self.quests.append(npc.quest_messages[0])
+            print(f"{npc.name} says: '{npc.dialogue}'\n")
+            print('Finish the quest and interact again when completed.')
             return True
+
+        elif npc.is_quest_completed:
+            print(f"{npc.name} says: '{npc.quest_messages[1]}'")
+            return True
+
+        elif self.complete_quest(npc, rewarded_points):
+            print(f"{npc.name} says: '{npc.quest_messages[1]}'")
+            print("You received:")
+            for item in npc.reward:
+                print('-', item)
+            self.quests.append(npc.quest_messages[0])
+            return True
+
+        print('Finish the quest and interact again when completed.')
         return False
+
+    def complete_quest(self, npc: Npc, rewarded_points: int) -> bool:
+        """Check if the player has all the required items to complete the quest."""
+        for item in npc.required_items:
+            if item not in self.inventory:
+                return False
+
+        npc.is_quest_completed = True
+        for reward in npc.reward:
+            self.inventory.append(reward)  # Give the reward
+        self.score += rewarded_points
+        for required_item in npc.required_items:
+            self.inventory.remove(required_item)
+
+        self.quests.remove(npc.quest_messages[0])  # Remove the quest
+        return True
 
     def undo_interaction(self, npc: Npc) -> None:
         """Undo the last interaction with the NPC."""
         if npc.is_quest_completed:
-            self.inventory.remove(npc.reward)
+            for reward in npc.reward:
+                self.inventory.remove(reward)
             self.score -= 15  # Remove points
 
             for required_item in npc.required_items:

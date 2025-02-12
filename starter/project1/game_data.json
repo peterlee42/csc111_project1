@@ -4,13 +4,13 @@
       "id": 1,
       "name": "Your Dorm Room",
       "brief_description": "You are in your dorm room at Chestnut Residence.",
-      "long_description": "You wake up in a panic in your dorm room at Chestnut Residence. Your desk is cluttered with notes, empty coffee cups. You need your USB drive, your laptop charger, your laptop and your lucky UofT mug! You should retrace your steps! You also know you can’t focus without a drink to keep you energized.",
+      "long_description": "You wake up in a panic in your dorm room at Chestnut Residence.\nYour desk is cluttered with notes, empty coffee cups. You need your USB drive, your laptop charger, your laptop and your lucky UofT mug!\nYou should retrace your steps!",
       "available_directions": {
-        "out of dorm": 2
+        "to lobby": 2
       },
       "items": [
         "toonie",
-        "five dollars"
+        "five dollar bill"
       ],
       "given_items": [],
       "npcs": ["Tired Student"]
@@ -22,7 +22,7 @@
       "long_description": "You are now in the lobby of Chestnut Residence, you see a vending machine and an exit out of the residence to go towards the campus",
       "available_directions": {
         "outside": 3,
-        "back to dorm": 1
+        "to dorm": 1
       },
       "items": [],
       "given_items": [
@@ -33,7 +33,7 @@
     {
       "id": 3,
       "name": "Outside Chestnut",
-      "brief_description": "You are outside Chestnut residence",
+      "brief_description": "You are outside Chestnut Residence",
       "long_description": "Stepping outside, you are greeted by the fresh air and the sprawling campus. Paths lead in multiple directions, hinting at the adventures that await.",
       "available_directions": {
         "south": 4,
@@ -46,8 +46,8 @@
     },
     {
       "id": 4,
-      "name": "In front of Trucks",
-      "brief_description": "You're in front of the coffee and pink food trucks, with McLennan east of you",
+      "name": "In front of food trucks",
+      "brief_description": "You're in front of the blue and pink food trucks, with McLennan east of you",
       "long_description": "The aroma from the food trucks fills the air as you stand in front of them. The building of McLennan to your east adds a touch of academia to the bustling scene.",
       "available_directions": {
         "south": 7,
@@ -63,19 +63,19 @@
       "id": 6,
       "name": "At Food Trucks",
       "brief_description": "You can buy a meal",
-      "long_description": "You are the the best food trucks on campus, you can use a five dollars to buy a meal if you please.",
+      "long_description": "You are the the best food trucks on campus, you can use a five dollar bill to buy a meal if you please.",
       "available_directions": {
         "back": 4
       },
       "items": [],
-      "given_items": ["meal"],
+      "given_items": ["Meal"],
       "npcs": []
     },
     {
       "id": 7,
       "name": "Outside Bahen",
       "brief_description": "You are infront of Bahen",
-      "long_description": "Outside Bahen, the building’s classic architecture meets modern student life. The entrance invites you in with promises of activity and hidden secrets.",
+      "long_description": "Outside Bahen, the large 8 floor building and primarily used by the Department of Computer Science. There's usually many students going in and out, but it seems oddly empty at this hour...",
       "available_directions": {
         "inside": 8,
         "north": 4
@@ -88,11 +88,11 @@
       "id": 8,
       "name": "Bahen Lobby",
       "brief_description": "You are inside Bahen Lobby",
-      "long_description": "The Bahen Lobby is spacious and welcoming, with soft lighting and quiet corners that offer a moment of respite in a busy day.",
+      "long_description": "The Bahen Lobby is spacious and welcoming, with soft lighting and quiet corners that offer a moment of respite in a busy day. There are exits to the north and east.",
       "available_directions": {
         "to CSSU lounge": 9,
-        "outside using front door": 7,
-        "outside using side door": 12
+        "to north exit": 7,
+        "to east exit": 12
       },
       "items": [],
       "given_items": [
@@ -102,23 +102,23 @@
     {
       "id": 9,
       "name": "CSSU Lounge",
-      "brief_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
-      "long_description": "You are inside CSSU Lounge, and meet Sadia, you ask her if she knows where you left your bag last class. She remembers you and says that you must answer the following question to get your bag back...",
+      "brief_description": "Inside the CSSU Lounge, a cozy space with drinks and snacks available.",
+      "long_description": "You step into the CSSU Lounge, a relaxed hub for students to unwind.\n few students are chatting at a table, their laptops open. Nearby, a shelf holds an assortment of snacks.\nAs you glance around, you spot Prof Sadia, who greets you with a warm smile.",
       "available_directions": {
-        "to Lobby": 8
+        "lobby": 8
       },
       "items": [],
       "given_items": [],
-      "npcs": ["Prof. Sadia"]
+      "npcs": ["Prof Sadia"]
     },
     {
       "id": 12,
       "name": "Infront of Bahen and McLennan",
-      "brief_description": "You are south of mclennan and east of bahen",
-      "long_description": "You are between mclennan and bahen, with the side door door to bahen to your west",
+      "brief_description": "You are south of McLennan and east of Bahen",
+      "long_description": "You are between McLennan and Bahen, with the side door door to Bahen to your west",
       "available_directions": {
-        "to mclennan": 13,
-        "to bahen": 8,
+        "inside McLennan": 13,
+        "inside Bahen": 8,
         "west": 14
       },
       "items": [],
@@ -127,7 +127,7 @@
     },
     {
       "id": 13,
-      "name": "McLennan",
+      "name": "Inside McLennan",
       "brief_description": "You are inside McLennan, ",
       "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
       "available_directions": {
@@ -143,7 +143,7 @@
     {
       "id": 14,
       "name": "West of Kings Circle",
-      "brief_description": "You are infront of Kings Circle, with Myhal Centre in the distant North, and the Convocation Hall is still East of you",
+      "brief_description": "You are infront of Kings Circle, with Myhal Centre in the distant North, and the Convocation Hall is still east of you",
       "long_description": "From your vantage point west of Kings Circle, you witness the dynamic interplay of historic and contemporary campus life. The area is alive with movement and possibility.",
       "available_directions": {
         "north": 16,
@@ -161,7 +161,7 @@
       "long_description": "At the heart of Kings Circle, you find yourself surrounded by iconic campus landmarks and a vibrant atmosphere that exudes both tradition and modernity.",
       "available_directions": {
         "south": 17,
-        "inside convocation hall": 22,
+        "inside Convocation Hall": 22,
         "west": 14
       },
       "items": [],
@@ -200,7 +200,7 @@
       "brief_description": "You are now directly in font of Gerstein",
       "long_description": "In front of Gerstein, you are captivated by the building's stately facade and the subtle hints of its storied history.",
       "available_directions": {
-        "inside gerstein": 20,
+        "inside Gerstein": 20,
         "east": 17
       },
       "items": [],
@@ -226,7 +226,7 @@
       "long_description": "In front of University College, the historic architecture and solemn ambiance invite both awe and introspection.",
       "available_directions": {
         "north": 17,
-        "inside university college": 21
+        "inside University College": 21
       },
       "items": [],
       "given_items": [],
@@ -250,7 +250,7 @@
       "brief_description": "You have McLennan directly to the west",
       "long_description": "Facing McLennan, you observe a blend of contemporary style and timeless charm, reflecting the dynamic spirit of the campus.",
       "available_directions": {
-        "inside mclennan": 13,
+        "inside McLennan": 13,
         "north": 23,
         "south": 14
       },
@@ -264,7 +264,7 @@
       "brief_description": "You now have Sidney Smith to the East, and MyHall is far north",
       "long_description": "Located at a central junction of campus landmarks, you find yourself poised between the vibrant energy of Sidney Smith and the quiet resolve of the surroundings.",
       "available_directions": {
-        "inside sidney smith": 24,
+        "inside Sidney Smith": 24,
         "north": 25,
         "south": 16
       },
@@ -275,13 +275,13 @@
     {
       "id": 24,
       "name": "Inside of Sidney Smith",
-      "brief_description": "You are now directly inside of Sidney Smith, there is a secret door that requires a pass",
-      "long_description": "Inside Sidney Smith, you see the best coffee place on campus right as you walk in, along with a secret door. But it looks like you need some sort of pass to access it.",
+      "brief_description": "You are now directly inside of Sidney Smith. You see your USB drive behind a locked door that requires a pass",
+      "long_description": "Inside Sidney Smith, you see the best coffee place on campus right as you walk in. You peek through the the doors in the hallway and spot your USB drive. However, it is locked! It looks like you need some sort of pass to access it.",
       "available_directions": {
-        "back outside": 23
+        "outside": 23
       },
       "items": [],
-      "given_items": ["usb drive"],
+      "given_items": ["USB drive"],
       "npcs": []
     },
     {
@@ -290,7 +290,7 @@
       "brief_description": "You now have New College directly west, and Myhal Centre some distance north",
       "long_description": "In front of New College, the area buzzes with activity and the promise of academic discovery, while nearby landmarks add to the campus mosaic.",
       "available_directions": {
-        "inside new college": 27,
+        "inside New College": 27,
         "north": 29,
         "south": 23
       },
@@ -304,8 +304,8 @@
       "brief_description": "You are now inside of New College.",
       "long_description": "You into New College and see a student with your laptop, you need to confront him.",
       "available_directions": {
-        "outside through west exit": 25,
-        "outside through north exit": 28
+        "west exit": 25,
+        "north exit": 28
       },
       "items": [],
       "given_items": [],
@@ -315,9 +315,9 @@
       "id": 28,
       "name": "Infront of New College",
       "brief_description": "You now have New College directly south, and Robarts East",
-      "long_description": "Standing in front of New College, you are surrounded by academic vigor and the steady presence of Robarts East, each telling its own story.",
+      "long_description": "Standing in front of New College, you see many students going in and out. They accommodate over 900 students! You also see the steady presence of Robarts to the east.",
       "available_directions": {
-        "inside new college": 27,
+        "inside New College": 27,
         "east": 29,
         "west": 3
       },
@@ -349,7 +349,7 @@
         "outside Myhal Centre": 29
       },
       "items": [
-        "backpack"
+        "Backpack"
       ],
       "given_items": [],
       "npcs": []
@@ -360,7 +360,7 @@
       "brief_description": "You now have Robarts directly infront of you",
       "long_description": "Outside Robarts, the sleek exterior contrasts with the historic campus surroundings, evoking both modern energy and a sense of nostalgia.",
       "available_directions": {
-        "inside robarts": 32,
+        "inside Robarts": 32,
         "west": 29
       },
       "items": [],
@@ -374,20 +374,20 @@
       "long_description": "You remember that you were at two places, the cafe and your last spot was a study table",
       "available_directions": {
         "outside": 31,
-        "to study table": 33
+        "to Robarts Commons": 33
       },
-      "items": [],
+      "items": ["barista notes"],
       "given_items": [],
       "npcs": []
     },
     {
       "id": 33,
-      "name": "Study Table",
-      "brief_description": "You are at your old study table in Robarts.",
-      "long_description": "Your old study table is very cluttered with some of your work that you must've forgot and someone elses, there is someone very tired at your spot, maybe he knows something about your lost stuff, but he is in no state to answer questions.",
+      "name": "Robarts Commons",
+      "brief_description": "You are at Robarts Commons, near the study table you used yesterday.",
+      "long_description": "You are at Robarts Commons. You see your old study table. It is very cluttered with some of your work that you must've forgot and someone elses, There is someone very tired at your spot. Maybe he knows something about your lost stuff, but he is in no state to answer questions...",
       "available_directions": {
-        "upstairs to cafe": 34,
-        "back": 32
+        "to Robarts Cafe": 34,
+        "to lobby": 32
       },
       "items": [],
       "given_items": [
@@ -407,165 +407,158 @@
       "npcs": []
     }
   ],
-  "items" : [
+  "items": [
     {
-      "name" : "usb drive",
-      "full_name" : "your usb drive",
-      "description" : "Your missing USB drive, containing the only copy of your project.",
-      "start_position" : 24,
-      "target_position" : 1,
-      "target_points" : 10
+      "name": "USB drive",
+      "description": "Your missing USB drive, containing the only copy of your project.",
+      "start_position": 24,
+      "target_position": 1,
+      "target_points": 20
     },
     {
-      "name" : "backpack",
-      "full_name" : "your backpack",
-      "description" : "Your missing backpack. It's empty :( But at least now you should be able to carry more things!",
-      "start_position" : 30,
-      "target_position" : 1,
-      "target_points" : 10
+      "name": "backpack",
+      "description": "Your missing backpack. It's empty. But at least you don't need to buy a new one!!",
+      "start_position": 30,
+      "target_position": 1,
+      "target_points": 15
     },
     {
-      "name" : "toonie",
-      "full_name" : "a toonie",
-      "description" : "A shiny toonie. Useful for vending machines!",
-      "start_position" : 1,
-      "target_position" : 2,
-      "target_points" : 10
+      "name": "toonie",
+      "description": "A shiny toonie. Useful for vending machines!",
+      "start_position": 1,
+      "target_position": 2,
+      "target_points": 10
     },
     {
-      "name" : "student id",
-      "full_name" : "a student id",
-      "description" : "A strangers student ID... Alex Carter... New College... Wonder what this could be used for...",
-      "start_position" : 30,
-      "target_position" : 27,
-      "target_points" : 10
+      "name": "student ID",
+      "description": "A stranger's student ID... Alex Carter... New College... Wonder what this could be used for...",
+      "start_position": 30,
+      "target_position": 27,
+      "target_points": 15
     },
     {
-      "name" : "notebook",
-      "full_name" : "a notebook",
-      "description" : "In the first semester, we would gathered as one,\nFirst-year students filled seats left and right.\nFind this place, where first-years reside.\nOnce you pick up, your quest's not through,\nA lost ID is waiting for you.\nWhere should you go? ",
-      "start_position" : 9,
-      "target_position" : 30,
-      "target_points" : 10
+      "name": "notebook",
+      "description": "In the first semester, we would gathered as one,\nFirst-year students filled seats left and right.\nFind this place, where first-years reside.\nOnce you pick up, your quest's not through,\nA lost ID is waiting for you.\nWhere should you go? ",
+      "start_position": 9,
+      "target_position": 30,
+      "target_points": 15
     },
     {
-      "name" : "lucky mug",
-      "full_name" : "your lucky mug",
-      "description" : "Your lucky UofT mug, essential for your caffeine-fueled success!",
-      "start_position" : 35,
-      "target_position" : 1,
-      "target_points" : 10
+      "name": "lucky UofT mug",
+      "description": "Your lucky UofT mug, essential for your caffeine-fueled success!",
+      "start_position": 35,
+      "target_position": 1,
+      "target_points": 20
     },
     {
-      "name" : "laptop charger",
-      "full_name" : "your laptop charger",
-      "description" : "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
-      "start_position" : 20,
-      "target_position" : 1,
-      "target_points" : 10
+      "name": "laptop charger",
+      "description": "A borrowed laptop charger from the computer lab. This will keep your laptop from dying!",
+      "start_position": 20,
+      "target_position": 1,
+      "target_points": 20
     },
     {
-      "name" : "laptop",
-      "full_name" : "your laptop",
-      "description" : "Your laptop that you used to work on your assignment! But Oh NO it's dead, you will need your laptop charger.",
-      "start_position" : 27,
-      "target_position" : 1,
-      "target_points" : 10
+      "name": "laptop",
+      "description": "Your laptop that you used to work on your assignment! But Oh NO it's dead, you will need your laptop charger.",
+      "start_position": 27,
+      "target_position": 1,
+      "target_points": 20
     },
     {
-      "name" : "red bull",
-      "full_name" : "a Red Bull",
-      "description" : "A Red Bull from the vending machine to help you focus.",
-      "start_position" : 2,
-      "target_position" : 33,
-      "target_points" : 10
+      "name": "Red Bull",
+      "description": "A Red Bull from the vending machine to help you focus.",
+      "start_position": 2,
+      "target_position": 33,
+      "target_points": 10
     },
     {
-      "name" : "crumpled paper",
-      "full_name" : "a crumpled paper",
-      "description" : "In the most crowded study spot around,\nWhere pages turn and pens abound,\nGo back to where you last took a seat,\nA tired student you’re sure to meet.",
-      "start_position" : 20,
-      "target_position" : 32,
-      "target_points" : 10
+      "name": "crumpled paper",
+      "description": "In the most crowded study spot around,\nWhere pages turn and pens abound,\nGo back to where you last took a seat,\nA tired student you’re sure to meet.",
+      "start_position": 20,
+      "target_position": 32,
+      "target_points": 10
     },
     {
-      "name" : "pass",
-      "full_name" : "a pass",
-      "description" : "a pass that may or may not unlock a secret door at Sidney Smith",
-      "start_position" : 33,
-      "target_position" : 24,
-      "target_points" : 10
+      "name": "admin pass",
+      "description": "A pass that may or may not unlock a secret door at Sidney Smith",
+      "start_position": 33,
+      "target_position": 24,
+      "target_points": 15
     },
     {
-      "name" : "meal",
-      "full_name" : "",
-      "description" : "a meal",
-      "start_position" : 6,
-      "target_position" : 20,
-      "target_points" : 10
+      "name": "chicken burger",
+      "description": "A freshly fried, juicy, and crispy chicken burger!",
+      "start_position": 6,
+      "target_position": 20,
+      "target_points": 10
     },
     {
-      "name" : "cat",
-      "full_name" : "a cat",
-      "description" : "Prof. Sadia's lost cat",
-      "start_position" : 13,
-      "target_position" : 9,
-      "target_points" : 10
+      "name": "Pocoyo",
+      "description": "Prof. Sadia's lost cat Pocoyo",
+      "start_position": 13,
+      "target_position": 9,
+      "target_points": 10
     },
     {
-      "name": "five dollars",
-      "full_name": "a five dollar bill",
-      "description" : "A five dollar bill that you can use to buy something, maybe a meal",
-      "start_position" : 1,
-      "target_position" : 6,
-      "target_points" : 10
+      "name": "five dollar bill",
+      "description": "A crisp five dollar bill that you can use to buy something, maybe a meal",
+      "start_position": 1,
+      "target_position": 6,
+      "target_points": 10
+    },
+    {
+      "name": "barista notes",
+      "description": "The Robarts cafe barista's notes!",
+      "start_position": 32,
+      "target_position": 34,
+      "target_points": 10
     }
   ],
   "npcs": [
     {
       "name" : "Tired Student",
-      "description": "A tired student who looks exhausted after studying all night.",
-      "location_id": 33,
-      "quest_message": "Zzzzzzzzzzz.... Energy... Drink...kk",
-      "quest_complete_message": "Oh my goodness. Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts maybe try going to the cafe. Also I think this pass may be helpful in your search.",
+      "dialogue": "Zzzzzzzzzzz.... Energy... Drink...kk",
+      "location_id": 1,
+      "quest_message": "Bring tired student an energy drink.",
+      "quest_complete_message": "Oh my goodness! Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts. Maybe try going to the cafe. Also, I think this pass may be helpful in your search. Also, give this note to the Barista.",
       "required_items": ["Red Bull"],
-      "reward": "pass"
+      "reward": ["admin pass"]
     },
     {
       "name" : "Prof. Sadia",
-      "description": "Prof Sadia will help you find your bag only if you find her cat",
+      "dialogue": "Oh! I recognize you, your the one who forgot their belongings, I can help you find them if you are able to find my cat named Pocoyo!",
       "location_id": 9,
-      "quest_message": "Oh! I recognizes you, your the one who forgot their belongings, I can help you find them if you are able to find my cat",
+      "quest_message": "Find and bring Prof. Sadia's cat Pocoyo.",
       "quest_complete_message": "Wow! Thank you so much for my cat! Here is this notebook, it should let you know where your belongings are",
-      "required_items": ["cat"],
-      "reward": "notebook"
+      "required_items": ["Pocoyo"],
+      "reward": ["notebook"]
     },
     {
       "name" : "Security Guard",
-      "description": "You ask the Security Guard at Gerstein if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
+      "dialogue": "You ask the Security Guard at Gerstein if he knows anything about your belongings that you may have forgotten here, he says that he will only give it to you if you buy him a meal from the pink truck",
       "location_id": 20,
-      "quest_message": "Before I can give you your belongings you must buy me a meal from the pink food truck",
+      "quest_message": "Bring the Security Guard a meal.",
       "quest_complete_message": "Thanks for the meal! Here is what I have left of your belongings... A crumpled paper, and a laptop charger",
-      "required_items": ["meal"],
-      "reward": "crumpled paper, laptop charger"
+      "required_items": ["chicken burger"],
+      "reward": ["crumpled paper", "laptop charger"]
     },
     {
       "name" : "Alex Carter",
-      "description": "A student in New College, who is looking for his ID but he also has your laptop",
+      "dialogue": "Hey, I found this laptop and decided to take it... Hmmm So it's yours? I think I'm going to give it to you if you can find my student ID",
       "location_id": 27,
-      "quest_message": "Hey, I see that you now realize that I have your laptop, but I will only give it to you if you can find my student ID",
-      "quest_complete_message": "Thanks so much! I will now give you your laptop. As for the rest of your belongings maybe go to Gerstein",
-      "required_items": ["student id"],
-      "reward": "laptop"
+      "quest_message": "Bring Alex Carter his student ID.",
+      "quest_complete_message": "Thanks so much! I will now give you your laptop. As for the rest of your belongings maybe go to Gerstein. That's where the laptop last.",
+      "required_items": ["student ID"],
+      "reward": ["laptop"]
     },
     {
       "name": "Barista",
-      "description": "A Barista that has your lucky cup",
+      "dialogue": "Find the Barista her notes.",
       "location_id": 34,
-      "quest_message": "Hey, you left this behind last night. Your lucky UofT mug. I'm in the middle of something, wait like 5 sec and talk to me again",
+      "quest_message": "Hey, you left this behind last night. Your lucky UofT mug. The only thing is, I'm having trouble making this latte art. If you can find me my notes on making a perfectly crafted latte, I will give you your mug.",
       "quest_complete_message": "If you haven't already you may want to inquire with a very tired student here in Robarts, maybe give him something that wakes him up!",
-      "required_items": [],
-      "reward": "lucky mug"
+      "required_items": ["barista notes"],
+      "reward": ["lucky UofT mug"]
     }
   ]
 }

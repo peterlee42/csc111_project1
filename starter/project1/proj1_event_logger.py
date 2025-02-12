@@ -49,11 +49,10 @@ class Event:
     # If you want to create a special type of Event for your game that requires a different
     # set of attributes, you can create new classes using inheritance, as well.
 
-    # TODO: Add attributes below based on the provided descriptions above.
     id_num: int
     description: str
-    next_command: Optional[str] = None
     event_time: Optional[time] = None
+    next_command: Optional[str] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
@@ -87,11 +86,9 @@ class EventList:
                 f"Location: {curr.id_num}, Command: {curr.next_command}, Time of Event: {curr.event_time}")
             curr = curr.next
 
-    # TODO: Complete the methods below, based on the given descriptions.
     def is_empty(self) -> bool:
         """Return whether this event list is empty."""
 
-        # TODO: Your code below
         if self.first is None:
             return True
         else:

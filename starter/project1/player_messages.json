@@ -21,17 +21,12 @@
     {
       "type": "item_does_not_exist",
       "messages": [
-        "{target}? That doesn't seem to exist.",
-        "You can't find any trace of {target}.",
-        "{target} isn’t part of this world… or is it?",
-        "There’s no such thing as {target} here.",
-        "Your mind conjures {target}, but reality disagrees.",
+        "That doesn't seem to exist.",
+        "There’s no such thing here.",
         "Hmmm... Maybe look somewhere else.",
         "You reach out, but grasp only empty air.",
         "You search thoroughly but find nothing of the sort.",
-        "Nothing like that is around here.",
-        "Your search yields nothing. Perhaps it’s hidden elsewhere.",
-        "The item eludes you, as if it was never here to begin with."
+        "Nothing like that is around here."
       ]
     },
     {
