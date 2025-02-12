@@ -23,10 +23,9 @@ from dataclasses import dataclass
 from typing import Optional
 
 # My imports
-import difflib
 from datetime import time
 
-from game_entities import Location, Item, Player, Npc
+from game_entities import Location, Item, Player, Npc, LocationEntities
 from proj1_event_logger import Event, EventList
 
 
@@ -42,6 +41,8 @@ def parse_command(command: str, valid_actions: list[str]) -> tuple[str, str]:
         if command.startswith(valid_action + ' '):
             target = command[len(valid_action) + 1:].strip()
             return valid_action, target
+
+    return command, ''
 
 
 @dataclass
@@ -127,15 +128,16 @@ class AdventureGame:
         locations = {}
         # Go through each element associated with the 'locations' key in the file
         for loc_data in data['locations']:
+            location_obj_entities = LocationEntities(loc_data['items'], loc_data['given_items'], loc_data['npcs'])
             location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'],
                                     loc_data['long_description']), loc_data['available_directions'],
-                                    loc_data['items'], loc_data['given_items'], loc_data['npcs'])
+                                    location_obj_entities)
             locations[loc_data['id']] = location_obj
 
         items = []
 
         for item_data in data['items']:
-            item_obj = Item(item_data['name'], item_data['full_name'], item_data['description'],
+            item_obj = Item(item_data['name'], item_data['description'],
                             item_data['start_position'], item_data['target_position'], item_data['target_points'])
             items.append(item_obj)
 
@@ -162,12 +164,9 @@ class AdventureGame:
 
     def get_item(self, item_name: str) -> Optional[Item]:
         """Retrieves item object by a given item name. If item object does not exist, return None.
-
-        Preconditions:
-        - item_name == item_name.lower.strip()
         """
         for item_obj in self._items:
-            if item_obj.name == item_name:
+            if item_name.lower() == item_obj.name.lower():
                 return item_obj
 
         return None
@@ -176,10 +175,10 @@ class AdventureGame:
         """Retrieves npc object by a given npc name. If npc object does not exist, return None.
 
         Preconditions:
-        - npc_name == npc_name.lower.strip()
+        - npc_name == npc_name.strip()
         """
         for npc_obj in self._npcs:
-            if npc_obj.name.lower() == npc_name:
+            if npc_name.lower() == npc_obj.name.lower():
                 return npc_obj
 
         return None
@@ -213,23 +212,23 @@ class AdventureGame:
 
         if prev_action == 'pick up':
             self.player.inventory.remove(prev_target)
-            prev_location.items.append(prev_target)
+            prev_location.location_entities.items.append(prev_target)
         elif prev_action == 'drop':
             self.player.inventory.append(prev_target)
-            prev_location.items.remove(prev_target)
+            prev_location.location_entities.items.remove(prev_target)
         elif prev_action == 'use':
             prev_item_obj = self.get_item(prev_target)
 
             self.player.score -= prev_item_obj.target_points
 
-            for given_item in prev_location.given_items:
+            for given_item in prev_location.location_entities.given_items:
                 self.player.inventory.remove(given_item)  # remove any given items
 
             # add previous target item
             self.player.inventory.append(prev_target)
         elif prev_action == 'interact':
             prev_npc = self.get_npc(prev_target)
-            prev_npc.undo_interaction(self.player)
+            self.player.undo_interaction(prev_npc)
 
         print('Action undone!')
 
@@ -323,16 +322,16 @@ if __name__ == "__main__":
             location.visited = True
 
         # Display Location's Item Name if there is any.
-        if not location.items:
+        if location.location_entities.items:
             print("At this location, you can pick up:")
-            for location_item in location.items:
-                print(f'- There is {game.get_item(location_item).full_name}')
+            for location_item in location.location_entities.items:
+                print(f'- {location_item}')
 
         # Display interactive NPCs if there is any.
-        if not location.npcs:
+        if location.location_entities.npcs:
             print("At this location, you can interact with:")
-            for location_npc in location.npcs:
-                print(f'- {game.get_npc(location_npc).name}')
+            for location_npc in location.location_entities.npcs:
+                print(f'- {location_npc}')
 
         # Display the current time
         print(f"\nThe current time is {game.time_window.current_time.strftime("%I:%M %p")}.")
@@ -380,7 +379,6 @@ if __name__ == "__main__":
                 game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
-
             if player_action == 'go':
 
                 result = game.player.go(location, player_target)
@@ -400,24 +398,18 @@ if __name__ == "__main__":
                 player_target_obj = game.get_item(player_target)
                 action_time = 3
                 valid_move = game.player.use(
-                    location, player_target, player_target_obj)
+                    location, player_target_obj)
             elif player_action == 'drop':
                 action_time = 1
                 valid_move = game.player.drop_item(location, player_target)
             elif player_action == 'examine':
                 player_target_obj = game.get_item(player_target)
                 action_time = 1
-                valid_move = game.player.examine_item(
-                    player_target, player_target_obj)
+                valid_move = game.player.examine_item(player_target_obj)
 
-            # TODO: CLEAN THIS CODE BELOW
             elif player_action == 'interact':
                 target_npc_obj = game.get_npc(player_target)
-                if target_npc_obj:
-                    valid_move = target_npc_obj.interact(location.id_num, game.player)
-                    action_time = 5
-                else:
-                    valid_move = False
-                    print("Doesn't seem like that person is here...")
+                valid_move = game.player.interact(location.id_num, target_npc_obj)
+                action_time = 5
 
         print("========")

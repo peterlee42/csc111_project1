@@ -13,7 +13,7 @@
         "five dollars"
       ],
       "given_items": [],
-      "npc": []
+      "npcs": ["Tired Student"]
     },
     {
       "id": 2,
@@ -26,9 +26,9 @@
       },
       "items": [],
       "given_items": [
-        "red bull"
+        "Red Bull"
       ],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 3,
@@ -37,11 +37,12 @@
       "long_description": "Stepping outside, you are greeted by the fresh air and the sprawling campus. Paths lead in multiple directions, hinting at the adventures that await.",
       "available_directions": {
         "south": 4,
-        "east": 28
+        "east": 28,
+        "inside Chestnut": 2
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 4,
@@ -56,7 +57,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 6,
@@ -68,7 +69,7 @@
       },
       "items": [],
       "given_items": ["meal"],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 7,
@@ -81,7 +82,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 8,
@@ -96,7 +97,7 @@
       "items": [],
       "given_items": [
       ],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 9,
@@ -108,20 +109,21 @@
       },
       "items": [],
       "given_items": [],
-      "npc": ["Prof. Saida"]
+      "npcs": ["Prof. Saida"]
     },
     {
       "id": 12,
       "name": "Infront of Bahen and Mclennan",
-      "brief_description": "You are inside McLennan, ",
-      "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
+      "brief_description": "You are south of mclennan and east of bahen",
+      "long_description": "You are between mclennan and bahen, with the side door door to bahen to your west",
       "available_directions": {
         "to mclennan": 13,
-        "to bahen": 8
+        "to bahen": 8,
+        "west": 14
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 13,
@@ -130,14 +132,13 @@
       "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
       "available_directions": {
         "outside south entrance": 12,
-        "outside west entrance": 16,
-        "outside east entrance": 15
+        "outside west entrance": 4
       },
       "items": [
         "cat"
       ],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 14,
@@ -151,7 +152,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 15,
@@ -165,19 +166,19 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 22,
-      "name": "Infront of Convocation Hall",
-      "brief_description": "You are now directly infront of Convocation Hall",
-      "long_description": "Before you lies the majestic Convocation Hall, its grandeur a reminder of the institution's storied past and the academic excellence it represents.",
+      "name": "Inside of Convocation Hall",
+      "brief_description": "You are now inside of Convocation Hall",
+      "long_description": "You are in the majestic Convocation Hall, its grandeur a reminder of the institution's storied past and the academic excellence it represents.",
       "available_directions": {
         "outside": 15
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 17,
@@ -186,11 +187,12 @@
       "long_description": "Positioned between University College and Gerstein, you stand in awe of the beautiful architecture of the campus",
       "available_directions": {
         "west": 18,
-        "south": 19
+        "south": 19,
+        "north": 15
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 18,
@@ -203,7 +205,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 20,
@@ -215,7 +217,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": ["security guard"]
+      "npcs": ["security guard"]
     },
     {
       "id": 19,
@@ -228,7 +230,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 21,
@@ -240,7 +242,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 16,
@@ -254,7 +256,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 23,
@@ -268,7 +270,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 24,
@@ -280,7 +282,7 @@
       },
       "items": [],
       "given_items": ["usb drive"],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 25,
@@ -294,7 +296,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 27,
@@ -307,7 +309,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": ["Alex Carter"]
+      "npcs": ["Alex Carter"]
     },
     {
       "id": 28,
@@ -321,7 +323,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 29,
@@ -332,11 +334,11 @@
         "inside Myhal Centre": 30,
         "east": 31,
         "west": 28,
-        "south": 23
+        "south": 25
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 30,
@@ -350,7 +352,7 @@
         "backpack"
       ],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 31,
@@ -363,7 +365,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 32,
@@ -376,7 +378,7 @@
       },
       "items": [],
       "given_items": [],
-      "npc": []
+      "npcs": []
     },
     {
       "id": 33,
@@ -390,7 +392,7 @@
       "items": [],
       "given_items": [
       ],
-      "npc": ["Tired Student"]
+      "npcs": ["Tired Student"]
     },
     {
       "id": 34,
@@ -398,23 +400,11 @@
       "brief_description": "You are in Robarts Café on the second floor.",
       "long_description": "You remember stopping here for a caffeine boost. A barista is wiping down the counter. Maybe they saw your lucky mug?",
       "available_directions": {
-        "to the counter": 35,
         "downstairs": 33
       },
       "items": [],
-      "given_items": []
-    },
-    {
-      "id": 35,
-      "name": "Barista Counter",
-      "brief_description": "You are at the counter in Robarts Café.",
-      "long_description": "The barista recognizes you! 'Hey, you left this behind last night.' Your lucky UofT mug is sitting behind the counter. You better take it with you! But she requires you to solve a puzzle before you leave",
-      "available_directions": {
-        "leave counter": 34
-      },
-      "items": ["lucky mug"],
-      "given_items": [
-      ]
+      "given_items": [],
+      "npcs": []
     }
   ],
   "items" : [
@@ -535,10 +525,10 @@
     {
       "name" : "Tired Student",
       "description": "A tired student who looks exhausted after studying all night.",
-      "location_id": 33,
+      "location_id": 1,
       "quest_message": "Zzzzzzzzzzz.... Energy... Drink...kk",
       "quest_complete_message": "Oh my goodness. Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts maybe try going to the cafe. Also I think this pass may be helpful in your search.",
-      "required_items": ["red bull", "sprite", "coca cola"],
+      "required_items": ["Red Bull"],
       "reward": "pass"
     },
     {
@@ -567,9 +557,15 @@
       "quest_complete_message": "Thanks so much! I will now give you your laptop. As for the rest of your belongings maybe go to Gerstein",
       "required_items": ["student id"],
       "reward": "laptop"
+    },
+    {
+      "name": "Barista",
+      "description": "A Barista that has your lucky cup",
+      "location_id": 34,
+      "quest_message": "Hey, you left this behind last night. Your lucky UofT mug. I'm in the middle of something, wait like 5 sec and talk to me again",
+      "quest_complete_message": "If you haven't already you may want to inquire with a very tired student here in Robarts, maybe give him something that wakes him up!",
+      "required_items": [],
+      "reward": "lucky mug"
     }
-  ],
-  "special_locations": [
-
   ]
 }
