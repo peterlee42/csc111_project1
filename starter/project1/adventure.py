@@ -25,8 +25,6 @@ from typing import Optional
 # My imports
 from datetime import time
 
-from hypothesis import target
-
 from game_entities import Location, Item, Player, Npc, LocationEntities
 from proj1_event_logger import Event, EventList
 
@@ -86,7 +84,7 @@ class AdventureGame:
     time_window: TimeWindow
     ongoing: bool  # Suggested attribute, can be removed
 
-    def __init__(self, game_data_file: str, player_message_file: str, initial_location_id: int,
+    def __init__(self, game_data_file: str, initial_location_id: int,
                  time_window: TimeWindow) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
@@ -111,7 +109,7 @@ class AdventureGame:
         self.current_location_id = initial_location_id
 
         # Player attribute
-        self.player = Player(player_message_file)
+        self.player = Player()
 
         # Game start time and deadline time.
         self.time_window = time_window
@@ -284,15 +282,16 @@ class AdventureGame:
     def check_win(self, initial_location_id: int, win_items: list[str]) -> None:
         """Check if player has brought all of the win items in the initial location.
         """
-        for item in win_items:
-            if item not in self.player.inventory:
-                return
+        if self.current_location_id == initial_location_id:
+            for item in win_items:
+                if item not in self.player.inventory:
+                    return
 
-        total_score = sum([self.get_item(item).target_points for item in win_items])
-        self.player += total_score
-        self.ongoing = False
-        print("You submitted on before the deadline! Congratulations!\n")
-        print('Your Final Score:', self.player.score)
+            total_score = sum([self.get_item(item).target_points for item in win_items])
+            self.player.score += total_score
+            self.ongoing = False
+            print("You submitted on before the deadline! Congratulations!\n")
+            print('Your Final Score:', self.player.score)
 
 
 if __name__ == "__main__":
@@ -312,7 +311,7 @@ if __name__ == "__main__":
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
     game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-    game = AdventureGame('game_data.json', 'player_messages.json', game_initial_location_id,
+    game = AdventureGame('game_data.json', game_initial_location_id,
                          game_time_window)
     # Regular menu options available at each location
     menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
@@ -406,26 +405,26 @@ if __name__ == "__main__":
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    action_time = 5
+                    action_time = 6
                     valid_move = True
                 else:
                     valid_move = False
                 # Change to new location (or the same)
                 game.current_location_id = result
             elif player_action == 'pick up':
-                action_time = 1
+                action_time = 2
                 valid_move = game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
                 player_target_obj = game.get_item(player_target)
-                action_time = 2
+                action_time = 3
                 valid_move = game.player.use(
                     location, player_target_obj)
             elif player_action == 'drop':
-                action_time = 1
+                action_time = 2
                 valid_move = game.player.drop_item(location, player_target)
             elif player_action == 'examine':
                 player_target_obj = game.get_item(player_target)
-                action_time = 1
+                action_time = 2
                 valid_move = game.player.examine_item(player_target_obj)
 
             elif player_action == 'interact':
@@ -435,7 +434,7 @@ if __name__ == "__main__":
                     rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items])
                 valid_move = game.player.interact(game.current_location_id, target_npc_obj, rewarded_points)
 
-                action_time = 3
+                action_time = 5
 
         print("========")
 
