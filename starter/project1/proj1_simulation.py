@@ -53,8 +53,7 @@ class AdventureGameSimulation:
         # TODO: Add first event (initial location, no previous command)
         # Hint: self._game.get_location() gives you back the current location
         start_location = self._game.get_location()
-        self._events.add_event(
-                Event(start_location.id_num, start_location.descriptions[0]))
+        self._events.add_event(Event(start_location.id_num, start_location.descriptions[0]))
 
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
@@ -110,8 +109,6 @@ class AdventureGameSimulation:
                     if self._game.current_location_id != result:
                         action_time = 6
                         valid_move = True
-                    else:
-                        valid_move = False
                     # Change to new location (or the same)
                     self._game.current_location_id = result
                     location = self._game.get_location(result)
@@ -143,7 +140,8 @@ class AdventureGameSimulation:
 
             if valid_move:
                 self._game.add_minutes(action_time)
-                self._events.add_event(Event(location.id_num, location.descriptions[0]), command, self._game.time_window.current_time)
+                self._events.add_event(Event(location.id_num, location.descriptions[0]), command,
+                                       self._game.time_window.current_time)
 
     def get_id_log(self) -> list[int]:
         """
@@ -201,10 +199,19 @@ if __name__ == "__main__":
     game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
 
     # Create a list of all the commands needed to walk through your game to win it
-    win_walkthrough = ["pick up toonie", "pick up five dollars", "go to lobby", "use toonie", "go outside",
+    win_walkthrough = ["pick up toonie", "pick up five dollar bill", "go to lobby", "use toonie", "go outside",
                        "go south", "go inside McLennan", "pick up Pocoyo", "go to west exit",
                        "go to food trucks", "use five dollar bill", "go back", "go south"
-                       "go inside Bahen", "go to CSSU lounge", "interact Prof Sadia"]
+                       "go inside Bahen", "go to CSSU lounge", "interact Prof Sadia", "go to lobby", "go to east exit",
+                       "go east", "go north", "go north", "go north", "go north", "go inside Myhal Centre",
+                       "pick up student ID", "go outside myhal centre", "go south", "go inside New College",
+                       "interact Alex Carter", "go east exit", "go south", "go south", "go south", "go east",
+                       "go south", "go west" "go inside Gerstein", "interact Security Guard", "go outside", "go east",
+                       "go north", "go west", "go north", "go north", "go north", "go north", "go east",
+                       "go inside Robarts", "pick up barista notes", "go to Robarts Commons", "interact tired student",
+                       "interact Barista", "go downstairs", "go to lobby", "go outside", "go west", "go south",
+                       "go south", "go inside Sidney Smith", "use admin pass", "go outside", "go north", "go north",
+                       "go west", "go west", "go inside Chestnut", "go to dorm"]
     # Update this log list to include the IDs of all locations that would be visited
     expected_log = []
     # Uncomment the line below to test your walkthrough

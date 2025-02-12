@@ -10,11 +10,10 @@
       },
       "items": [
         "toonie",
-        "five dollar bill",
-        "Pocoyo"
+        "five dollar bill"
       ],
       "given_items": [],
-      "npcs": ["Prof Sadia"]
+      "npcs": []
     },
     {
       "id": 2,
@@ -69,7 +68,7 @@
         "back": 4
       },
       "items": [],
-      "given_items": ["Meal"],
+      "given_items": ["chicken burger"],
       "npcs": []
     },
     {
@@ -116,11 +115,11 @@
       "id": 12,
       "name": "Infront of Bahen and McLennan",
       "brief_description": "You are south of McLennan and east of Bahen",
-      "long_description": "You are between McLennan and Bahen, with the side door door to Bahen to your west",
+      "long_description": "You are between McLennan and Bahen, with the side door door to Bahen to your east",
       "available_directions": {
         "inside McLennan": 13,
         "inside Bahen": 8,
-        "west": 14
+        "east": 14
       },
       "items": [],
       "given_items": [],
@@ -133,7 +132,7 @@
       "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
       "available_directions": {
         "to south exit": 12,
-        "to west exit": 4
+        "to east exit": 4
       },
       "items": [
         "Pocoyo"
@@ -218,7 +217,7 @@
       },
       "items": [],
       "given_items": [],
-      "npcs": ["security guard"]
+      "npcs": ["Security Guard"]
     },
     {
       "id": 19,
@@ -405,7 +404,7 @@
       },
       "items": [],
       "given_items": [],
-      "npcs": []
+      "npcs": ["Barista"]
     }
   ],
   "items": [
@@ -495,14 +494,14 @@
     },
     {
       "name": "Pocoyo",
-      "description": "Prof. Sadia's lost cat Pocoyo",
+      "description": "Prof Sadia's lost cat Pocoyo",
       "start_position": 13,
       "target_position": 9,
       "target_points": 10
     },
     {
       "name": "five dollar bill",
-      "description": "A crisp five dollar bill that you can use to buy something, maybe a meal",
+      "description": "A crisp five dollar bill that you can use to buy something, maybe something from the food trucks.",
       "start_position": 1,
       "target_position": 6,
       "target_points": 10
@@ -528,7 +527,7 @@
     {
       "name" : "Prof Sadia",
       "dialogue": "Oh! I recognize you, your the one who forgot their belongings, I can help you find them if you are able to find my cat named Pocoyo!",
-      "location_id": 1,
+      "location_id": 9,
       "quest_message": "Find and bring Prof. Sadia's cat Pocoyo.",
       "quest_complete_message": "Wow! Thank you so much for my cat! Here is this notebook, it should let you know where your belongings are",
       "required_items": ["Pocoyo"],

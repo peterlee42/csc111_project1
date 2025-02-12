@@ -282,17 +282,17 @@ class AdventureGame:
             self.ongoing = False
 
     def check_win(self, initial_location_id: int, win_items: list[str]) -> None:
-        """Check if player has dropped all of the win items in the initial location.
+        """Check if player has brought all of the win items in the initial location.
         """
-        initial_location_obj = self.get_location(initial_location_id)
-        player_won = all({item in initial_location_obj.location_entities.items for item in win_items})
+        for item in win_items:
+            if item not in self.player.inventory:
+                return
 
-        if player_won:
-            total_score = sum([self.get_item(item).target_points for item in win_items])
-            self.player += total_score
-            self.ongoing = False
-            print("You submitted on before the deadline! Congratulations!\n")
-            print('Your Final Score:', self.player.score)
+        total_score = sum([self.get_item(item).target_points for item in win_items])
+        self.player += total_score
+        self.ongoing = False
+        print("You submitted on before the deadline! Congratulations!\n")
+        print('Your Final Score:', self.player.score)
 
 
 if __name__ == "__main__":
@@ -406,26 +406,26 @@ if __name__ == "__main__":
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    action_time = 6
+                    action_time = 5
                     valid_move = True
                 else:
                     valid_move = False
                 # Change to new location (or the same)
                 game.current_location_id = result
             elif player_action == 'pick up':
-                action_time = 2
+                action_time = 1
                 valid_move = game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
                 player_target_obj = game.get_item(player_target)
-                action_time = 3
+                action_time = 2
                 valid_move = game.player.use(
                     location, player_target_obj)
             elif player_action == 'drop':
-                action_time = 2
+                action_time = 1
                 valid_move = game.player.drop_item(location, player_target)
             elif player_action == 'examine':
                 player_target_obj = game.get_item(player_target)
-                action_time = 2
+                action_time = 1
                 valid_move = game.player.examine_item(player_target_obj)
 
             elif player_action == 'interact':
@@ -433,9 +433,9 @@ if __name__ == "__main__":
                 rewarded_points = 0
                 if target_npc_obj:
                     rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items])
-                valid_move = game.player.interact(location.id_num, target_npc_obj, rewarded_points)
+                valid_move = game.player.interact(game.current_location_id, target_npc_obj, rewarded_points)
 
-                action_time = 5
+                action_time = 3
 
         print("========")
 

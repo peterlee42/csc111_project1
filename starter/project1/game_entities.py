@@ -21,9 +21,9 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from dataclasses import dataclass
 
 # My imports
-# from random import randrange
+from random import randrange
 from typing import Optional
-# import json
+import json
 
 
 @dataclass
@@ -157,7 +157,7 @@ class Player:
     # Private Instance Attributes:
     # - _messages: a dictionary mapping all types of output messages to a list of output messages of that type.
 
-    # _messages: dict[str, list[str]]
+    _messages: dict[str, list[str]]
     inventory: list[str]
     available_actions: list[str]
     score: int
@@ -172,42 +172,42 @@ class Player:
         self.quests = []
 
         # Message data
-    # self._messages = self._load_message_data(message_data_file)
+        self._messages = self._load_message_data(message_data_file)
 
-    # @staticmethod
-    # def _load_message_data(filename: str) -> dict[str, list[str]]:
-    #     """Load messages from a JSON file with the given filename and
-    #     return dictionary mapping all types of message to a list of the messages of that type."""
-    #
-    #     with open(filename, 'r') as f:
-    #         data = json.load(f)  # This loads all the data from the JSON file
-    #
-    #     game_messages = {}
-    #     # Go through each element associated with the 'message_types' key in the file
-    #     # Map each type of message to the list of all messages of that type.
-    #     for message_type in data['message_types']:
-    #         game_messages[message_type['type']] = message_type['messages']
-    #
-    #     return game_messages
-    #
-    # def _get_random_message(self, message_type: str, target: Optional[str] = None) -> str:
-    #     """Get a random message from the messages attribute based on the message type.
-    #     If the message does not exist, raise an error
-    #
-    #     Preconditions:
-    #     - target is not None and any({'{target}' in message for message in self._messages[message_type]})
-    #     """
-    #     if message_type in self._messages:
-    #         random_index = randrange(len(self._messages[message_type]))
-    #         random_message = self._messages[message_type][random_index]
-    #
-    #         if not target:
-    #             return random_message
-    #         else:
-    #             formatted_message = random_message.format(target=target)
-    #             return formatted_message[0].upper() + formatted_message[1:]
-    #
-    #     raise ValueError('This message type does not exist.')
+    @staticmethod
+    def _load_message_data(filename: str) -> dict[str, list[str]]:
+        """Load messages from a JSON file with the given filename and
+        return dictionary mapping all types of message to a list of the messages of that type."""
+
+        with open(filename, 'r') as f:
+            data = json.load(f)  # This loads all the data from the JSON file
+
+        game_messages = {}
+        # Go through each element associated with the 'message_types' key in the file
+        # Map each type of message to the list of all messages of that type.
+        for message_type in data['message_types']:
+            game_messages[message_type['type']] = message_type['messages']
+
+        return game_messages
+
+    def _get_random_message(self, message_type: str, target: Optional[str] = None) -> str:
+        """Get a random message from the messages attribute based on the message type.
+        If the message does not exist, raise an error
+
+        Preconditions:
+        - target is not None and any({'{target}' in message for message in self._messages[message_type]})
+        """
+        if message_type in self._messages:
+            random_index = randrange(len(self._messages[message_type]))
+            random_message = self._messages[message_type][random_index]
+
+            if not target:
+                return random_message
+            else:
+                formatted_message = random_message.format(target=target)
+                return formatted_message[0].upper() + formatted_message[1:]
+
+        raise ValueError('This message type does not exist.')
 
     def use(self, current_location: Location, item_obj: Optional[Item]) -> bool:
         """Use an item in the player's inventory. Return true if the player sucessfully used the item. Return false
@@ -217,11 +217,12 @@ class Player:
         - not item_obj and item_name == item_obj.name
         """
         if not item_obj or item_obj.name not in self.inventory:
-            print("You reach out, but grasp only empty air.")
+            print(self._get_random_message(
+                'item_does_not_exist'))
             return False
         elif current_location.id_num == item_obj.target_position:
             item_name = item_obj.name
-            print(f"You have used {item_name}.")
+            print(self._get_random_message('item_used', item_name))
 
             for item in current_location.location_entities.given_items:
                 self.inventory.append(item)
@@ -233,7 +234,8 @@ class Player:
             return True
         else:
             item_name = item_obj.name
-            print(f"I might need {item_name} for something else...")
+            print(self._get_random_message(
+                'item_cannot_be_used', item_name))
             return False
 
     def drop_item(self, current_location: Location, item_name: str) -> bool:
@@ -247,11 +249,12 @@ class Player:
 
                 self.score -= 1  # so that you cant infinitely farm points
 
-                print(f"{inventory_item} has been removed from your inventory.")
+                print(self._get_random_message(
+                    'item_removed_from_inventory', inventory_item))
 
                 return True
 
-        print("You reach out, but grasp only empty air.")
+        print(self._get_random_message('item_does_not_exist'))
         return False
 
     def go(self, current_location: Location, direction: str) -> int:
@@ -278,19 +281,19 @@ class Player:
                 # add 1 point to score for picking up item
                 self.score += 1
 
-                print(f"You have picked up {loc_item}.")
+                print(self._get_random_message('item_picked_up', loc_item))
                 return True
 
-        print("You reach out, but grasp only empty air.")
+        print(self._get_random_message('item_does_not_exist'))
         return False
 
     def display_inventory(self) -> None:
         """Displays the player's current inventory in sorted order"""
         if not self.inventory:
-            print("You’re not carrying anything right now.")
+            print(self._get_random_message('inventory_empty'))
         else:
             sorted_inventory = sorted(self.inventory)
-            print("You currently have:")
+            print(self._get_random_message('currently_have'))
             for item in sorted_inventory:
                 print('- ', item)
 
@@ -306,7 +309,8 @@ class Player:
             print(item_obj.description)
             return True
         else:
-            print("You reach out, but grasp only empty air.")
+            print(self._get_random_message(
+                'item_does_not_exist'))
             return False
 
     def display_quests(self) -> None:
