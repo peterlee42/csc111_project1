@@ -279,19 +279,16 @@ class AdventureGame:
             print('YOU MISSED THE DEADLINE!')
             self.ongoing = False
 
-    def check_win(self, initial_location_id: int, win_items: list[str]) -> None:
+    def check_win(self, initial_location_id: int, win_items: list[str]) -> bool:
         """Check if player has brought all of the win items in the initial location.
         """
         if self.current_location_id == initial_location_id:
             for item in win_items:
                 if item not in self.player.inventory:
-                    return
+                    return False
+            return True
 
-            total_score = sum([self.get_item(item).target_points for item in win_items])
-            self.player.score += total_score
-            self.ongoing = False
-            print("You submitted on before the deadline! Congratulations!\n")
-            print('Your Final Score:', self.player.score)
+        return False
 
 
 if __name__ == "__main__":
@@ -438,4 +435,9 @@ if __name__ == "__main__":
 
         print("========")
 
-        game.check_win(game_initial_location_id, game_win_items)
+        if game.check_win(game_initial_location_id, game_win_items):
+            total_score = sum([game.get_item(item).target_points for item in win_items])
+            game.player.score += total_score
+            game.ongoing = False
+            print("You submitted on before the deadline! Congratulations!\n")
+            print('Your Final Score:', game.player.score)

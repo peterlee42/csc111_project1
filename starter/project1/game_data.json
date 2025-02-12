@@ -348,7 +348,8 @@
         "outside Myhal Centre": 29
       },
       "items": [
-        "Backpack"
+        "Backpack",
+        "student ID"
       ],
       "given_items": [],
       "npcs": []
