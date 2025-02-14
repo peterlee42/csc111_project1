@@ -61,9 +61,10 @@ class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
     Instance Attributes:
-        - ongoing: a boolean representing whether the game is ongoing or not.
+        - current_location_id: the ID representing the current location in the adventure game.
         - player: a Player object representing the player in the game.
         - time_window: A TimeWindow object representing the current time and deadline in the game.
+        - ongoing: a boolean representing whether the game is ongoing or not.
 
     Representation Invariants:
         - self.current_location_id in self._locations
@@ -88,19 +89,11 @@ class AdventureGame:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
-        (note: you are allowed to modify the format of the file as you see fit)
 
         Preconditions:
         - game_data_file is the filename of a valid game data JSON file
-        - start_time < end_time
+        - self.time_window.current_time < self.time_window.deadline
         """
-
-        # NOTES:
-        # You may add parameters/attributes/methods to this class as you see fit.
-
-        # Requirements:
-        # 1. Make sure the Location class is used to represent each location.
-        # 2. Make sure the Item class is used to represent each item.
 
         # Game data
         self._locations, self._items, self._npcs = self._load_game_data(game_data_file)
@@ -259,6 +252,7 @@ class AdventureGame:
         """Checks if the player has won. If the time has passed the deadline, the player has lost.
         If player has brought all win items in the initial location before the deadline, they have
         won.
+        If the player has neither won nor lost, do nothing.
         """
         if deadline_passed:
             print('========')
@@ -275,11 +269,11 @@ class AdventureGame:
             self.ongoing = False
             print('========')
             print('You submitted on before the deadline! Congratulations!\n')
-            print('Time of submission:', self.time_window.current_time)
+            print('Time of submission:', self.time_window.current_time.strftime("%I:%M %p"))
             print('Your Final Score:', self.player.score)
 
     def display_location_info(self, location: Location) -> None:
-        """Display information about the given location in the console. This include the location description, items,
+        """Display information about the given location in the console. This includes the location description, items,
         and npcs.
         """
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
@@ -313,10 +307,12 @@ if __name__ == "__main__":
     #     'disable': ['R1705', 'E9998', 'E9999']
     # })
 
+    # Starting location and the items needed to win.
     game_initial_location_id = 1
     game_win_items = ['laptop', 'laptop charger', 'lucky UofT mug', 'USB drive']
 
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
+
     # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
     game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
     game = AdventureGame('game_data.json', game_initial_location_id,
@@ -361,22 +357,22 @@ if __name__ == "__main__":
         print("========")
         print(f"You decided to: {player_action} {player_target}")
 
-        if player_action in menu:
+        if choice in menu:
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
-            if player_action == "log":
+            if choice == "log":
                 game_log.display_events()
-            elif player_action == "quit":
+            elif choice == "quit":
                 print('Bye bye!')
                 game.ongoing = False
-            elif player_action == "undo":
+            elif choice == "undo":
                 game.undo(game_log)
-            elif player_action == "inventory":
+            elif choice == "inventory":
                 game.player.display_inventory()
-            elif player_action == "score":
+            elif choice == "score":
                 print("Score:", game.player.score)
-            elif player_action == "look":
+            elif choice == "look":
                 print(current_location.descriptions[1])
-            elif player_action == "quests":
+            elif choice == "quests":
                 game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
@@ -385,7 +381,7 @@ if __name__ == "__main__":
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    action_time = 10
+                    action_time = 6
                     valid_move = True
                 else:
                     valid_move = False

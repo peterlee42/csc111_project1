@@ -103,7 +103,7 @@
       "id": 9,
       "name": "CSSU Lounge",
       "brief_description": "Inside the CSSU Lounge, a cozy space with drinks and snacks available.",
-      "long_description": "You step into the CSSU Lounge, a relaxed hub for students to unwind.\nA few students are chatting at a table, their laptops open. Nearby, a shelf holds an assortment of snacks.\nAs you glance around, you spot Prof Sadia, who greets you with a warm smile.",
+      "long_description": "You step into the CSSU Lounge, a relaxed hub for students to unwind.\nA few students are chatting at a table, their laptops open. As you glance around, you spot Prof Sadia.",
       "available_directions": {
         "to lobby": 8
       },
@@ -129,10 +129,11 @@
       "id": 13,
       "name": "Inside McLennan",
       "brief_description": "You are inside McLennan, ",
-      "long_description": "Inside McLennan, modern design meets academic rigor. The room hums with energy as students move between classes and study sessions.",
+      "long_description": "Inside McLennan, modern design meets academic rigor.",
       "available_directions": {
         "to south exit": 12,
-        "to east exit": 4
+        "to west exit": 4,
+        "to  east exit": 16
       },
       "items": [
         "Pocoyo"
@@ -144,7 +145,7 @@
       "id": 14,
       "name": "West of Kings Circle",
       "brief_description": "You are infront of Kings Circle, with Myhal Centre in the distant North, and the Convocation Hall is still east of you",
-      "long_description": "From your vantage point west of Kings Circle, you witness the dynamic interplay of historic and contemporary campus life. The area is alive with movement and possibility.",
+      "long_description": "From your vantage point west of Kings Circle, you see Myhal in the distant north and convocation hall east.",
       "available_directions": {
         "north": 16,
         "east": 15,
@@ -247,7 +248,7 @@
     {
       "id": 16,
       "name": "Infront of McLennan",
-      "brief_description": "You have McLennan directly to the west",
+      "brief_description": "You have McLennan directly to the west and Myhal North",
       "long_description": "Facing McLennan, you observe a blend of contemporary style and timeless charm, reflecting the dynamic spirit of the campus.",
       "available_directions": {
         "inside McLennan": 13,
@@ -262,7 +263,7 @@
       "id": 23,
       "name": "Middle",
       "brief_description": "You now have Sidney Smith to the East, and MyHall is far north",
-      "long_description": "Located at a central junction of campus landmarks, you find yourself poised between the vibrant energy of Sidney Smith and the quiet resolve of the surroundings.",
+      "long_description": "You now have Sidney Smith to the East, and MyHall is far north",
       "available_directions": {
         "inside Sidney Smith": 24,
         "north": 25,
@@ -304,7 +305,7 @@
       "brief_description": "You are now inside of New College.",
       "long_description": "You into New College and see a student with your laptop, you need to confront him.",
       "available_directions": {
-        "west exit": 25,
+        "east exit": 25,
         "north exit": 28
       },
       "items": [],

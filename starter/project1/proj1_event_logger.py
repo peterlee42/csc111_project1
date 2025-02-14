@@ -65,8 +65,8 @@ class EventList:
 
     Representation Invariants:
         - (self.first is None) == (self.last is None)
-        - self.first is not None or self.first.prev is None
-        - self.last is not None or (self.last.next is None and self.last.next_command is None)
+        - self.first is None or self.first.prev is None
+        - self.last is None or (self.last.next is None and self.last.next_command is None)
     """
     first: Optional[Event]
     last: Optional[Event]

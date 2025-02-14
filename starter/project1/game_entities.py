@@ -30,9 +30,9 @@ class LocationEntities:
     The location entities for a given location.
 
     Instance Attributes:
-        - items: a list of items available in the location
-        - visited: a boolean that indicates if the location has been visited
-        - given_items: a list of items that the location can give if the player uses the correct item
+        - items: a list of items in the given location
+        - given_items: a list of items that the given location can give if the player uses the correct item
+        - npcs: a list of npcs (non-playable characters) in the given location
     """
 
     items: list[str]
@@ -47,7 +47,7 @@ class Location:
     Instance Attributes:
         - id_num: the unique identifier of the location
         - name: the name of the locations
-        - descriptions: A tuple of two types of descriptions in this order. a short description for quick rederence and
+        - descriptions: A tuple of two types of descriptions in this order. a short description for quick reference and
                         a longer description of the location displayed upon entering
         - available_directions: a dictionary of available directions in the location
         - location_entities: all entities in the location
@@ -80,9 +80,9 @@ class Item:
     Instance Attributes:
         - name: the name of the item
         - description: a description of the item
-        - start_position:
-        - target_position:
-        - target_points: points awarded when the item is placed at its correct location
+        - start_position: the ID of the starting location of this item
+        - target_position: the ID of the location that this item can be used
+        - target_points: points awarded when the item is used at the location with the ID of the target position
 
     Representation Invariants:
         - self.name != ''
@@ -115,17 +115,16 @@ class Npc:
         - dialgoue: the dialogue with the NPC
         - location_id: the location where the NPC is found
         - quest_messages: a tuple containing the quest message and the quest completion message
-        - required_items: A list of items required to complete the quest.
-        - reward: the reward given when the quest is completed
-        - is_quest_completed: whether the quest has been completed
+        - required_items: a list of items required to complete the quest.
+        - reward: a list of rewarded items when the quest is completed
+        - is_quest_completed: a boolean representing whether the quest has been completed
 
     Representation Invariants:
         - self.name != ''
         - self.dialogue != ''
-        - self.quest_messages[0] != ''
-        - self.quest_messages[1] != ''
+        - self.quest_messages != ('', '')
         - self.required_items != []
-        - self.reward != ''
+        - self.reward != []
     """
 
     name: str
@@ -141,10 +140,10 @@ class Player:
     """A player in our text adventure game world.
 
     Instance Attributes:
-        - inventory: a list of items the player has
-        - available_commands: a list of actions that the player can use
-        - score: type player's score so far
-        - quests: a list of all quests that the player accepted
+        - inventory: a list of items the player is carrying
+        - available_commands: a list of actions that the player can perform
+        - score: the player's score so far
+        - quests: a list of all quests that the player has accepted
 
     Representation Invariants:
         - self.score >= 0
@@ -158,18 +157,13 @@ class Player:
     def __init__(self) -> None:
         """Initialize a new player object."""
         self.inventory = []
-        self.available_actions = ['go', 'pick up',
-                                  'use', 'drop', 'examine', 'interact']
+        self.available_actions = ['go', 'pick up', 'use', 'drop', 'examine', 'interact']
         self.score = 0
         self.quests = []
 
     def use(self, current_location: Location, item_obj: Optional[Item]) -> bool:
-        """Use an item in the player's inventory. Return true if the player sucessfully used the item. Return false
-        otherwise.
-
-        Precondition:
-        - not item_obj and item_name == item_obj.name
-        """
+        """Use an item in the player's inventory. Return True if the player sucessfully used the item. Return False
+        otherwise."""
         if not item_obj or item_obj.name not in self.inventory:
             print("You reach out, but grasp only empty air.")
             return False
@@ -191,8 +185,10 @@ class Player:
             return False
 
     def drop_item(self, current_location: Location, item_name: str) -> bool:
-        """Remove an item from the player's inventory. Return true if the player sucessfully dropped the item.
-        Return false otherwise.
+        """Remove an item from the player's inventory. Return True if the player sucessfully dropped the item.
+        Return False otherwise.
+        Preconditions:
+        - item_name == item_name.lower()
         """
         for inventory_item in self.inventory:
             if item_name == inventory_item.lower():
@@ -209,7 +205,7 @@ class Player:
         return False
 
     def go(self, current_location: Location, direction: str) -> int:
-        """Return the id of the new location if the direction is valid. Return otherwise, return False.
+        """Return the id of the new location if the direction is valid. Otherwise, return the current location id.
         """
         for loc_direction in current_location.available_directions:
             if direction == loc_direction.lower():
@@ -219,8 +215,11 @@ class Player:
         return current_location.id_num
 
     def pick_up_item(self, current_location: Location, item_name: str) -> bool:
-        """Add an item to the player's inventory. Reward the player with 1 point. Return true if the player sucessfully
-        picked up the item. Return false otherwise.
+        """Add an item to the player's inventory. Reward the player with 1 point. Return True if the player sucessfully
+        picked up the item. Return False otherwise.
+
+        Preconditions:
+        - item_name == item_name.lower()
         """
         for loc_item in current_location.location_entities.items:
             if item_name == loc_item.lower():
@@ -249,22 +248,18 @@ class Player:
                 print('- ', item)
 
     def examine_item(self, item_obj: Optional[Item]) -> bool:
-        """Examine the item and display the item's description. Return true if the player sucessfully examined the item.
-        Return false otherwise.
-
-        Precondition:
-        - not item_obj and item_name == item_obj.name
+        """Examine the item and display the item's description. Return True if the player sucessfully examined the item.
+        Return False otherwise.
         """
-
-        if item_obj.name in self.inventory:
-            print(item_obj.description)
-            return True
-        else:
+        if not item_obj or item_obj.name not in self.inventory:
             print("You reach out, but grasp only empty air.")
             return False
+        else:
+            print(item_obj.description)
+            return True
 
     def display_quests(self) -> None:
-        """Display all the player's current quests"""
+        """Display all the player's current quests in sorted order"""
         if not self.quests:
             print("You have no quests.")
         else:
