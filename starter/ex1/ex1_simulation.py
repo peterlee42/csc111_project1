@@ -121,7 +121,7 @@ class AdventureGameSimulation:
         self._events = EventList()
 
         initial_location = self._game.get_location()
-        self._events.add_event(Event(initial_location.id_num, initial_location.description, None, None, None))
+        self._events.add_event(Event(initial_location_id, initial_location.description))
 
         self.generate_events(commands, initial_location)
 
@@ -134,10 +134,11 @@ class AdventureGameSimulation:
         """
 
         for command in commands:
-            next_location_id = current_location.available_commands[command]
-            next_location = self._game.get_location(next_location_id)
-            self._events.add_event(Event(next_location.id_num, next_location.description, command, None,
-                                         self._events.last))
+            self._game.current_location_id = current_location.available_commands[command]
+
+            next_location = self._game.get_location()
+
+            self._events.add_event(Event(next_location.id_num, next_location.description), command)
             current_location = next_location
 
     def get_id_log(self) -> list[int]:

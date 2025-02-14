@@ -48,7 +48,8 @@ class AdventureGameSimulation:
         self._game = AdventureGame(game_data_file, initial_location_id, time_window)
 
         start_location = self._game.get_location()
-        self._events.add_event(Event(start_location.id_num, start_location.descriptions[0]))
+        start_time = time_window.current_time
+        self._events.add_event(Event(initial_location_id, start_location.descriptions[0], start_time))
 
         # Hint: Call self.generate_events with the appropriate arguments
         self.generate_events(commands, start_location)
@@ -65,91 +66,26 @@ class AdventureGameSimulation:
         # which executing <command> while in <current_location_id> leads to
 
         menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
-        initial_loc_id = current_location.id_num
-        win_items = ['laptop', 'laptop charger', 'lucky UofT mug', 'USB drive', 'backpack']
+        action_times = {"go": 5, "pick up": 2, "use": 3, "drop": 2, "examine": 2, "interact": 5}
+
         for command in commands:
-            location = self._game.get_location()
-            command = command.lower().strip()
 
-            parsed_command = parse_command(command, list(self._game.player.available_actions))
-            player_action = parsed_command[0]
+            player_action, player_target = parse_command(command, self._game.player.available_actions)
 
-            if player_action in menu:
-                # Note: For the "undo" command, remember to manipulate the self._events event list to keep it up-to-date
-                if player_action == "log":
-                    self._events.display_events()
-                elif player_action == "quit":
-                    print('Bye bye!')
-                    self._game.ongoing = False
-                elif player_action == "undo":
-                    self._game.undo(self._events)
-                elif player_action == "inventory":
-                    self._game.player.display_inventory()
-                elif player_action == "score":
-                    print("Score:", self._game.player.score)
-                elif player_action == "look":
-                    print(location.descriptions[1])
-                elif player_action == "quests":
-                    self._game.player.display_quests()
-            else:
-                action_time, valid_move = self.other_commands(location, parsed_command)
-                if valid_move:
-                    self._game.add_minutes(action_time)
-                    self._events.add_event(Event(self._game.current_location_id, location.descriptions[0]), command,
-                                           self._game.time_window.current_time)
-            self._game.check_win(initial_loc_id, win_items)
+            if player_action not in menu:
+                if player_action == 'go':
+                    # update the game's location id
+                    result = self._game.player.go(current_location, player_target)
+                    self._game.current_location_id = result
 
-    def other_commands(self, location: Location, parsed_command: tuple[str, str]) -> tuple[int, bool]:
-        """This checks for player commands and runs the correct command based on the parsed command. Return the
-        total minutes of the action and if the commmand was valid.
-        """
-        player_action, player_target = parsed_command
-        action_time = 0
-        valid_move = False
-        if player_action == 'go':
+                # update game's current time
+                self._game.add_minutes(action_times[player_action])
 
-            result = self._game.player.go(location, player_target)
+                next_location = self._game.get_location()
 
-            # add to time if it is a new location
-            if self._game.current_location_id != result:
-                action_time = 6
-                valid_move = True
-            # Change to new location (or the same)
-            self._game.current_location_id = result
-
-            return action_time, valid_move
-
-        elif player_action == 'pick up':
-            action_time = 2
-            valid_move = self._game.player.pick_up_item(location, player_target)
-            return action_time, valid_move
-        elif player_action == 'use':
-            player_target_obj = self._game.get_item(player_target)
-            action_time = 3
-            valid_move = self._game.player.use(
-                location, player_target_obj)
-            return action_time, valid_move
-        elif player_action == 'drop':
-            action_time = 2
-            valid_move = self._game.player.drop_item(location, player_target)
-            return action_time, valid_move
-
-        elif player_action == 'examine':
-            player_target_obj = self._game.get_item(player_target)
-            action_time = 2
-            valid_move = self._game.player.examine_item(player_target_obj)
-            return action_time, valid_move
-
-        elif player_action == 'interact':
-            target_npc_obj = self._game.get_npc(player_target)
-            rewarded_points = 0
-            if target_npc_obj:
-                rewarded_points = sum(
-                    [self._game.get_item(item).target_points for item in target_npc_obj.required_items])
-            valid_move = self._game.player.interact(location.id_num, target_npc_obj, rewarded_points)
-            return action_time, valid_move
-
-        return action_time, valid_move
+                self._events.add_event(Event(next_location.id_num, next_location.descriptions[0],
+                                             self._game.time_window.current_time), command)
+                current_location = next_location
 
     def get_id_log(self) -> list[int]:
         """
@@ -157,16 +93,12 @@ class AdventureGameSimulation:
         that follows the given commands.
 
         >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["go to lobby", "go outside", "go south", 'go inside mclennan', 'go to east exit'])
+        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["go to lobby", "go outside", "go south", 'go inside McLennan', 'go to east exit'])
         >>> sim.get_id_log()
         [1, 2, 3, 4, 13, 4]
 
         >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
         >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["pick up toonie", "score", "go to lobby", "use toonie", "go to dorm"])
-        toonie has been added to your inventory.
-        Score: 1
-        You have used toonie.
-        You received: Red Bull
         >>> sim.get_id_log()
         [1, 1, 2, 2, 1]
         """
@@ -195,12 +127,12 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    import python_ta
-
-    python_ta.check_all(config={
-        'max-line-length': 120,
-        'disable': ['R1705', 'E9998', 'E9999']
-    })
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'max-line-length': 120,
+    #     'disable': ['R1705', 'E9998', 'E9999']
+    # })
 
     game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
 
@@ -239,27 +171,26 @@ if __name__ == "__main__":
     expected_log = [1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
 
     lose_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, lose_demo)
-    print(lose_sim.get_id_log())
     assert expected_log == lose_sim.get_id_log()
 
     inventory_demo = ["pick up toonie", "inventory"]
     expected_log = [1, 1]
-    actual_log = AdventureGameSimulation('game_data.json', 1, game_time_window, inventory_demo)
-    assert expected_log == actual_log.get_id_log()
+    inventory_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, inventory_demo)
+    assert expected_log == inventory_sim.get_id_log()
 
     scores_demo = ["pick up toonie", "inventory", "go to lobby", "use toonie", "inventory"]
     expected_log = [1, 1, 2, 2]
-    actual_log = AdventureGameSimulation('game_data.json', 1,
+    scores_sim = AdventureGameSimulation('game_data.json', 1,
                                          game_time_window, scores_demo)
-    assert expected_log == actual_log.get_id_log()
+    assert expected_log == scores_sim.get_id_log()
 
     examine_demo = ["pick up toonie", "examine toonie"]
     expected_log = [1, 1, 1]
-    actual_log = AdventureGameSimulation('game_data.json', 1, game_time_window, examine_demo)
-    assert expected_log == actual_log.get_id_log()
+    examine_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, examine_demo)
+    assert expected_log == examine_sim.get_id_log()
 
     interact_demo = ["go to lobby", "go outside", "go south", "go south", "go inside Bahen", "go to CSSU lounge",
                      "interact Prof Sadia"]
     expected_log = [1, 2, 3, 4, 7, 8, 9, 9]
-    actual_log = AdventureGameSimulation('game_data.json', 1, game_time_window, interact_demo)
-    assert expected_log == actual_log.get_id_log()
+    interact_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, interact_demo)
+    assert expected_log == interact_sim.get_id_log()

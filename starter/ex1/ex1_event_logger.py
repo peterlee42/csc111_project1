@@ -51,7 +51,7 @@ class Event:
 
     id_num: int
     description: str
-    next_command: Optional[str]
+    next_command: Optional[str] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
@@ -65,8 +65,9 @@ class EventList:
         - last: The last event in the linked list of game events
 
     Representation Invariants:
-        - self.first is not None and self.first.prev is None
-        - self.last is not None and self.last.next is None
+        - (self.first is None) == (self.last is None)
+        - self.first is not None or self.first.prev is None
+        - self.last is not None or (self.last.next is None and self.last.next_command is None)
     """
     first: Optional[Event]
     last: Optional[Event]
@@ -85,10 +86,7 @@ class EventList:
 
     def is_empty(self) -> bool:
         """Return whether this event list is empty."""
-        if self.first is None:
-            return True
-        else:
-            return False
+        return self.first is None
 
     def add_event(self, event: Event, command: Optional[str] = None) -> None:
         """Add the given new event to the end of this event list.
@@ -115,16 +113,10 @@ class EventList:
             if self.first is self.last:
                 self.first, self.last = None, None
             else:
-                curr = self.first
-                while curr.next is not self.last:
-                    curr = curr.next
-
-                assert curr.next is self.last
-
-                if curr.next is self.last:
-                    curr.next = None
-                    curr.next_command = None
-                    self.last = curr
+                new_last = self.last.prev
+                new_last.next = None
+                new_last.next_command = None
+                self.last = new_last
 
     def get_id_log(self) -> list[int]:
         """Return a list of all location IDs visited for each event in this list, in sequence."""

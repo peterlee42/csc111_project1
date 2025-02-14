@@ -10,7 +10,8 @@
       },
       "items": [
         "toonie",
-        "five dollar bill"],
+        "five dollar bill"
+      ],
       "given_items": [],
       "npcs": []
     },
@@ -459,7 +460,7 @@
     },
     {
       "name": "laptop",
-      "description": "Your laptop that you used to work on your assignment! But Oh NO it's dead, you will need your laptop charger.",
+      "description": "Your laptop that you used to work on your assignment!\nBut Oh NO it's dead, you will need your laptop charger.",
       "start_position": 27,
       "target_position": 1,
       "target_points": 20
@@ -473,7 +474,7 @@
     },
     {
       "name": "crumpled paper",
-      "description": "In the most crowded study spot around,\nWhere pages turn and pens abound,\nGo back to where you last took a seat,\nA tired student you’re sure to meet.",
+      "description": "In the most crowded study spot around.\nWhere pages turn and pens abound.\nGo back to where you last took a seat.\nA tired student you’re sure to meet.",
       "start_position": 20,
       "target_position": 32,
       "target_points": 10
@@ -520,7 +521,7 @@
       "dialogue": "Zzzzzzzzzzz.... Energy... Drink...kk",
       "location_id": 33,
       "quest_message": "Bring tired student an energy drink.",
-      "quest_complete_message": "Oh my goodness! Thank you so much for the drink. Oh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts. Maybe try going to the cafe. Also, I think this pass may be helpful in your search. Also, give this note to the Barista.",
+      "quest_complete_message": "Oh my goodness! Thank you so much for the drink.\nOh wait are you the guy who left your stuff here? I had your stuff put away by the barista at Robarts. Maybe try going to the cafe.\nAlso, I think this pass may be helpful in your search.",
       "required_items": ["Red Bull"],
       "reward": ["admin pass"]
     },

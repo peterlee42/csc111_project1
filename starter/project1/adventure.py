@@ -53,7 +53,6 @@ class TimeWindow:
         - current_time: The current time of this time window
         - deadline: The deadline of this time window
     """
-
     current_time: time
     deadline: time
 
@@ -82,7 +81,7 @@ class AdventureGame:
     current_location_id: int
     player: Player
     time_window: TimeWindow
-    ongoing: bool  # Suggested attribute, can be removed
+    ongoing: bool
 
     def __init__(self, game_data_file: str, initial_location_id: int,
                  time_window: TimeWindow) -> None:
@@ -130,7 +129,8 @@ class AdventureGame:
         for loc_data in data['locations']:
             location_obj_entities = LocationEntities(loc_data['items'], loc_data['given_items'], loc_data['npcs'])
             location_obj = Location(loc_data['id'], loc_data['name'], (loc_data['brief_description'],
-                                    loc_data['long_description']), loc_data['available_directions'],
+                                                                       loc_data['long_description']),
+                                    loc_data['available_directions'],
                                     location_obj_entities)
             locations[loc_data['id']] = location_obj
 
@@ -185,25 +185,19 @@ class AdventureGame:
 
     def undo(self, current_game_log: EventList) -> None:
         """Undo the last action taken by the player."""
-        # Make current location id the id of the previous event. Remove the last event from the game log.
+        # Check if there are actions to undo
         if current_game_log.is_empty() or current_game_log.first.next is None:
             print("No actions to undo.")
             return
 
-        # Undo the game log
         prev_event = current_game_log.last.prev
 
         # Change current time to the time of the previous action
         self.time_window.current_time = prev_event.event_time
 
-        prev_location_id = prev_event.id_num
-
-        # always changes current location id to the previous one
-        self.current_location_id = prev_location_id
-
-        prev_location = self.get_location(prev_location_id)
-
-        current_game_log.last = prev_event
+        # changes current location id to the previous one
+        self.current_location_id = prev_event.id_num
+        prev_location = self.get_location()
 
         # Retrieve the previous command and since we know it already exists, we don't have to check anything.
         prev_command = prev_event.next_command
@@ -212,7 +206,6 @@ class AdventureGame:
 
         if prev_action == 'pick up':
             prev_item_obj = self.get_item(prev_target)
-
             self.player.inventory.remove(prev_item_obj.name)
             prev_location.location_entities.items.append(prev_item_obj.name)
         elif prev_action == 'drop':
@@ -236,102 +229,60 @@ class AdventureGame:
 
         print('Action undone!')
 
-        # Remove the most recent command
-        current_game_log.last.next = None
-        current_game_log.last.next_command = None
-        current_game_log.last.event_time = None
+        current_game_log.remove_last_event()
 
-    def add_minutes(self, added_minutes: int) -> None:
-        """Adds specified minutes to self.current_time.
-        This method will also see if the game's current time is past the deadline time.
-        It will make self.ongoing False if the user passed the deadline.
+    def add_minutes(self, added_minutes: int) -> bool:
+        """Adds minutes to self.current_time.
+        Returns return true if the player passed the deadline. Return False otherwise.
 
         Preconditions:
         - 0 <= added_minutes <= 60
         """
-
-        current_hour = self.time_window.current_time.hour
-        current_minute = self.time_window.current_time.minute
-
+        current_hour, current_minute = self.time_window.current_time.hour, self.time_window.current_time.minute
         current_minute += added_minutes
+        current_hour += current_minute // 60
+        current_minute %= 60
 
-        hour_in_minutes = 60
-        # add the number of hours (60 minutes is one hour).
-        current_hour += current_minute // hour_in_minutes
-        # find the number of remaining minutes (60 minutes is one hour)
-        current_minute %= hour_in_minutes
+        day_passed = False
+        if current_hour >= 24:
+            current_hour %= 24
+            day_passed = True
 
-        # If you add to many hours such that it goes to the next day, automatically stop the game.
-        day_in_hours = 24
-        if current_hour // day_in_hours == 0:  # our current hour is before midnight
-            self.time_window.current_time = time(current_hour, current_minute)
+        new_time = time(hour=current_hour, minute=current_minute)
+        self.time_window.current_time = new_time
 
-            if self.time_window.current_time >= self.time_window.deadline:
-                print(f'It is {self.time_window.current_time.strftime("%I:%M %p")}!')
-                print('YOU MISSED THE DEADLINE!')
-                self.ongoing = False
-        else:
-            current_hour %= day_in_hours
-            new_time = time(hour=current_hour,
-                            minute=current_minute).strftime("%I:%M %p")
-            print(
-                f'It is {new_time} the next day!')
-            print('YOU MISSED THE DEADLINE!')
+        if day_passed or self.time_window.current_time >= self.time_window.deadline:
+            return False
+        return True
+
+    def check_win(self, initial_location_id: int, deadline_passed: bool, win_items: list[str]) -> None:
+        """Checks if the player has won. If the time has passed the deadline, the player has lost.
+        If player has brought all win items in the initial location before the deadline, they have
+        won.
+        """
+        if deadline_passed:
+            print('========')
+            print('YOU MISSED THE DEADLINE!\n')
+            print('Current Time:', self.time_window.current_time.strftime("%I:%M %p"))
+            print('Your Final Score:', self.player.score)
             self.ongoing = False
 
-    def check_win(self, initial_location_id: int, win_items: list[str]) -> bool:
-        """Check if player has brought all of the win items in the initial location.
+        elif self.current_location_id == initial_location_id and all({item in self.player.inventory
+                                                                      for item in win_items}):
+            # Case where player is back at original location AND has all win items in their inventory.
+            total_score = sum([self.get_item(item).target_points for item in win_items])
+            self.player.score += total_score
+            self.ongoing = False
+            print('========')
+            print('You submitted on before the deadline! Congratulations!\n')
+            print('Time of submission:', self.time_window.current_time)
+            print('Your Final Score:', self.player.score)
+
+    def display_location_info(self, location: Location) -> None:
+        """Display information about the given location in the console. This include the location description, items,
+        and npcs.
         """
-        if self.current_location_id == initial_location_id:
-            for item in win_items:
-                if item not in self.player.inventory:
-                    return False
-            return True
-
-        return False
-
-
-if __name__ == "__main__":
-    # When you are ready to check your work with python_ta, uncomment the following lines.
-    # (Delete the "#" and space before each line.)
-    # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    #
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
-
-    game_initial_location_id = 1
-    game_win_items = ['laptop', 'laptop charger', 'lucky UofT mug', 'USB drive', 'backpack']
-
-    game_log = EventList()  # This is REQUIRED as one of the baseline requirements
-    # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
-    game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-    game = AdventureGame('game_data.json', game_initial_location_id,
-                         game_time_window)
-    # Regular menu options available at each location
-    menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
-    choice = None
-    valid_move = True
-    action_time = 0
-
-    # Note: You may modify the code below as needed; the following starter code is just a suggestion
-    while game.ongoing:
-        # Note: If the loop body is getting too long, you should split the body up into helper functions
-        # for better organization. Part of your marks will be based on how well-organized your code is.
-
-        location = game.get_location()
-
-        #  Note that the <choice> variable should be the command which led to this event
-        # YOUR CODE HERE
-        if choice not in menu and valid_move:
-            game_log.add_event(
-                Event(location.id_num, location.descriptions[0]), choice, game.time_window.current_time)
-            game.add_minutes(action_time)
-
         #  print either full description (first time visit) or brief description (every subsequent visit) of location
-        # YOUR CODE HERE
         if location.visited:
             print(location.descriptions[0])
         else:
@@ -350,6 +301,44 @@ if __name__ == "__main__":
             for location_npc in location.location_entities.npcs:
                 print(f'- {location_npc}')
 
+
+if __name__ == "__main__":
+    # When you are ready to check your work with python_ta, uncomment the following lines.
+    # (Delete the "#" and space before each line.)
+    # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'max-line-length': 120,
+    #     'disable': ['R1705', 'E9998', 'E9999']
+    # })
+
+    game_initial_location_id = 1
+    game_win_items = ['laptop', 'laptop charger', 'lucky UofT mug', 'USB drive']
+
+    game_log = EventList()  # This is REQUIRED as one of the baseline requirements
+    # load data, setting initial location ID to 1, start_time to 8:00 AM, and deadline to 4:00 PM
+    game_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
+    game = AdventureGame('game_data.json', game_initial_location_id,
+                         game_time_window)
+    # Regular menu options available at each location
+    menu = ["look", "inventory", "score", "undo", "log", "quit", "quests"]
+    choice = None
+    valid_move = True
+    action_time = 0
+
+    # Note: You may modify the code below as needed; the following starter code is just a suggestion
+    while game.ongoing:
+        current_location = game.get_location()
+
+        # Add event to game_log if it is a valid, non menu, move.
+        if choice not in menu and valid_move:
+            game_log.add_event(
+                Event(current_location.id_num, current_location.descriptions[0], game.time_window.current_time), choice)
+
+        # display location info
+        game.display_location_info(current_location)
+
         # Display the current time
         print(f"\nThe current time is {game.time_window.current_time.strftime("%I:%M %p")}.")
 
@@ -358,24 +347,19 @@ if __name__ == "__main__":
 
         # Display directions the player can go
         print("At this location, you can go:")
-        for direction in location.available_directions:
+        for direction in current_location.available_directions:
             print('-', direction)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        parsed_choice = parse_command(choice, list(
-            game.player.available_actions) + list(menu))
-        while parsed_choice[0] not in game.player.available_actions and parsed_choice[0] not in menu:
+        player_action, player_target = parse_command(choice, game.player.available_actions)
+        while player_action not in game.player.available_actions and player_action not in menu:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
-            parsed_choice = parse_command(choice, list(
-                game.player.available_actions) + list(menu))
+            player_action, player_target = parse_command(choice, game.player.available_actions)
 
         print("========")
-        print("You decided to:", choice)
-
-        # our handled choice has two components. An action and a target.
-        player_action, player_target = parsed_choice
+        print(f"You decided to: {player_action} {player_target}")
 
         if player_action in menu:
             # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
@@ -391,53 +375,48 @@ if __name__ == "__main__":
             elif player_action == "score":
                 print("Score:", game.player.score)
             elif player_action == "look":
-                print(location.descriptions[1])
+                print(current_location.descriptions[1])
             elif player_action == "quests":
                 game.player.display_quests()
             # ENTER YOUR CODE BELOW to handle other menu commands (remember to use helper functions as appropriate)
         else:
             if player_action == 'go':
-
-                result = game.player.go(location, player_target)
+                result = game.player.go(current_location, player_target)
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    action_time = 6
+                    action_time = 5
                     valid_move = True
                 else:
                     valid_move = False
                 # Change to new location (or the same)
                 game.current_location_id = result
             elif player_action == 'pick up':
+                valid_move = game.player.pick_up_item(current_location, player_target)
                 action_time = 2
-                valid_move = game.player.pick_up_item(location, player_target)
             elif player_action == 'use':
                 player_target_obj = game.get_item(player_target)
+                valid_move = game.player.use(current_location, player_target_obj)
                 action_time = 3
-                valid_move = game.player.use(
-                    location, player_target_obj)
             elif player_action == 'drop':
+                valid_move = game.player.drop_item(current_location, player_target)
                 action_time = 2
-                valid_move = game.player.drop_item(location, player_target)
             elif player_action == 'examine':
                 player_target_obj = game.get_item(player_target)
-                action_time = 2
                 valid_move = game.player.examine_item(player_target_obj)
-
+                action_time = 2
             elif player_action == 'interact':
                 target_npc_obj = game.get_npc(player_target)
-                rewarded_points = 0
-                if target_npc_obj:
-                    rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items])
+                rewarded_points = sum([game.get_item(item).target_points for item in target_npc_obj.required_items
+                                       if target_npc_obj])
                 valid_move = game.player.interact(game.current_location_id, target_npc_obj, rewarded_points)
-
                 action_time = 5
 
-        print("========")
+            # If it's a valid move, then add minutes and check if time has passed the deadline.
+            player_lost = False
+            if valid_move:
+                player_lost = game.add_minutes(action_time)
+            # Checks if the player has won
+            game.check_win(game_initial_location_id, player_lost, game_win_items)
 
-        if game.check_win(game_initial_location_id, game_win_items):
-            total_score = sum([game.get_item(item).target_points for item in win_items])
-            game.player.score += total_score
-            game.ongoing = False
-            print("You submitted on before the deadline! Congratulations!\n")
-            print('Your Final Score:', game.player.score)
+        print("========")

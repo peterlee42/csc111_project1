@@ -50,7 +50,7 @@ class Location:
         - descriptions: A tuple of two types of descriptions in this order. a short description for quick rederence and
                         a longer description of the location displayed upon entering
         - available_directions: a dictionary of available directions in the location
-        - npcs: a list of npcs (non-playable characters) in the location
+        - location_entities: all entities in the location
 
     Representation Invariants:
         - self.id_num >= 0
@@ -78,7 +78,6 @@ class Item:
     """An item in our text adventure game world.
 
     Instance Attributes:
-        - # TODO Describe each instance attribute here
         - name: the name of the item
         - description: a description of the item
         - start_position:
@@ -86,7 +85,6 @@ class Item:
         - target_points: points awarded when the item is placed at its correct location
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
         - self.name != ''
         - self.description != ''
         - self.start_position >= 0
@@ -197,7 +195,7 @@ class Player:
         Return false otherwise.
         """
         for inventory_item in self.inventory:
-            if item_name == inventory_item.lower():
+            if item_name.lower() == inventory_item.lower():
                 self.inventory.remove(inventory_item)
                 current_location.location_entities.items.append(inventory_item)
 
@@ -214,7 +212,7 @@ class Player:
         """Return the id of the new location if the direction is valid. Return otherwise, return False.
         """
         for loc_direction in current_location.available_directions:
-            if direction == loc_direction.lower():
+            if direction.lower() == loc_direction.lower():
                 return current_location.available_directions[loc_direction]
 
         print("Looks like that isn't a valid direction...")
@@ -225,7 +223,7 @@ class Player:
         picked up the item. Return false otherwise.
         """
         for loc_item in current_location.location_entities.items:
-            if item_name == loc_item.lower():
+            if item_name.lower() == loc_item.lower():
 
                 self.inventory.append(loc_item)  # add to inventory
                 # remove item from location
@@ -295,15 +293,12 @@ class Player:
                 print('-', item)
             self.quests.append(npc.quest_messages[0])
             return True
-        elif npc.quest_messages[0] not in self.quests:
-            self.quests.append(npc.quest_messages[0])
+        else:
+            if npc.quest_messages[0] not in self.quests:
+                self.quests.append(npc.quest_messages[0])
             print(f"{npc.name} says: '{npc.dialogue}'")
             print('\nFinish the quest and interact again when completed.')
-
             return True
-        else:
-            print('Finish the quest and interact again when completed.')
-            return False
 
     def complete_quest(self, npc: Npc, rewarded_points: int) -> bool:
         """Check if the player has all the required items to complete the quest."""
