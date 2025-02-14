@@ -195,7 +195,7 @@ class Player:
         Return false otherwise.
         """
         for inventory_item in self.inventory:
-            if item_name.lower() == inventory_item.lower():
+            if item_name == inventory_item.lower():
                 self.inventory.remove(inventory_item)
                 current_location.location_entities.items.append(inventory_item)
 
@@ -212,7 +212,7 @@ class Player:
         """Return the id of the new location if the direction is valid. Return otherwise, return False.
         """
         for loc_direction in current_location.available_directions:
-            if direction.lower() == loc_direction.lower():
+            if direction == loc_direction.lower():
                 return current_location.available_directions[loc_direction]
 
         print("Looks like that isn't a valid direction...")
@@ -223,7 +223,7 @@ class Player:
         picked up the item. Return false otherwise.
         """
         for loc_item in current_location.location_entities.items:
-            if item_name.lower() == loc_item.lower():
+            if item_name == loc_item.lower():
 
                 self.inventory.append(loc_item)  # add to inventory
                 # remove item from location

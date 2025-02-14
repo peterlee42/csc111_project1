@@ -66,9 +66,10 @@ class AdventureGameSimulation:
         # which executing <command> while in <current_location_id> leads to
 
         menu = {"look", "inventory", "score", "undo", "log", "quit", "quests"}
-        action_times = {"go": 5, "pick up": 2, "use": 3, "drop": 2, "examine": 2, "interact": 5}
+        action_times = {"go": 10, "pick up": 2, "use": 3, "drop": 2, "examine": 2, "interact": 5}
 
         for command in commands:
+            command = command.lower().strip()
 
             player_action, player_target = parse_command(command, self._game.player.available_actions)
 
@@ -93,12 +94,12 @@ class AdventureGameSimulation:
         that follows the given commands.
 
         >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["go to lobby", "go outside", "go south", 'go inside McLennan', 'go to east exit'])
+        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["go to lobby", "go outside", "go south", 'go inside McLennan', 'pick up pocoyo'])
         >>> sim.get_id_log()
-        [1, 2, 3, 4, 13, 4]
+        [1, 2, 3, 4, 13, 13]
 
         >>> sim_time_window = TimeWindow(time(hour=8, minute=0), time(hour=16, minute=0))
-        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["pick up toonie", "score", "go to lobby", "use toonie", "go to dorm"])
+        >>> sim = AdventureGameSimulation('game_data.json', 1, sim_time_window, ["pick up tOOnie", "score", "go to lobby", "use toonie", "score","go to dorm"])
         >>> sim.get_id_log()
         [1, 1, 2, 2, 1]
         """
@@ -140,7 +141,7 @@ if __name__ == "__main__":
     win_walkthrough = ["pick up toonie", "pick up five dollar bill", "go to lobby", "use toonie", "go outside",
                        "go south", "go inside McLennan", "pick up Pocoyo", "go to east exit",
                        "go to food trucks", "use five dollar bill", "go back", "go south",
-                                                                               "go inside Bahen", "go to CSSU lounge",
+                       "go inside Bahen", "go to CSSU lounge",
                        "interact Prof Sadia", "go to lobby", "go to east exit",
                        "go east", "go north", "go north", "go north", "go north", "go inside Myhal Centre",
                        "pick up student ID", "pick up backpack", "go outside myhal centre", "go south",
@@ -153,32 +154,31 @@ if __name__ == "__main__":
                        "interact Barista", "go downstairs", "go to lobby", "go outside", "go west", "go south",
                        "go south", "go inside Sidney Smith", "use admin pass", "go outside", "go north", "go north",
                        "go west", "go west", "go inside Chestnut", "go to dorm"]
-    # Update this log list to include the IDs of all locations that would be visited
+
+    # Win simulation
     expected_log = [1, 1, 1, 2, 2, 3, 4, 13, 13, 4, 6, 6, 4, 7, 8, 9, 9, 8, 12, 14, 16, 23, 25, 29, 30, 30, 30, 29, 25,
                     27, 27, 25, 23, 16, 14, 15, 17, 18, 20, 20, 18, 17, 15, 14, 16, 23, 25, 29, 31, 32, 32, 33, 33, 34,
                     34, 33, 32, 31, 29, 25, 23, 24, 24, 23, 25, 29, 28, 3, 2, 1]
-
-    # Uncomment the line below to test your walkthrough
     win_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, win_walkthrough)
     assert expected_log == win_sim.get_id_log()
 
-    # Create a list of all the commands needed to walk through your game to reach a 'game over' state
-    lose_demo = ["pick up toonie", "pick up five dollar bill", "go to lobby", "go to dorm", "go to lobby", "go to dorm",
+    # Lose Simulation
+    lose_demo = ["go to lobby", "go to dorm", "go to lobby", "go to dorm", "go to lobby", "go to dorm",
                  "go to lobby", "go to dorm", "go to lobby", "go to dorm", "go to lobby", "go to dorm",
                  "go to lobby", "go to dorm", "go to lobby", "go to dorm", "go to lobby", "go to dorm",
-                 "go to lobby", "go to dorm", "go to lobby", "go to dorm", "go to lobby"]
-    # Update this log list to include the IDs of all locations that would be visited
-    expected_log = [1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
-
+                 "go to lobby", "go to dorm", "go to lobby", "go to dorm", "go to lobby", "go to dorm"]
+    expected_log = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1]
     lose_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, lose_demo)
     assert expected_log == lose_sim.get_id_log()
 
-    inventory_demo = ["pick up toonie", "inventory"]
-    expected_log = [1, 1]
+    # Inventory demo
+    inventory_demo = ["pick up toonie", "inventory", "go to lobby", "use toonie", "inventory"]
+    expected_log = [1, 1, 2, 2]
     inventory_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, inventory_demo)
     assert expected_log == inventory_sim.get_id_log()
 
-    scores_demo = ["pick up toonie", "inventory", "go to lobby", "use toonie", "inventory"]
+    # Scores demo
+    scores_demo = ["pick up toonie", "score", "go to lobby", "use toonie", "score"]
     expected_log = [1, 1, 2, 2]
     scores_sim = AdventureGameSimulation('game_data.json', 1,
                                          game_time_window, scores_demo)
@@ -190,7 +190,9 @@ if __name__ == "__main__":
     assert expected_log == examine_sim.get_id_log()
 
     interact_demo = ["go to lobby", "go outside", "go south", "go south", "go inside Bahen", "go to CSSU lounge",
-                     "interact Prof Sadia"]
-    expected_log = [1, 2, 3, 4, 7, 8, 9, 9]
+                     "interact Prof Sadia", "quests", "interact Prof Sadia", "go to lobby", "go to east exit",
+                     "go inside McLennan", "pick up Pocoyo", "go to south exit", "go inside bahen", "go to CSSU lounge",
+                     "interact Prof Sadia", "inventory"]
+    expected_log = [1, 2, 3, 4, 7, 8, 9, 9, 9, 8, 12, 13, 13, 12, 8, 9, 9]
     interact_sim = AdventureGameSimulation('game_data.json', 1, game_time_window, interact_demo)
     assert expected_log == interact_sim.get_id_log()

@@ -252,8 +252,8 @@ class AdventureGame:
         self.time_window.current_time = new_time
 
         if day_passed or self.time_window.current_time >= self.time_window.deadline:
-            return False
-        return True
+            return True
+        return False
 
     def check_win(self, initial_location_id: int, deadline_passed: bool, win_items: list[str]) -> None:
         """Checks if the player has won. If the time has passed the deadline, the player has lost.
@@ -385,7 +385,7 @@ if __name__ == "__main__":
 
                 # add to time if it is a new location
                 if game.current_location_id != result:
-                    action_time = 5
+                    action_time = 10
                     valid_move = True
                 else:
                     valid_move = False
